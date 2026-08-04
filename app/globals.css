@@ -1,26 +1,213 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  /* ---- Brand palette (Figma) ---- */
+  --color-brand: var(--brand);
+  --color-brand-deep: var(--brand-deep);
+  --color-brand-soft: var(--brand-soft);
+  --color-brand-line: var(--brand-line);
+  --color-gold: var(--gold);
+  --color-gold-strong: var(--gold-strong);
+  --color-gold-soft: var(--gold-soft);
+  --color-sand: var(--sand);
+  --color-cream: var(--cream);
+  --color-stone: var(--stone);
+
+  /* ---- Semantic (shadcn) ---- */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --font-sans: var(--font-pehlevi), "Segoe UI", system-ui, sans-serif;
+  --font-mono: var(--font-pehlevi), monospace;
+  --font-heading: var(--font-pehlevi), "Segoe UI", system-ui, sans-serif;
+  --font-display: var(--font-pehlevi), "Segoe UI", system-ui, sans-serif;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.75);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.25);
+  --radius-2xl: calc(var(--radius) * 1.5);
+  --radius-3xl: calc(var(--radius) * 2);
+  --radius-4xl: calc(var(--radius) * 2.5);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  /*
+   * Pehlevi is a light script face, so the whole type scale is bumped a notch
+   * (and given roomier leading) to stay readable at UI sizes.
+   */
+  --text-xs: 0.9375rem;
+  --text-xs--line-height: 1.45rem;
+  --text-sm: 1.0625rem;
+  --text-sm--line-height: 1.7rem;
+  --text-base: 1.1875rem;
+  --text-base--line-height: 1.9rem;
+  --text-lg: 1.3125rem;
+  --text-lg--line-height: 2rem;
+  --text-xl: 1.5rem;
+  --text-xl--line-height: 2.15rem;
+  --text-2xl: 1.75rem;
+  --text-2xl--line-height: 2.35rem;
+  --text-3xl: 2.25rem;
+  --text-3xl--line-height: 2.85rem;
+  --text-4xl: 2.75rem;
+  --text-4xl--line-height: 3.4rem;
+  --text-5xl: 3.5rem;
+  --text-5xl--line-height: 4rem;
+
+  --shadow-card: 0 18px 40px -24px rgb(16 40 27 / 0.35);
+  --shadow-float: 0 24px 60px -28px rgb(16 40 27 / 0.45);
+
+  --animate-accordion-down: accordion-down 220ms ease-out;
+  --animate-accordion-up: accordion-up 220ms ease-in;
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--accordion-panel-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--accordion-panel-height);
+    }
+    to {
+      height: 0;
+    }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+:root {
+  /* Figma brand palette */
+  --brand: #10281b;
+  --brand-deep: #0b1d13;
+  --brand-soft: #1b3a28;
+  --brand-line: #2c4a38;
+  --gold: #d7c190;
+  --gold-strong: #c9a84c;
+  --gold-soft: #eadfc5;
+  --sand: #e2cfa5;
+  --cream: #fbf8f1;
+  --stone: #e7e9e8;
+
+  --background: #ffffff;
+  --foreground: #10281b;
+  --card: #ffffff;
+  --card-foreground: #10281b;
+  --popover: #ffffff;
+  --popover-foreground: #10281b;
+  --primary: #10281b;
+  --primary-foreground: #fbf8f1;
+  --secondary: #d7c190;
+  --secondary-foreground: #10281b;
+  --muted: #e7e9e8;
+  --muted-foreground: #55665c;
+  --accent: #eadfc5;
+  --accent-foreground: #10281b;
+  --destructive: #b3261e;
+  --border: #e3e6e2;
+  --input: #d8ded8;
+  --ring: #10281b;
+  --chart-1: #10281b;
+  --chart-2: #1b3a28;
+  --chart-3: #c9a84c;
+  --chart-4: #d7c190;
+  --chart-5: #e7e9e8;
+  --radius: 0.625rem;
+  --sidebar: #10281b;
+  --sidebar-foreground: #fbf8f1;
+  --sidebar-primary: #d7c190;
+  --sidebar-primary-foreground: #10281b;
+  --sidebar-accent: #1b3a28;
+  --sidebar-accent-foreground: #fbf8f1;
+  --sidebar-border: #2c4a38;
+  --sidebar-ring: #d7c190;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply scroll-smooth font-sans;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display font-normal tracking-tight;
+  }
+
+  ::selection {
+    @apply bg-gold text-brand;
+  }
+}
+
+@layer components {
+  /* Decorative gold ornament frame used on the featured product cards. */
+  .ornament-frame {
+    background-image: url("/ornament-frame.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+  }
+
+  /* Dark plaque with the carved top/bottom notches (About section cards). */
+  .about-plaque {
+    background-image: url("/about-rectangle.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 }

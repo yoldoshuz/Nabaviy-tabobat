@@ -1,0 +1,30 @@
+import Image from "next/image";
+import { useTranslations } from "next-intl";
+
+import { Link } from "@/lib/i18n/navigation";
+import { cn } from "@/lib/utils";
+
+export function Logo({ className }: { className?: string }) {
+  const t = useTranslations("common");
+
+  return (
+    <Link
+      href="/"
+      aria-label={t("brand")}
+      className={cn(
+        "inline-flex shrink-0 items-center transition-opacity hover:opacity-85 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold",
+        className,
+      )}
+    >
+      <Image
+        src="/logo.png"
+        alt={t("brand")}
+        width={240}
+        height={68}
+        priority
+        sizes="240px"
+        className="h-7 w-auto sm:h-8"
+      />
+    </Link>
+  );
+}
