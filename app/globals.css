@@ -20,8 +20,10 @@
   /* ---- Semantic (shadcn) ---- */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-pehlevi), "Segoe UI", system-ui, sans-serif;
-  --font-mono: var(--font-pehlevi), monospace;
+  /* Body and UI text. Pehlevi is reserved for `font-display` below. */
+  --font-sans: var(--font-manrope), "Segoe UI", system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* The brand script face — headings, ornamental numerals, nothing to read. */
   --font-heading: var(--font-pehlevi), "Segoe UI", system-ui, sans-serif;
   --font-display: var(--font-pehlevi), "Segoe UI", system-ui, sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
@@ -62,27 +64,11 @@
   --radius-4xl: calc(var(--radius) * 2.5);
 
   /*
-   * Pehlevi is a light script face, so the whole type scale is bumped a notch
-   * (and given roomier leading) to stay readable at UI sizes.
+   * Body text is Manrope now, so the type scale is back to Tailwind's defaults.
+   * The previous values were inflated a notch to keep the light Pehlevi script
+   * legible at UI sizes, which made everything oversized once it was scoped to
+   * headings.
    */
-  --text-xs: 0.9375rem;
-  --text-xs--line-height: 1.45rem;
-  --text-sm: 1.0625rem;
-  --text-sm--line-height: 1.7rem;
-  --text-base: 1.1875rem;
-  --text-base--line-height: 1.9rem;
-  --text-lg: 1.3125rem;
-  --text-lg--line-height: 2rem;
-  --text-xl: 1.5rem;
-  --text-xl--line-height: 2.15rem;
-  --text-2xl: 1.75rem;
-  --text-2xl--line-height: 2.35rem;
-  --text-3xl: 2.25rem;
-  --text-3xl--line-height: 2.85rem;
-  --text-4xl: 2.75rem;
-  --text-4xl--line-height: 3.4rem;
-  --text-5xl: 3.5rem;
-  --text-5xl--line-height: 4rem;
 
   --shadow-card: 0 18px 40px -24px rgb(16 40 27 / 0.35);
   --shadow-float: 0 24px 60px -28px rgb(16 40 27 / 0.45);

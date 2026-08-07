@@ -5,6 +5,7 @@ import { CartProvider, QueryProvider } from "@/hooks";
 import { getProducts } from "@/lib/api/catalog";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import localFont from "next/font/local";
+import { Manrope } from "next/font/google";
 import { notFound } from "next/navigation";
 
 import { ConsultationProvider } from "@/components/layout/consultation-provider";
@@ -21,8 +22,10 @@ import type { Locale } from "@/types";
 import "../globals.css";
 
 /**
- * Pehlevi is the brand typeface used across the whole Figma design
- * (free for any use, by Andrew Markelov). It carries both headings and body.
+ * Pehlevi is the brand display face (free for any use, by Andrew Markelov).
+ * It is a light script, which reads beautifully at heading sizes and poorly in
+ * a paragraph, so it is scoped to headings and ornamental numerals; body and UI
+ * text use Manrope.
  */
 const pehlevi = localFont({
   src: [
@@ -33,6 +36,14 @@ const pehlevi = localFont({
   display: "swap",
   fallback: ["Segoe UI", "system-ui", "sans-serif"],
   adjustFontFallback: false,
+});
+
+/** Body and UI text — chosen for its Cyrillic and Latin coverage. */
+const manrope = Manrope({
+  variable: "--font-manrope",
+  subsets: ["latin", "cyrillic"],
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
 });
 
 export function generateStaticParams() {
@@ -100,7 +111,7 @@ export default async function LocaleLayout(props: LayoutProps<"/[locale]">) {
   return (
     <html
       lang={localeMeta[typedLocale].htmlLang}
-      className={`${pehlevi.variable} h-full`}
+      className={`${pehlevi.variable} ${manrope.variable} h-full`}
       suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col bg-background">
