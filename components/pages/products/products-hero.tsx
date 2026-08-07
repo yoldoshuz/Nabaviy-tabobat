@@ -3,15 +3,15 @@ import { useTranslations } from "next-intl";
 
 import { Container } from "@/components/shared/container";
 import { Link } from "@/lib/i18n/navigation";
-import { products } from "@/lib/products";
+import type { Product } from "@/types";
 
-const highlightKeys = {
+const highlightKeys: Record<string, string> = {
   "qora-sedana": "qoraSedana",
   "qust-al-hindi": "qustAlHindi",
   "omega-3": "omega",
 } as const;
 
-export function ProductsHero() {
+export function ProductsHero({ products }: { products: Product[] }) {
   const t = useTranslations("products");
   const tCatalog = useTranslations("catalog");
 

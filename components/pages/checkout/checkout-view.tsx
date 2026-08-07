@@ -1,5 +1,6 @@
 "use client";
 
+import { useCart, useCheckout, useMounted } from "@/hooks";
 import { CircleCheck } from "lucide-react";
 import Image from "next/image";
 import { useFormatter, useTranslations } from "next-intl";
@@ -7,16 +8,17 @@ import { useState, type FormEvent } from "react";
 
 import { Container } from "@/components/shared/container";
 import { GreenLeaf } from "@/components/shared/green-leaf";
-import { useCart } from "@/hooks/use-cart";
-import { useMounted } from "@/hooks/use-mounted";
+import { enabledPaymentMethods, normalizePhone } from "@/lib/api/checkout";
+import type { PaymentMethod } from "@/lib/api/types";
 import { Link } from "@/lib/i18n/navigation";
 import { cn } from "@/lib/utils";
 
-const fields = ["name", "phone", "city", "address"] as const;
+const fields = ["name", "surname", "phone", "city", "address"] as const;
 type FieldKey = (typeof fields)[number];
 
 const autoComplete: Record<FieldKey, string> = {
-  name: "name",
+  name: "given-name",
+  surname: "family-name",
   phone: "tel",
   city: "address-level2",
   address: "street-address",
@@ -27,14 +29,19 @@ export function CheckoutView() {
   const tCommon = useTranslations("common");
   const tCatalog = useTranslations("catalog");
   const format = useFormatter();
-  const { lines, count, subtotal, clear } = useCart();
+  const { lines, count, subtotal } = useCart();
   const mounted = useMounted();
+  const { phase, errorKey, orderId, busy, setErrorKey, submit } = useCheckout();
+
+  const [method, setMethod] = useState<PaymentMethod>("cash");
+  const methods = enabledPaymentMethods();
 
   const [errors, setErrors] = useState<Partial<Record<FieldKey, string>>>({});
-  const [status, setStatus] = useState<"idle" | "sending" | "done">("idle");
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (busy) return;
+
     const data = new FormData(event.currentTarget);
 
     const nextErrors: Partial<Record<FieldKey, string>> = {};
@@ -43,17 +50,31 @@ export function CheckoutView() {
         nextErrors[field] = t("errorRequired");
       }
     }
+
+    const phone = normalizePhone(String(data.get("phone") ?? ""));
+    if (!nextErrors.phone && !phone) nextErrors.phone = t("errorPhone");
+
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) return;
 
-    setStatus("sending");
-    // Payment provider (CLICK) and order API are wired once the backend is ready.
-    await new Promise((resolve) => window.setTimeout(resolve, 700));
-    clear();
-    setStatus("done");
+    setErrorKey(null);
+    submit({
+      method,
+      payload: {
+        customerName: String(data.get("name") ?? "").trim(),
+        customerSurname: String(data.get("surname") ?? "").trim(),
+        customerPhone: phone as string,
+        // The API takes a single address line; the city input is folded in.
+        customerAddress: [data.get("city"), data.get("address")]
+          .map((part) => String(part ?? "").trim())
+          .filter(Boolean)
+          .join(", "),
+        deliveryType: "delivery",
+      },
+    });
   }
 
-  if (status === "done") {
+  if (orderId && !errorKey) {
     return (
       <section className="bg-white pt-12 pb-20">
         <Container>
@@ -203,12 +224,63 @@ export function CheckoutView() {
               </span>
             </div>
 
+            <fieldset disabled={busy} className="mt-6">
+              <legend className="text-sm font-medium text-brand">
+                {t("paymentTitle")}
+              </legend>
+              <div className="mt-3 flex flex-col gap-2">
+                {methods.map((option) => {
+                  const key = option.charAt(0).toUpperCase() + option.slice(1);
+                  return (
+                    <label
+                      key={option}
+                      className={cn(
+                        "flex cursor-pointer items-start gap-3 rounded-lg border px-4 py-3 transition-colors",
+                        method === option
+                          ? "border-brand bg-cream"
+                          : "border-border hover:border-brand/40",
+                      )}
+                    >
+                      <input
+                        type="radio"
+                        name="paymentMethod"
+                        value={option}
+                        checked={method === option}
+                        onChange={() => setMethod(option)}
+                        className="mt-0.5 size-4 accent-brand"
+                      />
+                      <span className="leading-tight">
+                        <span className="block text-sm font-medium text-brand">
+                          {t(`payment${key}`)}
+                        </span>
+                        <span className="block text-xs text-muted-foreground">
+                          {t(`payment${key}Hint`)}
+                        </span>
+                      </span>
+                    </label>
+                  );
+                })}
+              </div>
+            </fieldset>
+
+            {errorKey ? (
+              <p role="alert" className="mt-4 text-sm font-medium text-red-600">
+                {t(errorKey)}
+              </p>
+            ) : null}
+
             <button
               type="submit"
-              disabled={status === "sending" || lines.length === 0}
+              disabled={busy || lines.length === 0}
               className="mt-6 flex h-13 w-full items-center justify-center rounded-lg bg-brand text-sm font-medium text-cream transition-colors hover:bg-brand-soft disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
             >
-              {status === "sending" ? t("processing") : t("pay")}
+              {phase === "submitting"
+                ? t("submitting")
+                : phase === "redirecting"
+                  ? t("redirecting")
+                  : method === "cash"
+                    ? t("payCash")
+                    : t("pay")}
             </button>
           </aside>
         </form>

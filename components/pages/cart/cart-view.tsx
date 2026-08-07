@@ -1,5 +1,6 @@
 "use client";
 
+import { useCart, useMounted } from "@/hooks";
 import { Headphones, Leaf, Trash2, Truck } from "lucide-react";
 import Image from "next/image";
 import { useFormatter, useTranslations } from "next-intl";
@@ -7,8 +8,6 @@ import { useFormatter, useTranslations } from "next-intl";
 import { ConsultationButton } from "@/components/layout/consultation-button";
 import { Container } from "@/components/shared/container";
 import { QuantityInput } from "@/components/shared/quantity-input";
-import { useCart } from "@/hooks/use-cart";
-import { useMounted } from "@/hooks/use-mounted";
 import { Link } from "@/lib/i18n/navigation";
 
 const benefits = [

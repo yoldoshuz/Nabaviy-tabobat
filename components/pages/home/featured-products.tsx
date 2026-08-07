@@ -3,9 +3,9 @@ import { useTranslations } from "next-intl";
 import { Container } from "@/components/shared/container";
 import { OrnateProductCard } from "@/components/shared/ornate-product-card";
 import { SectionHeading } from "@/components/shared/section-heading";
-import { products } from "@/lib/products";
+import type { Product } from "@/types";
 
-export function FeaturedProducts() {
+export function FeaturedProducts({ products }: { products: Product[] }) {
   const t = useTranslations("home.featured");
 
   return (

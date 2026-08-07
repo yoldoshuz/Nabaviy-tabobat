@@ -2,9 +2,9 @@ import { useTranslations } from "next-intl";
 
 import { Container } from "@/components/shared/container";
 import { ProductCard } from "@/components/shared/product-card";
-import { products } from "@/lib/products";
+import type { Product } from "@/types";
 
-export function ProductsGrid() {
+export function ProductsGrid({ products }: { products: Product[] }) {
   const t = useTranslations("home.featured");
 
   return (

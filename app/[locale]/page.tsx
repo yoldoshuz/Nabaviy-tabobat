@@ -11,7 +11,7 @@ import { Videos } from "@/components/pages/home/videos";
 import { JsonLd } from "@/components/shared/json-ld";
 import { faqKeys } from "@/lib/faq";
 import { faqJsonLd, itemListJsonLd } from "@/lib/json-ld";
-import { products } from "@/lib/products";
+import { getProducts } from "@/lib/api/catalog";
 import { buildMetadata } from "@/lib/seo";
 import type { Locale } from "@/types";
 
@@ -34,13 +34,15 @@ export default async function HomePage(props: PageProps<"/[locale]">) {
   const { locale } = await props.params;
   setRequestLocale(locale);
 
+  const products = await getProducts();
+
   const tFaq = await getTranslations({ locale, namespace: "home.faq" });
   const tCatalog = await getTranslations({ locale, namespace: "catalog" });
 
   return (
     <>
       <Hero />
-      <FeaturedProducts />
+      <FeaturedProducts products={products} />
       <About />
       <Certificates />
       <Videos />

@@ -294,7 +294,10 @@
     "ctaDescription": "{product} ни кунлик овқатланишингизга қўшинг ва натижани 2-4 ҳафта ичида ҳис қилинг!",
     "galleryThumb": "{product} расми {index}",
     "backLabel": "орқаси:",
-    "added": "Саватга қўшилди"
+    "added": "Саватга қўшилди",
+    "quantity": "Miqdori",
+    "decrease": "Kamaytirish",
+    "increase": "Ko'paytirish"
   },
   "catalog": {
     "omega-3": {
@@ -619,7 +622,27 @@
     "successTitle": "Буюртмангиз қабул қилинди!",
     "successText": "Мутахассисимиз тасдиқлаш учун сиз билан яқин орада боғланади.",
     "errorRequired": "Ушбу майдонни тўлдиринг",
-    "emptyCart": "Буюртма расмийлаштириш учун саватга маҳсулот қўшинг."
+    "emptyCart": "Буюртма расмийлаштириш учун саватга маҳсулот қўшинг.",
+    "surnameLabel": "Familiya",
+    "surnamePlaceholder": "Karimov",
+    "paymentTitle": "To'lov usuli",
+    "paymentCash": "Yetkazib berishda naqd pul",
+    "paymentCashHint": "Buyurtmani tekshirgach kuryerga to'lanadi",
+    "paymentClick": "Click",
+    "paymentClickHint": "Click orqali karta bilan to'lov",
+    "paymentPayme": "Payme",
+    "paymentPaymeHint": "Payme orqali karta bilan to'lov",
+    "paymentUzum": "Uzum",
+    "paymentUzumHint": "Uzum ilovasi orqali to'lov",
+    "submitting": "Rasmiylashtirilmoqda…",
+    "redirecting": "To'lovga o'tilmoqda…",
+    "payCash": "Buyurtma berish",
+    "orderNumber": "Buyurtma raqami",
+    "errorGeneric": "Buyurtmani rasmiylashtirib bo'lmadi. Qayta urinib ko'ring.",
+    "errorStock": "Omborda yetarli mahsulot yo'q. Miqdorni o'zgartiring.",
+    "errorPayment": "Buyurtma yaratildi, ammo to'lovni ochib bo'lmadi. Siz bilan bog'lanamiz.",
+    "errorOffline": "Server mavjud emas. Buyurtmani telefon orqali qabul qilamiz.",
+    "errorPhone": "Raqamni +998 XX XXX XX XX ko'rinishida kiriting"
   },
   "notFound": {
     "title": "Саҳифа топилмади",

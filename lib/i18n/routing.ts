@@ -14,3 +14,6 @@ export const routing = defineRouting({
     maxAge: 60 * 60 * 24 * 365,
   },
 });
+
+/** Alias used by the API layer, which is shared across storefronts. */
+export type AppLocale = (typeof locales)[number];

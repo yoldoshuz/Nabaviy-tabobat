@@ -12,7 +12,8 @@ import { ProductUsage } from "@/components/pages/product/product-usage";
 import { JsonLd } from "@/components/shared/json-ld";
 import { locales } from "@/lib/i18n/routing";
 import { breadcrumbJsonLd, productJsonLd } from "@/lib/json-ld";
-import { getProduct, products } from "@/lib/products";
+import { getProduct } from "@/lib/api/catalog";
+import { products } from "@/lib/products";
 import { buildMetadata } from "@/lib/seo";
 import type { Locale } from "@/types";
 
@@ -26,7 +27,7 @@ export async function generateMetadata(
   props: PageProps<"/[locale]/products/[slug]">,
 ): Promise<Metadata> {
   const { locale, slug } = await props.params;
-  const product = getProduct(slug);
+  const product = await getProduct(slug);
   if (!product) return {};
 
   const t = await getTranslations({ locale, namespace: "metadata.product" });
@@ -50,7 +51,7 @@ export default async function ProductPage(
   const { locale, slug } = await props.params;
   setRequestLocale(locale);
 
-  const product = getProduct(slug);
+  const product = await getProduct(slug);
   if (!product) notFound();
 
   const tCatalog = await getTranslations({ locale, namespace: "catalog" });
