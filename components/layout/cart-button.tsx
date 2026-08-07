@@ -1,10 +1,9 @@
 "use client";
 
+import { useCart, useMounted } from "@/hooks";
 import { ShoppingCart } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-import { useCart } from "@/hooks/use-cart";
-import { useMounted } from "@/hooks/use-mounted";
 import { Link } from "@/lib/i18n/navigation";
 import { cn } from "@/lib/utils";
 

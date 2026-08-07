@@ -3,11 +3,11 @@ import { useTranslations } from "next-intl";
 
 import { Container } from "@/components/shared/container";
 import { SectionHeading } from "@/components/shared/section-heading";
-import { products } from "@/lib/products";
+import type { Product } from "@/types";
 
 const rows = ["dose", "course", "benefit", "audience"] as const;
 
-export function ComparisonTable() {
+export function ComparisonTable({ products }: { products: Product[] }) {
   const t = useTranslations("products");
   const tCatalog = useTranslations("catalog");
 

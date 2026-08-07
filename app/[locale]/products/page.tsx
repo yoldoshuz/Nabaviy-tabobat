@@ -6,7 +6,7 @@ import { ProductsGrid } from "@/components/pages/products/products-grid";
 import { ProductsHero } from "@/components/pages/products/products-hero";
 import { JsonLd } from "@/components/shared/json-ld";
 import { breadcrumbJsonLd, itemListJsonLd } from "@/lib/json-ld";
-import { products } from "@/lib/products";
+import { getProducts } from "@/lib/api/catalog";
 import { buildMetadata } from "@/lib/seo";
 import type { Locale } from "@/types";
 
@@ -31,14 +31,16 @@ export default async function ProductsPage(
   const { locale } = await props.params;
   setRequestLocale(locale);
 
+  const products = await getProducts();
+
   const tCatalog = await getTranslations({ locale, namespace: "catalog" });
   const tProduct = await getTranslations({ locale, namespace: "product" });
 
   return (
     <>
-      <ProductsHero />
-      <ComparisonTable />
-      <ProductsGrid />
+      <ProductsHero products={products} />
+      <ComparisonTable products={products} />
+      <ProductsGrid products={products} />
 
       <JsonLd
         id="ld-products"

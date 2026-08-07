@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 
 import { Container } from "@/components/shared/container";
 import { SectionHeading } from "@/components/shared/section-heading";
-import { useCarousel } from "@/hooks/use-carousel";
+import { useCarousel } from "@/hooks";
 import { cn } from "@/lib/utils";
 
 const videos = [

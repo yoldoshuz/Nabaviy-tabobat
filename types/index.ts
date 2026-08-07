@@ -2,7 +2,12 @@ import type { locales } from "@/lib/i18n/routing";
 
 export type Locale = (typeof locales)[number];
 
-export type ProductSlug = "omega-3" | "qora-sedana" | "qust-al-hindi";
+/**
+ * The catalogue is served by the API and editable in the CMS, so a slug can no
+ * longer be enumerated at compile time. `isProductSlug` still guards anything
+ * read back from storage or the URL.
+ */
+export type ProductSlug = string;
 
 export interface ProductSpec {
   /** Translation key inside `catalog.<slug>.specs` */
@@ -10,6 +15,14 @@ export interface ProductSpec {
 }
 
 export interface Product {
+  /**
+   * Backend UUID. Present only on products resolved from the API — the server
+   * cart addresses items by id, so its absence is what tells the cart to fall
+   * back to its local, offline mode.
+   */
+  id?: string;
+  /** Units left in stock; `undefined` when serving the static catalogue. */
+  stock?: number;
   slug: ProductSlug;
   /** Latin brand name, identical in every locale */
   name: string;

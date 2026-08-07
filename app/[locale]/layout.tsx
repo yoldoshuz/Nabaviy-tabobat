@@ -1,5 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
+
+import { CartProvider, QueryProvider } from "@/hooks";
+import { getProducts } from "@/lib/api/catalog";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import localFont from "next/font/local";
 import { notFound } from "next/navigation";
@@ -91,6 +94,9 @@ export default async function LocaleLayout(props: LayoutProps<"/[locale]">) {
   const t = await getTranslations({ locale, namespace: "metadata.home" });
   const tCommon = await getTranslations({ locale, namespace: "common" });
 
+  // The cart addresses items by backend id, so it needs the resolved catalogue.
+  const catalog = await getProducts();
+
   return (
     <html
       lang={localeMeta[typedLocale].htmlLang}
@@ -99,6 +105,8 @@ export default async function LocaleLayout(props: LayoutProps<"/[locale]">) {
     >
       <body className="flex min-h-full flex-col bg-background">
         <NextIntlClientProvider>
+          <QueryProvider>
+            <CartProvider catalog={catalog}>
           <ConsultationProvider>
             <a
               href="#main"
@@ -113,6 +121,8 @@ export default async function LocaleLayout(props: LayoutProps<"/[locale]">) {
             <Footer />
             <CtaBanner />
           </ConsultationProvider>
+            </CartProvider>
+          </QueryProvider>
         </NextIntlClientProvider>
 
         <JsonLd

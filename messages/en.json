@@ -294,7 +294,10 @@
     "ctaDescription": "Add {product} to your daily routine and feel the result within 2-4 weeks!",
     "galleryThumb": "{product} photo {index}",
     "backLabel": "back side",
-    "added": "Added to cart"
+    "added": "Added to cart",
+    "quantity": "Quantity",
+    "decrease": "Decrease",
+    "increase": "Increase"
   },
   "catalog": {
     "omega-3": {
@@ -619,7 +622,27 @@
     "successTitle": "Your order has been received!",
     "successText": "Our specialist will contact you shortly to confirm it.",
     "errorRequired": "Please fill in this field",
-    "emptyCart": "Add products to your cart to place an order."
+    "emptyCart": "Add products to your cart to place an order.",
+    "surnameLabel": "Surname",
+    "surnamePlaceholder": "Karimov",
+    "paymentTitle": "Payment method",
+    "paymentCash": "Cash on delivery",
+    "paymentCashHint": "Pay the courier after checking your order",
+    "paymentClick": "Click",
+    "paymentClickHint": "Card payment via Click",
+    "paymentPayme": "Payme",
+    "paymentPaymeHint": "Card payment via Payme",
+    "paymentUzum": "Uzum",
+    "paymentUzumHint": "Pay in the Uzum app",
+    "submitting": "Placing your order…",
+    "redirecting": "Taking you to payment…",
+    "payCash": "Place order",
+    "orderNumber": "Order number",
+    "errorGeneric": "We couldn't place the order. Please try again.",
+    "errorStock": "Not enough stock left. Please adjust the quantity.",
+    "errorPayment": "The order was created but payment could not be opened. We'll contact you.",
+    "errorOffline": "The server is unavailable. We'll take your order by phone.",
+    "errorPhone": "Enter the number as +998 XX XXX XX XX"
   },
   "notFound": {
     "title": "Page not found",

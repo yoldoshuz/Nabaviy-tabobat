@@ -5,9 +5,9 @@ import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
 import { Container } from "@/components/shared/container";
-import { blogArticles } from "@/lib/blog";
+import type { BlogArticle } from "@/types";
 
-export function BlogView() {
+export function BlogView({ articles: blogArticles }: { articles: BlogArticle[] }) {
   const t = useTranslations("blog");
   const [query, setQuery] = useState("");
 

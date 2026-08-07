@@ -3,7 +3,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { BlogView } from "@/components/pages/blog/blog-view";
 import { JsonLd } from "@/components/shared/json-ld";
-import { blogArticles } from "@/lib/blog";
+import { getArticles } from "@/lib/api/catalog";
 import { articleJsonLd, breadcrumbJsonLd } from "@/lib/json-ld";
 import { buildMetadata } from "@/lib/seo";
 import type { Locale } from "@/types";
@@ -27,12 +27,14 @@ export default async function BlogPage(props: PageProps<"/[locale]/blog">) {
   const { locale } = await props.params;
   setRequestLocale(locale);
 
+  const articles = await getArticles();
+
   const t = await getTranslations({ locale, namespace: "blog" });
   const tNav = await getTranslations({ locale, namespace: "nav" });
 
   return (
     <>
-      <BlogView />
+      <BlogView articles={articles} />
 
       <JsonLd
         id="ld-blog"
@@ -44,7 +46,7 @@ export default async function BlogPage(props: PageProps<"/[locale]/blog">) {
             ],
             locale as Locale,
           ),
-          ...blogArticles.map((article) =>
+          ...articles.map((article) =>
             articleJsonLd({
               headline: t(`articles.${article.slug}.title`),
               description: t(`articles.${article.slug}.intro`),
