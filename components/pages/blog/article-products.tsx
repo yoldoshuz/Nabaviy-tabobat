@@ -36,7 +36,7 @@ export function ArticleProducts({ products, note }: ArticleProductsProps) {
         {note ?? t("subtitle")}
       </p>
 
-      <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="mt-8 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
         {products.map((product) => (
           <li
             key={product.slug}
