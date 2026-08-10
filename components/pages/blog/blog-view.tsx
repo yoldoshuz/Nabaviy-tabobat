@@ -4,6 +4,7 @@ import { Check, Search } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
+import { ArticleProducts } from "@/components/pages/blog/article-products";
 import { Container } from "@/components/shared/container";
 import type { BlogArticle } from "@/types";
 
@@ -126,6 +127,11 @@ export function BlogView({ articles: blogArticles }: { articles: BlogArticle[] }
                   </li>
                 ))}
               </ul>
+
+              <ArticleProducts
+                products={article.relatedProducts}
+                note={article.relatedNote}
+              />
             </article>
           </Container>
         </section>

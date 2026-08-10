@@ -13,6 +13,7 @@ import {
 } from "react";
 
 import { Link } from "@/lib/i18n/navigation";
+import { formatUzPhoneInput, UZ_PHONE_PREFIX } from "@/lib/phone";
 import { cn } from "@/lib/utils";
 
 interface ConsultationContextValue {
@@ -234,6 +235,9 @@ function Field({
   type?: string;
   autoComplete?: string;
 }) {
+  // The phone field carries its own country code and regroups the digits as
+  // they are typed, so what the customer sees is always what the API accepts.
+  const isPhone = type === "tel";
   return (
     <div className="space-y-2">
       <label htmlFor={id} className="block text-xs text-cream/60">
@@ -245,6 +249,17 @@ function Field({
         type={type}
         placeholder={placeholder}
         autoComplete={autoComplete}
+        {...(isPhone
+          ? {
+              inputMode: "tel" as const,
+              defaultValue: UZ_PHONE_PREFIX,
+              onInput: (event: FormEvent<HTMLInputElement>) => {
+                event.currentTarget.value = formatUzPhoneInput(
+                  event.currentTarget.value,
+                );
+              },
+            }
+          : {})}
         aria-invalid={Boolean(error)}
         aria-describedby={error ? `${id}-error` : undefined}
         className={cn(

@@ -20,6 +20,18 @@ export const contacts = {
   geo: { latitude: 41.311081, longitude: 69.294067 },
 } as const;
 
+/**
+ * The rest of the NUMA group, surfaced from the logo dropdown. Every storefront
+ * carries the same list minus itself, so the header is one consistent way in
+ * and out of the group.
+ */
+export const SIBLING_SITES = [
+  { id: "family", href: "https://numafamily.uz" },
+  { id: "nutrition", href: "https://numanutrition.uz" },
+  { id: "kids", href: "https://numakids.com" },
+  { id: "catering", href: "https://numacatering.com" },
+] as const;
+
 export const navigation = [
   { key: "home", href: "/" },
   { key: "products", href: "/products" },

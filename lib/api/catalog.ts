@@ -22,7 +22,7 @@ import {
   getProductBySlug,
   getProductList,
 } from "./endpoints";
-import type { ApiBlogPost, ApiProduct } from "./types";
+import type { ApiBlogPost, ApiBlogPostProduct, ApiProduct } from "./types";
 
 /* ── mapping ─────────────────────────────────────────────────────────────── */
 
@@ -76,13 +76,55 @@ function toProduct(api: ApiProduct): Product {
   };
 }
 
+/**
+ * Folds a junction row onto a `Product` good enough for a card.
+ *
+ * The junction carries a trimmed product — id, name, slug, price, media — not
+ * the full record, so the rest is filled from the static entry when the slug is
+ * one the storefront knows. `AddToCartButton` addresses items by slug, so a
+ * card built this way adds to the cart exactly like a catalogue card does.
+ */
+function toRelatedProduct(row: ApiBlogPostProduct): Product | null {
+  const api = row.product;
+  if (!api?.slug) return null;
+
+  const base = staticProduct(api.slug);
+  const image = img(mainMediaUrl(api as ApiProduct)) || base?.image || "";
+  if (!image) return null;
+
+  return {
+    ...(base ?? ({} as Product)),
+    id: api.id,
+    slug: api.slug,
+    name: api.name?.ru || api.name?.en || base?.name || api.slug,
+    price: Number(api.price),
+    currency: "UZS",
+    image,
+    gallery: base?.gallery ?? [image],
+    banners: base?.banners ?? [image],
+    imageBack: base?.imageBack ?? image,
+    sku: base?.sku ?? "",
+    volume: base?.volume ?? "",
+    highlights: base?.highlights ?? [],
+    meters: base?.meters ?? [],
+    benefitKeys: base?.benefitKeys ?? [],
+    featureKeys: base?.featureKeys ?? [],
+    usageKeys: base?.usageKeys ?? [],
+    advantageKeys: base?.advantageKeys ?? [],
+  };
+}
+
 function toArticle(api: ApiBlogPost): BlogArticle {
   const base = staticArticle(api.slug);
+  const rows = [...(api.products ?? [])].sort((a, b) => a.sortOrder - b.sortOrder);
+
   return {
     slug: api.slug,
     cardKeys: base?.cardKeys ?? [],
     tipKeys: base?.tipKeys ?? [],
     publishedAt: (api.publishedAt ?? base?.publishedAt ?? "").slice(0, 10),
+    relatedProducts: rows.map(toRelatedProduct).filter((p): p is Product => p !== null),
+    relatedNote: rows.find((row) => row.note)?.note ?? null,
   };
 }
 
@@ -138,7 +180,16 @@ export async function getFeaturedProducts(): Promise<Product[]> {
 export async function getArticles(): Promise<BlogArticle[]> {
   const api = await fetchApiBlogPosts();
   if (!api?.length) return staticArticles;
-  return api.map(toArticle).sort((a, b) => (a.publishedAt < b.publishedAt ? 1 : -1));
+
+  // The feed omits `products` — only the by-slug response carries the junction
+  // — so each article is re-read to find what it should be selling. There are
+  // three of them and both calls are cached by Next, so this is one extra
+  // round of requests per revalidation, not per visitor.
+  const detailed = await Promise.all(
+    api.map(async (post) => (await tryFetch(() => getBlogPostBySlug(post.slug))) ?? post),
+  );
+
+  return detailed.map(toArticle).sort((a, b) => (a.publishedAt < b.publishedAt ? 1 : -1));
 }
 
 export async function getArticle(slug: string): Promise<BlogArticle | undefined> {

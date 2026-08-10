@@ -21,7 +21,8 @@
     "decrease": "Decrease",
     "remove": "Remove",
     "openMenu": "Open menu",
-    "skipToContent": "Skip to content"
+    "skipToContent": "Skip to content",
+    "otherBrands": "Other NUMA projects"
   },
   "nav": {
     "home": "Home",
@@ -477,6 +478,10 @@
     "searchLabel": "Search articles",
     "empty": "Nothing found. Try a different search.",
     "tipsTitle": "Useful recommendations",
+    "buy": {
+      "title": "Products from this article",
+      "subtitle": "The Nabaviy Tabobat remedies discussed above"
+    },
     "tips": {
       "sugar": "Avoid sugar and artificial additives",
       "water": "Drink warm water every morning",
@@ -682,5 +687,11 @@
       "title": "{product} — Nabaviy Tabobat",
       "keywords": "{product}, natural product, nabaviy medicine, Tashkent"
     }
+  },
+  "brands": {
+    "family": "NUMA FAMILY",
+    "nutrition": "NUMA NUTRITION",
+    "kids": "NUMA KIDS",
+    "catering": "NUMA CATERING"
   }
 }

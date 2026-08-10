@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { CartButton } from "@/components/layout/cart-button";
 import { ConsultationButton } from "@/components/layout/consultation-button";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
-import { Logo } from "@/components/layout/logo";
+import { BrandSwitcher } from "@/components/layout/brand-switcher";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { Container } from "@/components/shared/container";
 import { navigation } from "@/lib/constants";
@@ -19,7 +19,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-80 bg-brand">
       <Container className="flex h-16 items-center gap-3 sm:h-[88px] lg:gap-6">
-        <Logo className="mr-auto lg:mr-0" />
+        <BrandSwitcher className="mr-auto lg:mr-0" />
 
         <nav
           aria-label={t("home")}

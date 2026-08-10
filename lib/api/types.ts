@@ -114,6 +114,22 @@ export interface ApiBlogPost {
   tags: string[];
   readTimeMinutes: number | null;
   viewCount: number;
+  /**
+   * Products the article recommends, curated in the admin CMS
+   * (`blog_post_products`). Only the by-slug response carries it — the feed
+   * endpoint omits it — so the blog page fetches each article separately when
+   * it wants to offer them for sale.
+   */
+  products?: ApiBlogPostProduct[];
+}
+
+/** One row of the blog ↔ product junction, with the product folded in. */
+export interface ApiBlogPostProduct {
+  productId: string;
+  /** The editor's line, carried by the lead product only. */
+  note: string | null;
+  sortOrder: number;
+  product: Pick<ApiProduct, "id" | "name" | "slug" | "price" | "media">;
 }
 
 /* ── cart / checkout ─────────────────────────────────────────────────────── */

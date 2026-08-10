@@ -61,6 +61,15 @@ export interface BlogArticle {
   cardKeys: string[];
   tipKeys: string[];
   publishedAt: string;
+  /**
+   * Products the article recommends, so a reader can buy without going back to
+   * the catalogue to hunt for what they just read about. Curated per article in
+   * the admin CMS; empty when the storefront falls back to its static
+   * catalogue, which is why the "buy these" strip is conditional.
+   */
+  relatedProducts: Product[];
+  /** The editor's line for the lead product, when one was written. */
+  relatedNote: string | null;
 }
 
 export interface Certificate {

@@ -21,7 +21,8 @@
     "decrease": "Уменьшить",
     "remove": "Удалить",
     "openMenu": "Открыть меню",
-    "skipToContent": "Перейти к содержимому"
+    "skipToContent": "Перейти к содержимому",
+    "otherBrands": "Другие проекты NUMA"
   },
   "nav": {
     "home": "Главная",
@@ -477,6 +478,10 @@
     "searchLabel": "Поиск по статьям",
     "empty": "Ничего не найдено. Попробуйте другой запрос.",
     "tipsTitle": "Полезные рекомендации",
+    "buy": {
+      "title": "Продукты из этой статьи",
+      "subtitle": "Натуральные средства Nabaviy Tabobat, о которых шла речь выше"
+    },
     "tips": {
       "sugar": "Откажитесь от сахара и искусственных добавок",
       "water": "Каждое утро выпивайте тёплую воду",
@@ -682,5 +687,11 @@
       "title": "{product} — Набавий Табобат",
       "keywords": "{product}, натуральный продукт, набавийская медицина, Ташкент"
     }
+  },
+  "brands": {
+    "family": "NUMA FAMILY",
+    "nutrition": "NUMA NUTRITION",
+    "kids": "NUMA KIDS",
+    "catering": "NUMA CATERING"
   }
 }
