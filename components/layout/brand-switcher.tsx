@@ -1,8 +1,9 @@
 "use client";
 
-import { ChevronRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
+
+import Image from "next/image";
 
 import { Logo } from "@/components/layout/logo";
 import { SIBLING_SITES } from "@/lib/constants";
@@ -50,20 +51,17 @@ export function BrandSwitcher({ className }: { className?: string }) {
       onMouseEnter={() => schedule(true)}
       onMouseLeave={() => schedule(false)}
     >
-      <div className="flex items-center gap-1">
+      {/* The logo is the trigger — no separate affordance beside it. */}
+      <button
+        type="button"
+        aria-label={t("common.otherBrands")}
+        aria-expanded={open}
+        aria-haspopup="menu"
+        onClick={() => setOpen((value) => !value)}
+        className="flex items-center rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold"
+      >
         <Logo />
-        <button
-          type="button"
-          aria-label={t("common.otherBrands")}
-          aria-expanded={open}
-          onClick={() => setOpen((value) => !value)}
-          className="grid size-7 place-items-center rounded-full text-cream/50 transition hover:bg-brand-soft hover:text-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
-        >
-          <ChevronRight
-            className={cn("size-4 transition-transform", open && "rotate-90")}
-          />
-        </button>
-      </div>
+      </button>
 
       {open && (
         <div
@@ -79,11 +77,18 @@ export function BrandSwitcher({ className }: { className?: string }) {
               role="menuitem"
               className="flex items-center gap-3 rounded-md p-2.5 transition hover:bg-brand-soft"
             >
-              <span className="size-9 shrink-0 rounded-md bg-gradient-to-br from-gold/70 to-gold/20 ring-1 ring-gold/40" />
-              <span className="flex-1 text-sm font-medium tracking-wide text-cream">
-                {t(`brands.${site.id}`)}
+              <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-white p-1">
+                <Image
+                  src={site.logo}
+                  alt=""
+                  width={72}
+                  height={72}
+                  className="h-full w-full object-contain"
+                />
               </span>
-              <ChevronRight className="size-4 text-gold/80" />
+              <span className="flex-1 text-sm font-medium tracking-wide text-cream">
+                {site.label}
+              </span>
             </a>
           ))}
         </div>

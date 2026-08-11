@@ -126,13 +126,18 @@ export function ProductShowcase({ product }: { product: Product }) {
           </p>
 
           <div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-center">
-            <QuantityInput value={quantity} onChange={setQuantity} />
+            <QuantityInput
+              value={quantity}
+              onChange={setQuantity}
+              size="lg"
+              className="w-full sm:w-auto"
+            />
             <AddToCartButton
               slug={product.slug}
               quantity={quantity}
               size="lg"
               withIcon={false}
-              className="flex-1 sm:max-w-xs"
+              className="w-full flex-1 sm:w-auto sm:max-w-xs"
             />
           </div>
 

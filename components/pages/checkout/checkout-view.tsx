@@ -178,14 +178,19 @@ export function CheckoutView() {
               <ul className="mt-6 space-y-5">
                 {lines.map((line) => (
                   <li key={line.slug} className="flex items-center gap-4">
-                    <Image
-                      src={line.product.image}
-                      alt={tCatalog(`${line.slug}.name`)}
-                      width={96}
-                      height={130}
-                      sizes="72px"
-                      className="h-[72px] w-auto rounded-lg bg-stone/60 object-contain p-1"
-                    />
+                    {/* Square frame, artwork letterboxed inside — a jar and a
+                        bottle occupy the same box instead of one coming out
+                        twice as wide as the other. */}
+                    <span className="grid size-18 shrink-0 place-items-center overflow-hidden rounded-lg bg-stone/60">
+                      <Image
+                        src={line.product.image}
+                        alt={tCatalog(`${line.slug}.name`)}
+                        width={72}
+                        height={72}
+                        sizes="72px"
+                        className="h-full w-full object-contain p-1.5"
+                      />
+                    </span>
                     <span className="min-w-0 flex-1">
                       <span className="block text-sm text-brand">
                         {tCatalog(`${line.slug}.name`)}
