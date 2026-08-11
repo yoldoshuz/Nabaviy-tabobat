@@ -602,7 +602,10 @@
     },
     "helpTitle": "Буюртма бўйича ёрдам керакми?",
     "helpDescription": "Мутахассисларимиз барча саволларингизга жавоб беришади",
-    "naturalProduct": "Табиий маҳсулот"
+    "naturalProduct": "Табиий маҳсулот",
+    "unavailable": "Mavjud emas",
+    "unavailableTotal": "Buyurtma uchun mavjud emas",
+    "unavailableHint": "Buyurtma berish uchun mavjud bo'lmagan mahsulotlarni o'chiring."
   },
   "checkout": {
     "title": "Буюртмани расмийлаштириш",
@@ -647,7 +650,8 @@
     "errorStock": "Omborda yetarli mahsulot yo'q. Miqdorni o'zgartiring.",
     "errorPayment": "Buyurtma yaratildi, ammo to'lovni ochib bo'lmadi. Siz bilan bog'lanamiz.",
     "errorOffline": "Server mavjud emas. Buyurtmani telefon orqali qabul qilamiz.",
-    "errorPhone": "Raqamni +998 XX XXX XX XX ko'rinishida kiriting"
+    "errorPhone": "Raqamni +998 XX XXX XX XX ko'rinishida kiriting",
+    "errorUnavailable": "Mahsulot sotuvdan olindi. Savatni yangilang va uni o'chiring."
   },
   "notFound": {
     "title": "Саҳифа топилмади",
@@ -693,5 +697,22 @@
     "nutrition": "NUMA NUTRITION",
     "kids": "NUMA KIDS",
     "catering": "NUMA CATERING"
+  },
+  "PaymentReturn": {
+    "metaTitle": "To'lov holati",
+    "metaDescription": "Buyurtmangiz to'lovi holatini tekshiryapmiz.",
+    "checking": "To'lov tekshirilmoqda…",
+    "paidTitle": "Buyurtma to'landi",
+    "paidText": "To'lov tasdiqlandi. Yetkazib berish bo'yicha siz bilan bog'lanamiz.",
+    "failedTitle": "To'lov amalga oshmadi",
+    "failedText": "Pul yechilmadi. Mahsulotlar savatga qaytdi — buyurtmani qayta rasmiylashtirishingiz mumkin.",
+    "stillPendingTitle": "To'lov qayta ishlanmoqda",
+    "stillPendingText": "Bu bir necha daqiqa olishi mumkin. Holat buyurtmalaringizda ko'rinadi — pul yo'qolmaydi.",
+    "unknownTitle": "To'lovni tekshirib bo'lmadi",
+    "unknownText": "Sahifani yangilang yoki holatni keyinroq tekshiring.",
+    "missingOrder": "Buyurtma ko'rsatilmagan",
+    "orderRef": "Buyurtma raqami:",
+    "toCart": "Savatga o'tish",
+    "toCatalog": "Katalogga"
   }
 }

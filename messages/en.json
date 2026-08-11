@@ -602,7 +602,10 @@
     },
     "helpTitle": "Need help with your order?",
     "helpDescription": "Our specialists will answer all of your questions",
-    "naturalProduct": "Natural product"
+    "naturalProduct": "Natural product",
+    "unavailable": "Out of stock",
+    "unavailableTotal": "Not available to order",
+    "unavailableHint": "Remove the unavailable items to place the order."
   },
   "checkout": {
     "title": "Checkout",
@@ -647,7 +650,8 @@
     "errorStock": "Not enough stock left. Please adjust the quantity.",
     "errorPayment": "The order was created but payment could not be opened. We'll contact you.",
     "errorOffline": "The server is unavailable. We'll take your order by phone.",
-    "errorPhone": "Enter the number as +998 XX XXX XX XX"
+    "errorPhone": "Enter the number as +998 XX XXX XX XX",
+    "errorUnavailable": "This product is no longer on sale. Refresh the cart and remove it."
   },
   "notFound": {
     "title": "Page not found",
@@ -693,5 +697,22 @@
     "nutrition": "NUMA NUTRITION",
     "kids": "NUMA KIDS",
     "catering": "NUMA CATERING"
+  },
+  "PaymentReturn": {
+    "metaTitle": "Payment status",
+    "metaDescription": "Checking the payment status of your order.",
+    "checking": "Checking the payment…",
+    "paidTitle": "Order paid",
+    "paidText": "Payment confirmed. We'll contact you about delivery.",
+    "failedTitle": "Payment failed",
+    "failedText": "You were not charged. The items are back in your cart, so you can order again.",
+    "stillPendingTitle": "Payment is processing",
+    "stillPendingText": "This can take a few minutes. The status will appear in your orders — nothing is lost.",
+    "unknownTitle": "Could not check the payment",
+    "unknownText": "Refresh the page or check the status later.",
+    "missingOrder": "No order specified",
+    "orderRef": "Order number:",
+    "toCart": "Go to cart",
+    "toCatalog": "To catalogue"
   }
 }

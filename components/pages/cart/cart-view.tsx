@@ -21,7 +21,7 @@ export function CartView() {
   const tCommon = useTranslations("common");
   const tCatalog = useTranslations("catalog");
   const format = useFormatter();
-  const { lines, count, subtotal, setQuantity, remove } = useCart();
+  const { lines, count, subtotal, totals, hasUnavailable, setQuantity, remove } = useCart();
   const mounted = useMounted();
 
   return (
@@ -133,9 +133,32 @@ export function CartView() {
                   </span>
                 </div>
 
+                {totals.unavailableTotal > 0 ? (
+                  <p className="mt-4 text-sm font-medium text-red-600">
+                    {t("unavailableTotal")}:{" "}
+                    {tCommon("priceValue", {
+                      value: format.number(totals.unavailableTotal),
+                    })}
+                  </p>
+                ) : null}
+
+                {/* Checkout rejects these lines anyway; say so here rather than
+                    letting the customer bounce off a 400 on the next screen. */}
+                {hasUnavailable ? (
+                  <p className="mt-3 text-sm leading-snug text-red-600">
+                    {t("unavailableHint")}
+                  </p>
+                ) : null}
+
                 <Link
                   href="/checkout"
-                  className="mt-6 flex h-12 items-center justify-center rounded-lg bg-gold text-sm font-medium text-brand transition-colors hover:bg-sand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+                  aria-disabled={hasUnavailable}
+                  onClick={(event) => {
+                    if (hasUnavailable) event.preventDefault();
+                  }}
+                  className={`mt-6 flex h-12 items-center justify-center rounded-lg bg-gold text-sm font-medium text-brand transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold${
+                    hasUnavailable ? " pointer-events-none opacity-50" : " hover:bg-sand"
+                  }`}
                 >
                   {t("checkout")}
                 </Link>
