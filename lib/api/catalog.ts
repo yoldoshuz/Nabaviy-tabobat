@@ -37,21 +37,39 @@ const imgs = (urls: (string | null | undefined)[] | undefined) =>
   (urls ?? []).map(img).filter(Boolean);
 
 /**
+ * The photos uploaded through the admin, the one marked main first and the rest
+ * in their sort order.
+ *
+ * These outrank `attributes.images` on purpose. `attributes` is seed data that
+ * no admin screen writes to, so as long as it won, a moderator could replace a
+ * product's whole photo set and watch the storefront ignore every one of them.
+ */
+function uploadedShots(api: ApiProduct): string[] {
+  return [...(api.media ?? [])]
+    .filter((m) => m.type !== "video")
+    .sort((a, b) => Number(b.isMain) - Number(a.isMain) || a.sortOrder - b.sortOrder)
+    .map((m) => img(m.url))
+    .filter(Boolean);
+}
+
+/**
  * Folds an API product onto the storefront's `Product`.
  *
- * The seeded catalogue carries the storefront's own imagery and facets in
- * `attributes`, so this is normally a straight read. The static entry is
- * consulted only for fields a CMS-authored product would not have — which is
- * what keeps a hand-created product renderable instead of blank.
+ * Precedence for every field is live record → seeded `attributes` → the bundled
+ * static entry, so whatever a moderator can edit is what the page shows and the
+ * rest still has something to fall back on.
  */
 function toProduct(api: ApiProduct): Product {
   const attrs = api.attributes ?? {};
   const images = attrs.images ?? {};
   const base = staticProduct(api.slug);
-  const card = img(images.card ?? mainMediaUrl(api)) || base?.image || "";
-  const gallery = images.gallery
-    ? imgs(images.gallery)
-    : (base?.gallery ?? imgs((api.media ?? []).map((m) => m.url)));
+  const shots = uploadedShots(api);
+  const card = shots[0] || img(images.card) || base?.image || "";
+  const gallery = shots.length
+    ? shots
+    : images.gallery
+      ? imgs(images.gallery)
+      : (base?.gallery ?? []);
 
   return {
     id: api.id,
@@ -64,9 +82,13 @@ function toProduct(api: ApiProduct): Product {
     sku: api.sku || base?.sku || "",
     volume: attrs.volume ?? base?.volume ?? "",
     image: card,
-    imageBack: img(images.back) || base?.imageBack || card,
+    imageBack: shots[1] || img(images.back) || base?.imageBack || card,
     gallery: gallery.length ? gallery : [card],
-    banners: images.banners ? imgs(images.banners) : (base?.banners ?? [card]),
+    banners: shots.length
+      ? shots
+      : images.banners
+        ? imgs(images.banners)
+        : (base?.banners ?? [card]),
     highlights: attrs.highlights ?? base?.highlights ?? [],
     meters: attrs.meters ?? base?.meters ?? [],
     benefitKeys: attrs.benefitKeys ?? base?.benefitKeys ?? [],

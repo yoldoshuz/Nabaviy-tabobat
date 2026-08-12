@@ -12,8 +12,14 @@ import {
   type ReactNode,
 } from "react";
 
+import {
+  classifyConsultationError,
+  postConsultation,
+  PROBLEM_MAX_LENGTH,
+  PROBLEM_MIN_LENGTH,
+} from "@/lib/api/consultation";
 import { Link } from "@/lib/i18n/navigation";
-import { formatUzPhoneInput, UZ_PHONE_PREFIX } from "@/lib/phone";
+import { formatUzPhoneInput, toApiPhone, UZ_PHONE_PREFIX } from "@/lib/phone";
 import { cn } from "@/lib/utils";
 
 interface ConsultationContextValue {
@@ -55,7 +61,12 @@ export function ConsultationProvider({ children }: { children: ReactNode }) {
 function ConsultationModal({ onClose }: { onClose: () => void }) {
   const t = useTranslations("consultation");
   const [status, setStatus] = useState<"idle" | "sending" | "done">("idle");
-  const [errors, setErrors] = useState<{ name?: string; phone?: string }>({});
+  const [errors, setErrors] = useState<{
+    name?: string;
+    phone?: string;
+    message?: string;
+  }>({});
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const handleSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
@@ -63,17 +74,34 @@ function ConsultationModal({ onClose }: { onClose: () => void }) {
       const data = new FormData(event.currentTarget);
       const name = String(data.get("name") ?? "").trim();
       const phone = String(data.get("phone") ?? "").trim();
+      const message = String(data.get("message") ?? "").trim();
 
-      const nextErrors: { name?: string; phone?: string } = {};
+      const apiPhone = toApiPhone(phone);
+
+      const nextErrors: { name?: string; phone?: string; message?: string } = {};
       if (!name) nextErrors.name = t("errorName");
-      if (!phone) nextErrors.phone = t("errorPhone");
+      if (!apiPhone) nextErrors.phone = t("errorPhone");
+      if (message.length < PROBLEM_MIN_LENGTH) nextErrors.message = t("errorMessage");
       setErrors(nextErrors);
-      if (Object.keys(nextErrors).length > 0) return;
+      setSubmitError(null);
+      if (Object.keys(nextErrors).length > 0 || !apiPhone) return;
 
       setStatus("sending");
-      // Backend is wired later — the request payload is ready to be posted here.
-      await new Promise((resolve) => window.setTimeout(resolve, 600));
-      setStatus("done");
+      try {
+        await postConsultation({
+          name,
+          phone: apiPhone,
+          problem: message.slice(0, PROBLEM_MAX_LENGTH),
+        });
+        setStatus("done");
+      } catch (error) {
+        setStatus("idle");
+        setSubmitError(
+          classifyConsultationError(error) === "rateLimit"
+            ? t("errorRateLimit")
+            : t("errorNetwork"),
+        );
+      }
     },
     [t],
   );
@@ -142,15 +170,34 @@ function ConsultationModal({ onClose }: { onClose: () => void }) {
               id="consultation-message"
               name="message"
               rows={4}
+              required
+              minLength={PROBLEM_MIN_LENGTH}
+              maxLength={PROBLEM_MAX_LENGTH}
+              aria-invalid={Boolean(errors.message)}
+              aria-describedby={errors.message ? "consultation-message-error" : undefined}
               placeholder={t("messagePlaceholder")}
-              className="w-full rounded-lg border border-transparent bg-white px-4 py-3 text-sm text-brand outline-none transition-shadow placeholder:text-brand/40 focus-visible:ring-3 focus-visible:ring-gold/60"
+              className={cn(
+                "w-full rounded-lg border border-transparent bg-white px-4 py-3 text-sm text-brand outline-none transition-shadow placeholder:text-brand/40 focus-visible:ring-3 focus-visible:ring-gold/60",
+                errors.message && "ring-2 ring-destructive",
+              )}
             />
+            {errors.message ? (
+              <p id="consultation-message-error" className="text-xs text-destructive">
+                {errors.message}
+              </p>
+            ) : null}
           </div>
 
           <p className="flex items-start gap-3 rounded-lg bg-white px-4 py-3 text-xs leading-relaxed text-brand/80">
             <Info className="mt-0.5 size-4 shrink-0 text-gold-strong" aria-hidden />
             {t("note")}
           </p>
+
+          {submitError ? (
+            <p role="alert" className="text-center text-sm font-medium text-gold">
+              {submitError}
+            </p>
+          ) : null}
 
           <button
             type="submit"
