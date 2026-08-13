@@ -49,6 +49,11 @@ export function ProductUsage({ product }: { product: Product }) {
           </ol>
 
           <div className="space-y-5">
+            {/*
+              Contained, not cropped: both slots are filled from the product's
+              uploaded photos, and a 190px-tall cover-crop of an upright bottle
+              is a strip of its label blown up past recognition.
+            */}
             <div className="grid gap-5 sm:grid-cols-2">
               <Image
                 src={product.banners[2]}
@@ -56,7 +61,7 @@ export function ProductUsage({ product }: { product: Product }) {
                 width={506}
                 height={207}
                 sizes="(min-width: 1024px) 260px, 45vw"
-                className="h-[190px] w-full rounded-lg object-cover"
+                className="h-[190px] w-full rounded-lg bg-stone object-contain"
               />
               <Image
                 src={product.gallery[1]}
@@ -65,7 +70,7 @@ export function ProductUsage({ product }: { product: Product }) {
                 height={207}
                 loading="lazy"
                 sizes="(min-width: 1024px) 260px, 45vw"
-                className="h-[190px] w-full rounded-lg object-cover"
+                className="h-[190px] w-full rounded-lg bg-stone object-contain"
               />
             </div>
 

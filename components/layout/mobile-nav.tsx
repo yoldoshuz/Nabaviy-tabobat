@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 import { ConsultationButton } from "@/components/layout/consultation-button";
+import { LanguageSwitcher } from "@/components/layout/language-switcher";
 import { Logo } from "@/components/layout/logo";
 import { navigation } from "@/lib/constants";
 import { Link, usePathname } from "@/lib/i18n/navigation";
@@ -70,7 +71,10 @@ export function MobileNav() {
             })}
           </nav>
 
-          <div className="px-4 pb-10">
+          <div className="flex flex-col gap-3 px-4 pb-10">
+            {/* The bar drops the picker below `sm`, so this is the only way to
+                change language on a phone. */}
+            <LanguageSwitcher className="[&>button]:w-full [&>button]:justify-between" />
             <ConsultationButton
               className="h-12 w-full"
               onOpen={() => setOpen(false)}

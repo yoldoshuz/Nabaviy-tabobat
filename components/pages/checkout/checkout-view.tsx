@@ -1,6 +1,7 @@
 "use client";
 
-import { useCart, useCheckout, useMounted } from "@/hooks";
+import { useAuth, useCart, useCheckout, useMounted } from "@/hooks";
+import { formatUzPhoneInput, UZ_PHONE_PREFIX } from "@/lib/phone";
 import { CircleCheck } from "lucide-react";
 import Image from "next/image";
 import { useFormatter, useTranslations } from "next-intl";
@@ -9,7 +10,7 @@ import { useState, type FormEvent } from "react";
 import { Container } from "@/components/shared/container";
 import { GreenLeaf } from "@/components/shared/green-leaf";
 import { enabledPaymentMethods, normalizePhone } from "@/lib/api/checkout";
-import type { PaymentMethod } from "@/lib/api/types";
+import type { OfferedPaymentMethod } from "@/lib/api/types";
 import { Link } from "@/lib/i18n/navigation";
 import { cn } from "@/lib/utils";
 
@@ -30,11 +31,26 @@ export function CheckoutView() {
   const tCatalog = useTranslations("catalog");
   const format = useFormatter();
   const { lines, count, subtotal } = useCart();
+  const { user } = useAuth();
+
+  /**
+   * What the account already knows, so a signed-in customer is not asked to
+   * type it again. Empty for a guest, who fills the form as before.
+   */
+  const prefill: Partial<Record<(typeof fields)[number], string>> = user
+    ? {
+        name: user.firstName,
+        surname: user.lastName ?? "",
+        phone: formatUzPhoneInput(user.phone),
+      }
+    : {};
   const mounted = useMounted();
   const { phase, errorKey, orderId, busy, setErrorKey, submit } = useCheckout();
 
-  const [method, setMethod] = useState<PaymentMethod>("cash");
+  // First offered wins, so the preselected method follows the list rather than
+  // a second constant that could drift from it.
   const methods = enabledPaymentMethods();
+  const [method, setMethod] = useState<OfferedPaymentMethod>(methods[0] ?? "click");
 
   const [errors, setErrors] = useState<Partial<Record<FieldKey, string>>>({});
 
@@ -107,6 +123,7 @@ export function CheckoutView() {
         <h1 className="text-3xl text-brand sm:text-4xl">{t("title")}</h1>
 
         <form
+          key={user?.id ?? "guest"}
           onSubmit={handleSubmit}
           noValidate
           className="mt-8 grid gap-6 lg:grid-cols-[1.1fr_1fr]"
@@ -127,6 +144,9 @@ export function CheckoutView() {
                     <input
                       id={`checkout-${field}`}
                       name={field}
+                      defaultValue={
+                        prefill[field] ?? (field === "phone" ? UZ_PHONE_PREFIX : undefined)
+                      }
                       type={field === "phone" ? "tel" : "text"}
                       autoComplete={autoComplete[field]}
                       placeholder={t(`${field}Placeholder`)}

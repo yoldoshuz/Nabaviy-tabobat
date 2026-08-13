@@ -1,6 +1,5 @@
 "use client";
 
-import { ChevronDown } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useRef, useState, useTransition } from "react";
 
@@ -57,10 +56,6 @@ export function LanguageSwitcher({ className }: { className?: string }) {
       >
         <FlagIcon locale={locale} className="h-4 w-6 rounded-[3px]" />
         <span>{localeMeta[locale].label}</span>
-        <ChevronDown
-          aria-hidden
-          className={cn("size-4 transition-transform", open && "rotate-180")}
-        />
       </button>
 
       {open ? (

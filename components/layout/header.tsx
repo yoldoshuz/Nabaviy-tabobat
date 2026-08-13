@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 
 import { CartButton } from "@/components/layout/cart-button";
+import { LoginButton } from "@/components/layout/login-button";
 import { ConsultationButton } from "@/components/layout/consultation-button";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
 import { BrandSwitcher } from "@/components/layout/brand-switcher";
@@ -44,9 +45,12 @@ export function Header() {
           })}
         </nav>
 
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-1.5 [&>*]:h-10 sm:gap-2">
+          {/* Worded further along for wider screens; this is the phone one. */}
+          <LoginButton compact className="sm:hidden" />
           <CartButton />
-          <LanguageSwitcher />
+          <LanguageSwitcher className="hidden sm:flex" />
+          <LoginButton />
           <ConsultationButton className="hidden sm:inline-flex" />
           <MobileNav />
         </div>

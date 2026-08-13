@@ -32,7 +32,7 @@ export function ConsultationButton({
         open();
       }}
       className={cn(
-        "inline-flex items-center justify-center rounded-lg bg-cream px-5 py-2.5 text-sm font-medium text-brand transition-colors hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold",
+        "inline-flex h-10 items-center justify-center rounded-lg bg-cream px-5 text-sm font-medium text-brand transition-colors hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold",
         className,
       )}
     >

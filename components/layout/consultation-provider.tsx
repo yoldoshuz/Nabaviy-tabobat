@@ -1,5 +1,7 @@
 "use client";
 
+import { useAuth } from "@/hooks";
+
 import { Info, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import {
@@ -60,6 +62,8 @@ export function ConsultationProvider({ children }: { children: ReactNode }) {
 
 function ConsultationModal({ onClose }: { onClose: () => void }) {
   const t = useTranslations("consultation");
+  // Seeded from the account: nobody retypes a number we already store.
+  const { user } = useAuth();
   const [status, setStatus] = useState<"idle" | "sending" | "done">("idle");
   const [errors, setErrors] = useState<{
     name?: string;
@@ -147,6 +151,9 @@ function ConsultationModal({ onClose }: { onClose: () => void }) {
               placeholder={t("namePlaceholder")}
               error={errors.name}
               autoComplete="name"
+              prefill={
+                user ? [user.firstName, user.lastName].filter(Boolean).join(" ") : undefined
+              }
             />
             <Field
               id="consultation-phone"
@@ -156,6 +163,7 @@ function ConsultationModal({ onClose }: { onClose: () => void }) {
               placeholder={t("phonePlaceholder")}
               error={errors.phone}
               autoComplete="tel"
+              prefill={user ? formatUzPhoneInput(user.phone) : undefined}
             />
           </div>
 
@@ -273,6 +281,7 @@ function Field({
   error,
   type = "text",
   autoComplete,
+  prefill,
 }: {
   id: string;
   name: string;
@@ -280,6 +289,8 @@ function Field({
   placeholder: string;
   error?: string;
   type?: string;
+  /** Seeded from the account, so a signed-in visitor retypes nothing. */
+  prefill?: string;
   autoComplete?: string;
 }) {
   // The phone field carries its own country code and regroups the digits as
@@ -296,10 +307,11 @@ function Field({
         type={type}
         placeholder={placeholder}
         autoComplete={autoComplete}
+        {...(prefill && !isPhone ? { defaultValue: prefill } : {})}
         {...(isPhone
           ? {
               inputMode: "tel" as const,
-              defaultValue: UZ_PHONE_PREFIX,
+              defaultValue: prefill ?? UZ_PHONE_PREFIX,
               onInput: (event: FormEvent<HTMLInputElement>) => {
                 event.currentTarget.value = formatUzPhoneInput(
                   event.currentTarget.value,

@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 
-import { CartProvider, QueryProvider } from "@/hooks";
+import { AuthProvider, CartProvider, QueryProvider } from "@/hooks";
 import { getProducts } from "@/lib/api/catalog";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import localFont from "next/font/local";
@@ -130,6 +130,7 @@ export default async function LocaleLayout(props: LayoutProps<"/[locale]">) {
       <body className="flex min-h-full flex-col bg-background">
         <NextIntlClientProvider>
           <QueryProvider>
+            <AuthProvider>
             <CartProvider catalog={catalog}>
           <ConsultationProvider>
             <a
@@ -146,6 +147,7 @@ export default async function LocaleLayout(props: LayoutProps<"/[locale]">) {
             <CtaBanner />
           </ConsultationProvider>
             </CartProvider>
+            </AuthProvider>
           </QueryProvider>
         </NextIntlClientProvider>
 

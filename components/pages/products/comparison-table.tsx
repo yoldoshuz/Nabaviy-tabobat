@@ -34,13 +34,14 @@ export function ComparisonTable({ products }: { products: Product[] }) {
                         <span className="block bg-brand py-2 text-xs text-cream">
                           {tCatalog(`${product.slug}.name`)}
                         </span>
+                        {/* Whole bottle, never a slice of its label. */}
                         <Image
                           src={product.gallery[0]}
                           alt={tCatalog(`${product.slug}.name`)}
                           width={220}
                           height={160}
                           sizes="220px"
-                          className="h-[150px] w-full object-cover"
+                          className="h-[150px] w-full bg-stone object-contain"
                         />
                       </span>
                     </th>
