@@ -16,8 +16,30 @@ export function ProductAdvantages({ product }: { product: Product }) {
   const tCatalog = useTranslations(`catalog.${product.slug}`);
   const [index, setIndex] = useState(0);
 
+  /**
+   * Banners are uploaded photos, so their shapes are whatever the shop sent —
+   * portrait bottles and landscape scenes in the same carousel. A fixed frame
+   * cropped the portrait ones down to a band of label, so the frame takes the
+   * shape of the photo it is showing instead, measured as it loads. The width
+   * cap keeps a tall photo from pushing the rest of the page off the screen.
+   *
+   * `ratio` holds the shape on screen and `ratios` remembers the ones already
+   * measured: on the way to a photo seen before the frame reshapes with the
+   * click, and on the way to a new one it keeps the outgoing shape until the
+   * photo lands, rather than snapping through a placeholder in between.
+   */
+  const [ratios, setRatios] = useState<Record<string, number>>({});
+  const [ratio, setRatio] = useState(1200 / 415);
+
+  const src = product.banners[index];
   const total = product.banners.length;
-  const go = (step: number) => setIndex((value) => (value + step + total) % total);
+
+  const go = (step: number) => {
+    const next = (index + step + total) % total;
+    setIndex(next);
+    const known = ratios[product.banners[next]];
+    if (known) setRatio(known);
+  };
 
   return (
     <section className="relative overflow-hidden bg-white pb-16 lg:pb-24">
@@ -32,15 +54,28 @@ export function ProductAdvantages({ product }: { product: Product }) {
           className="mx-auto"
         />
 
-        <div className="relative mt-10">
-          <div className="relative aspect-[1200/415] w-full overflow-hidden rounded-xl">
+        <div
+          className="relative mx-auto mt-10 w-full"
+          style={{ maxWidth: `calc(70vh * ${ratio})` }}
+        >
+          <div
+            className="relative w-full overflow-hidden rounded-xl bg-stone"
+            style={{ aspectRatio: ratio }}
+          >
             <Image
-              key={product.banners[index]}
-              src={product.banners[index]}
+              key={src}
+              src={src}
               alt={tCatalog("name")}
               fill
               sizes="(min-width: 1200px) 1140px, 92vw"
-              className="object-cover"
+              onLoad={(event) => {
+                const { naturalWidth, naturalHeight } = event.currentTarget;
+                if (!naturalWidth || !naturalHeight) return;
+                const loaded = naturalWidth / naturalHeight;
+                setRatio(loaded);
+                setRatios((current) => ({ ...current, [src]: loaded }));
+              }}
+              className="object-contain"
             />
           </div>
 

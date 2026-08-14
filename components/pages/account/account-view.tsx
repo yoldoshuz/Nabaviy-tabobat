@@ -120,7 +120,10 @@ function ProfileHeader() {
           </span>
 
           <div className="min-w-0 flex-1">
-            <h1 className="text-2xl leading-tight break-words text-cream sm:text-3xl">
+            {/* The account is a working screen, not a page of the brand story:
+                names, order numbers and totals read in the UI face, and Pehlevi
+                (the global h1–h4 default) is left to the marketing pages. */}
+            <h1 className="font-sans text-2xl leading-tight font-bold break-words text-cream sm:text-3xl">
               {fullName || t("title")}
             </h1>
             {/* The number identifies the account and cannot be edited. */}
@@ -225,7 +228,7 @@ function PanelHead({
   return (
     <div className="flex flex-wrap items-start justify-between gap-3">
       <div>
-        <h2 className="flex items-center gap-2 text-lg font-extrabold text-brand">
+        <h2 className="flex items-center gap-2 font-sans text-lg font-extrabold text-brand">
           <span className="grid size-9 place-items-center rounded-lg bg-stone text-gold-strong">
             {icon}
           </span>

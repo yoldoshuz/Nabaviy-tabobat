@@ -50,27 +50,27 @@ export function ProductUsage({ product }: { product: Product }) {
 
           <div className="space-y-5">
             {/*
-              Contained, not cropped: both slots are filled from the product's
-              uploaded photos, and a 190px-tall cover-crop of an upright bottle
-              is a strip of its label blown up past recognition.
+              Square tiles, filled edge to edge: the uploaded photos come in
+              both shapes, and a square crop keeps the bottle recognisable in
+              either — a letterboxed photo left grey bars down both sides.
             */}
             <div className="grid gap-5 sm:grid-cols-2">
               <Image
                 src={product.banners[2]}
                 alt={tCatalog("name")}
                 width={506}
-                height={207}
+                height={506}
                 sizes="(min-width: 1024px) 260px, 45vw"
-                className="h-[190px] w-full rounded-lg bg-stone object-contain"
+                className="aspect-square w-full rounded-lg bg-stone object-cover"
               />
               <Image
                 src={product.gallery[1]}
                 alt={tCatalog("name")}
-                width={271}
-                height={207}
+                width={506}
+                height={506}
                 loading="lazy"
                 sizes="(min-width: 1024px) 260px, 45vw"
-                className="h-[190px] w-full rounded-lg bg-stone object-contain"
+                className="aspect-square w-full rounded-lg bg-stone object-cover"
               />
             </div>
 
