@@ -8,6 +8,7 @@ import {
   Package,
   Pencil,
   ReceiptText,
+  Trash2,
   ShoppingBag,
   ShoppingCart,
 } from "lucide-react";
@@ -17,6 +18,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { Container } from "@/components/shared/container";
+import { QuantityInput } from "@/components/shared/quantity-input";
 import { useAuth, useCart } from "@/hooks";
 import {
   getMyOrder,
@@ -302,7 +304,20 @@ function StoreTag({ store }: { store?: string }) {
 function CartPanel() {
   const t = useTranslations("account");
   const locale = useLocale();
-  const { items, count, subtotal, ready, hasUnavailable } = useCart();
+  const { items, count, subtotal, ready, hasUnavailable, setQuantity, remove } =
+    useCart();
+
+  // The server returns the basket in the order it last wrote it, so without
+
+
+  // a fixed sort a quantity change reshuffles the rows under the cursor.
+
+
+  const rows = [...items].sort((a, b) => a.slug.localeCompare(b.slug));
+
+
+  
+
 
   return (
     <section className={PANEL}>
@@ -340,8 +355,8 @@ function CartPanel() {
       ) : (
         <>
           <ul className="mt-5 flex flex-col divide-y divide-border">
-            {items.map((item) => (
-              <li key={item.slug} className="flex items-center gap-3 py-3 first:pt-0">
+            {rows.map((item) => (
+              <li key={item.slug} className="flex flex-wrap items-center gap-3 py-3 first:pt-0">
                 <span className="relative size-14 shrink-0 overflow-hidden rounded-lg bg-stone">
                   <Image
                     src={item.product.image}
@@ -356,11 +371,25 @@ function CartPanel() {
                     {item.product.name}
                   </span>
                   <span className="block text-xs text-brand/60">
-                    {formatAmount(item.product.price, locale as Locale)} × {item.quantity}
+                    {formatAmount(item.product.price, locale as Locale)}
                   </span>
                 </span>
-                <span className="whitespace-nowrap text-sm font-bold text-brand">
-                  {formatAmount(item.product.price * item.quantity, locale as Locale)}
+                <span className="flex w-full items-center justify-between gap-3 sm:w-auto sm:justify-end">
+                  <QuantityInput
+                    value={item.quantity}
+                    onChange={(next) => setQuantity(item.slug, next)}
+                  />
+                  <span className="w-24 text-right text-sm font-bold whitespace-nowrap text-brand">
+                    {formatAmount(item.product.price * item.quantity, locale as Locale)}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => remove(item.slug)}
+                    aria-label={t("removeItem")}
+                    className="grid size-8 shrink-0 place-items-center rounded-lg text-brand/40 transition-colors hover:bg-stone hover:text-destructive"
+                  >
+                    <Trash2 className="size-4" />
+                  </button>
                 </span>
               </li>
             ))}
