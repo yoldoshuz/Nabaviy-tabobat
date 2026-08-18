@@ -30,7 +30,7 @@ export function CheckoutView() {
   const tCommon = useTranslations("common");
   const tCatalog = useTranslations("catalog");
   const format = useFormatter();
-  const { lines, count, subtotal } = useCart();
+  const { lines, count, subtotal, totals } = useCart();
   const { user } = useAuth();
 
   /**
@@ -236,16 +236,26 @@ export function CheckoutView() {
                   {tCommon("priceValue", { value: format.number(subtotal) })}
                 </dd>
               </div>
+              {/* Priced by the API so this line and the created order cannot
+                  disagree; free from two units up. */}
               <div className="flex items-center justify-between gap-4">
                 <dt className="text-brand/70">{t("delivery")}</dt>
-                <dd className="text-brand">{t("deliveryPrice")}</dd>
+                <dd className="text-brand">
+                  {totals.deliveryFee > 0
+                    ? tCommon("priceValue", {
+                        value: format.number(totals.deliveryFee),
+                      })
+                    : t("deliveryPrice")}
+                </dd>
               </div>
             </dl>
 
             <div className="mt-5 flex items-center justify-between gap-4 border-t border-border pt-5 text-base">
               <span className="text-brand/70">{t("total")}</span>
               <span className="text-brand">
-                {tCommon("priceValue", { value: format.number(subtotal) })}
+                {tCommon("priceValue", {
+                  value: format.number(totals.grandTotal),
+                })}
               </span>
             </div>
 

@@ -15,9 +15,13 @@ export const contacts = {
   instagram: "@nabaviy_tabobati",
   instagramHref: "https://instagram.com/nabaviy_tabobati",
   telegram: "https://t.me/nabaviy_tabobati",
+  /**
+   * Resolved from the office address rather than a literal pin — the previous
+   * coordinate sat in the city centre. `geo` is omitted until the exact point
+   * is surveyed; a wrong one in structured data is worse than none.
+   */
   mapEmbed:
-    "https://yandex.uz/map-widget/v1/?ll=69.294%2C41.311&z=16&pt=69.294,41.311,pm2rdm",
-  geo: { latitude: 41.311081, longitude: 69.294067 },
+    "https://yandex.uz/map-widget/v1/?text=%D0%A2%D0%B0%D1%88%D0%BA%D0%B5%D0%BD%D1%82%2C%20%D1%83%D0%BB%D0%B8%D1%86%D0%B0%20%D0%AD%D0%BB%D0%B1%D0%B5%D0%BA%2C%2031&z=17&lang=ru_RU",
 } as const;
 
 /**

@@ -120,16 +120,26 @@ export function CartView() {
                       })}
                     </dd>
                   </div>
+                  {/* Priced by the API so the basket and the created order
+                      cannot disagree; free from two units up. */}
                   <div className="flex items-center justify-between gap-4">
                     <dt className="text-cream/80">{t("delivery")}</dt>
-                    <dd>{t("deliveryFree")}</dd>
+                    <dd>
+                      {totals.deliveryFee > 0
+                        ? tCommon("priceValue", {
+                            value: format.number(totals.deliveryFee),
+                          })
+                        : t("deliveryFree")}
+                    </dd>
                   </div>
                 </dl>
 
                 <div className="mt-5 flex items-center justify-between gap-4 border-t border-brand-line pt-5 text-base">
                   <span className="text-cream/80">{t("total")}</span>
                   <span>
-                    {tCommon("priceValue", { value: format.number(subtotal) })}
+                    {tCommon("priceValue", {
+                      value: format.number(totals.grandTotal),
+                    })}
                   </span>
                 </div>
 

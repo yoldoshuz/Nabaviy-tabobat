@@ -61,11 +61,6 @@ export function localBusinessJsonLd(locale: Locale, description: string): JsonLd
       addressLocality: "Toshkent",
       addressCountry: "UZ",
     },
-    geo: {
-      "@type": "GeoCoordinates",
-      latitude: contacts.geo.latitude,
-      longitude: contacts.geo.longitude,
-    },
     openingHoursSpecification: {
       "@type": "OpeningHoursSpecification",
       dayOfWeek: [
