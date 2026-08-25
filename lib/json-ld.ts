@@ -16,7 +16,7 @@ export function organizationJsonLd(locale: Locale, description: string): JsonLd 
     description,
     email: contacts.email,
     telephone: contacts.phone,
-    sameAs: [contacts.instagramHref, contacts.telegram],
+    sameAs: [contacts.instagramHref, contacts.telegram, contacts.facebookHref],
     address: {
       "@type": "PostalAddress",
       addressLocality: "Toshkent",

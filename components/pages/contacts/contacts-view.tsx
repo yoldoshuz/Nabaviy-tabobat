@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 
 import { ConsultationButton } from "@/components/layout/consultation-button";
 import { Container } from "@/components/shared/container";
-import { InstagramIcon, TelegramIcon } from "@/components/shared/social-icons";
+import { FacebookIcon, InstagramIcon, TelegramIcon } from "@/components/shared/social-icons";
 import { contacts } from "@/lib/constants";
 import { Link } from "@/lib/i18n/navigation";
 
@@ -32,7 +32,7 @@ export function ContactsView() {
                 {tCommon("orderNow")}
               </Link>
               <a
-                href={contacts.telegram}
+                href={contacts.telegramAdmin}
                 target="_blank"
                 rel="noreferrer noopener"
                 className="flex h-12 w-full items-center justify-center rounded-lg border border-brand/20 px-8 text-sm font-medium text-brand transition-colors hover:bg-stone focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand sm:w-auto"
@@ -69,6 +69,12 @@ export function ContactsView() {
                   external
                 />
                 <ContactRow
+                  icon={<FacebookIcon className="size-5" />}
+                  href={contacts.facebookHref}
+                  label="Facebook"
+                  external
+                />
+                <ContactRow
                   icon={<Clock className="size-5" aria-hidden />}
                   label={t("workingHours")}
                 />
@@ -89,7 +95,7 @@ export function ContactsView() {
             </ConsultationButton>
 
             <a
-              href={contacts.telegram}
+              href={contacts.telegramAdmin}
               target="_blank"
               rel="noreferrer noopener"
               className="flex h-13 w-full items-center justify-center gap-2 rounded-lg border border-brand/20 text-sm font-medium text-brand transition-colors hover:bg-stone focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"

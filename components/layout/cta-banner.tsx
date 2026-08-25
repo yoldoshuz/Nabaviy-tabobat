@@ -67,11 +67,13 @@ export function CtaBanner() {
               href={contacts.instagramHref}
               external
             />
+            {/* "Написать нам" — an offer to talk, so it goes to the administrator
+                rather than the channel the other two cards point at. */}
             <ContactCard
               icon={<MessageSquareText className="size-5" aria-hidden />}
               label={t("messageLabel")}
               value={t("messageValue")}
-              href={contacts.telegram}
+              href={contacts.telegramAdmin}
               external
             />
           </ul>

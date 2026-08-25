@@ -11,18 +11,22 @@ export const contacts = {
   phone: "+998 71 203 22 32",
   phoneHref: "tel:+998712032232",
   /*
-   * Group-wide contacts. The tester round found the per-brand handles dead: the
-   * Instagram account was never registered and the Telegram username resolves
-   * to nothing. These are the ones the group actually answers on — @numa.uz on
-   * Instagram and @Numa_uz_admin, the shared admin covering all four NUMA
-   * sites. Identical in every repo on purpose.
+   * Two Telegram destinations, and they are not interchangeable. `telegram` is
+   * the public channel — the footer, the contact card, structured data,
+   * anywhere the site is just saying where to find the brand. `telegramAdmin`
+   * is a person and belongs only behind a button offering to carry on a
+   * conversation. Dropping someone from a footer icon into a private chat with
+   * an administrator is what split these apart.
    */
   email: "numafamilyuz@gmail.com",
   emailHref: "mailto:numafamilyuz@gmail.com",
-  instagram: "@numa.uz",
-  instagramHref: "https://www.instagram.com/numa.uz",
-  telegramHandle: "@Numa_uz_admin",
-  telegram: "https://t.me/Numa_uz_admin",
+  instagram: "@nabaviy_tabobati",
+  instagramHref: "https://www.instagram.com/nabaviy_tabobati",
+  telegramHandle: "@nabaviyuz1",
+  telegram: "https://t.me/nabaviyuz1",
+  telegramAdminHandle: "@Numa_uz_admin",
+  telegramAdmin: "https://t.me/Numa_uz_admin",
+  facebookHref: "https://www.facebook.com/share/1HAf1K8hW8/",
   /**
    * Resolved from the office address rather than a literal pin — the previous
    * coordinate sat in the city centre. `geo` is omitted until the exact point
