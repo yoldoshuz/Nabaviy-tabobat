@@ -5,11 +5,12 @@ import { useFormatter, useTranslations } from "next-intl";
 import { useState } from "react";
 
 import { AddToCartButton } from "@/components/shared/add-to-cart-button";
+import { ProductImage } from "@/components/shared/product-image";
 import { Container } from "@/components/shared/container";
 import { GreenLeaf } from "@/components/shared/green-leaf";
 import { QuantityInput } from "@/components/shared/quantity-input";
 import { Link } from "@/lib/i18n/navigation";
-import { cn } from "@/lib/utils";
+import { cn, isSoldOut } from "@/lib/utils";
 import type { Product } from "@/types";
 
 const featureKeys = [
@@ -30,6 +31,7 @@ export function ProductShowcase({ product }: { product: Product }) {
 
   const images = [product.image, product.imageBack, product.gallery[0]];
   const [active, setActive] = useState(0);
+  const soldOut = isSoldOut(product);
 
   return (
     <section className="relative overflow-hidden bg-white pt-8 pb-16 lg:pb-24">
@@ -45,8 +47,9 @@ export function ProductShowcase({ product }: { product: Product }) {
       <Container className="relative grid gap-10 lg:grid-cols-2 lg:gap-14">
         <div>
           <div className="flex aspect-square items-center justify-center rounded-xl bg-stone/60 p-8">
-            <Image
+            <ProductImage
               key={images[active]}
+              slug={product.slug}
               src={images[active]}
               alt={tCatalog("name")}
               width={420}
@@ -125,21 +128,38 @@ export function ProductShowcase({ product }: { product: Product }) {
             {tCommon("priceValue", { value: format.number(product.price) })}
           </p>
 
-          <div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-center">
-            <QuantityInput
-              value={quantity}
-              onChange={setQuantity}
-              size="lg"
-              className="w-full sm:w-auto"
-            />
-            <AddToCartButton
-              slug={product.slug}
-              quantity={quantity}
-              size="lg"
-              withIcon={false}
-              className="w-full flex-1 sm:w-auto sm:max-w-xs"
-            />
-          </div>
+          {soldOut ? (
+            /*
+             * With nothing in stock there is no quantity worth picking, so the
+             * row is replaced outright rather than greyed in place: a dimmed
+             * stepper beside a dimmed button still invites a try, and this page
+             * was taking the order all the way through to checkout.
+             */
+            <div className="mt-5 rounded-lg border border-border bg-stone/60 px-5 py-4">
+              <p className="text-base font-medium text-brand">
+                {tCommon("outOfStock")}
+              </p>
+              <p className="mt-1 text-sm leading-relaxed text-brand/70">
+                {tCommon("outOfStockNote")}
+              </p>
+            </div>
+          ) : (
+            <div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-center">
+              <QuantityInput
+                value={quantity}
+                onChange={setQuantity}
+                size="lg"
+                className="w-full sm:w-auto"
+              />
+              <AddToCartButton
+                slug={product.slug}
+                quantity={quantity}
+                size="lg"
+                withIcon={false}
+                className="w-full flex-1 sm:w-auto sm:max-w-xs"
+              />
+            </div>
+          )}
 
           <h2 className="mt-10 text-2xl text-brand">{t("features")}</h2>
           <dl className="mt-5 space-y-3 text-sm">

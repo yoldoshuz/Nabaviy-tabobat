@@ -1,5 +1,6 @@
 import { contacts, siteConfig } from "@/lib/constants";
 import { absoluteUrl, localizedPath } from "@/lib/seo";
+import { isSoldOut } from "@/lib/utils";
 import type { Locale, Product } from "@/types";
 
 type JsonLd = Record<string, unknown>;
@@ -95,7 +96,11 @@ export function productJsonLd(
       url: absoluteUrl(localizedPath(`/products/${product.slug}`, locale)),
       priceCurrency: product.currency,
       price: product.price,
-      availability: "https://schema.org/InStock",
+      // Mirrors the storefront: a zero-stock product must not tell Google it
+      // is buyable while the page itself refuses the order.
+      availability: isSoldOut(product)
+        ? "https://schema.org/OutOfStock"
+        : "https://schema.org/InStock",
       itemCondition: "https://schema.org/NewCondition",
       seller: { "@id": `${siteConfig.url}#organization` },
     },

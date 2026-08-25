@@ -13,6 +13,8 @@ interface AddToCartButtonProps {
   className?: string;
   size?: "sm" | "lg";
   withIcon?: boolean;
+  /** Nothing left in stock — the control is shown, disabled, in its place. */
+  soldOut?: boolean;
 }
 
 /**
@@ -28,12 +30,34 @@ export function AddToCartButton({
   className,
   size = "sm",
   withIcon = true,
+  soldOut = false,
 }: AddToCartButtonProps) {
   const t = useTranslations("common");
   const tProduct = useTranslations("product");
   const { add, setQuantity, lines, ready } = useCart();
 
   const inCart = lines.find((line) => line.slug === slug)?.quantity ?? 0;
+
+  /*
+   * Sold out outranks everything, including a line already in the basket: the
+   * stock ran out while the shopper was browsing and the honest answer is that
+   * it cannot be ordered, not a stepper that pretends it can.
+   */
+  if (soldOut) {
+    return (
+      <button
+        type="button"
+        disabled
+        className={cn(
+          "inline-flex cursor-not-allowed items-center justify-center gap-2 rounded-lg border border-border bg-stone/60 font-medium text-brand/45",
+          size === "sm" ? "h-11 px-4 text-sm" : "h-14 px-8 text-base",
+          className,
+        )}
+      >
+        <span>{t("outOfStock")}</span>
+      </button>
+    );
+  }
 
   if (ready && inCart > 0) {
     return (

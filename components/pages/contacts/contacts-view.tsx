@@ -63,6 +63,12 @@ export function ContactsView() {
                   external
                 />
                 <ContactRow
+                  icon={<TelegramIcon className="size-5" />}
+                  href={contacts.telegram}
+                  label={contacts.telegramHandle}
+                  external
+                />
+                <ContactRow
                   icon={<Clock className="size-5" aria-hidden />}
                   label={t("workingHours")}
                 />

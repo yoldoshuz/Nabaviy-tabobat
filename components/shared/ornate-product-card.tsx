@@ -1,9 +1,9 @@
-import Image from "next/image";
 import { useFormatter, useTranslations } from "next-intl";
 
 import { AddToCartButton } from "@/components/shared/add-to-cart-button";
+import { ProductImage } from "@/components/shared/product-image";
 import { Link } from "@/lib/i18n/navigation";
-import { cn } from "@/lib/utils";
+import { cn, isSoldOut } from "@/lib/utils";
 import type { Product } from "@/types";
 
 interface OrnateProductCardProps {
@@ -24,6 +24,7 @@ export function OrnateProductCard({
   const t = useTranslations(`catalog.${product.slug}`);
   const tCommon = useTranslations("common");
   const format = useFormatter();
+  const soldOut = isSoldOut(product);
 
   return (
     <article
@@ -33,21 +34,33 @@ export function OrnateProductCard({
       )}
     >
       <div className="flex flex-1 flex-col gap-5 rounded-[4px] border border-gold/50 bg-white px-5 py-7 text-center sm:px-6">
-        <p className="text-xs font-medium tracking-[0.32em] text-gold-strong uppercase">
-          {badge}
+        {/* A zero-stock product stays on the page — the admin keeps it
+            "Активный" — but the eyebrow that sold it now states the status. */}
+        <p
+          className={cn(
+            "text-xs font-medium tracking-[0.32em] uppercase",
+            soldOut ? "text-brand/50" : "text-gold-strong",
+          )}
+        >
+          {soldOut ? tCommon("outOfStock") : badge}
         </p>
 
         <Link
           href={`/products/${product.slug}`}
           className="mx-auto block transition-transform duration-300 hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
         >
-          <Image
+          <ProductImage
+            slug={product.slug}
             src={product.image}
             alt={t("name")}
             width={200}
             height={320}
             sizes="200px"
-            className="mx-auto h-[180px] w-auto object-contain"
+            className={cn(
+              "mx-auto h-[180px] w-auto object-contain",
+              // Drained of colour, so the card reads as unavailable at a glance.
+              soldOut && "opacity-45 saturate-25",
+            )}
           />
         </Link>
 
@@ -77,6 +90,7 @@ export function OrnateProductCard({
           </p>
           <AddToCartButton
             slug={product.slug}
+            soldOut={soldOut}
             className="h-10 w-full px-3 text-xs whitespace-nowrap sm:w-auto"
           />
         </div>

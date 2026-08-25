@@ -68,6 +68,16 @@ export function Footer() {
             </li>
             <li>
               <a
+                href={contacts.telegram}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="text-sm text-cream/60 transition-colors hover:text-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+              >
+                {contacts.telegramHandle}
+              </a>
+            </li>
+            <li>
+              <a
                 href={contacts.emailHref}
                 className="text-sm text-cream/60 transition-colors hover:text-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
               >

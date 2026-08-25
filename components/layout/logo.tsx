@@ -4,6 +4,31 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/lib/i18n/navigation";
 import { cn } from "@/lib/utils";
 
+/**
+ * The wordmark on its own, with no link around it.
+ *
+ * The brand switcher wraps the logo in a `<button>`, and an anchor inside a
+ * button is invalid markup — the browser hands the click to the anchor, so the
+ * logo navigated home instead of opening the group menu that is the whole point
+ * of the control. Anything supplying its own interactive element takes this;
+ * everything else takes `<Logo>` below.
+ */
+export function LogoMark({ className }: { className?: string }) {
+  const t = useTranslations("common");
+
+  return (
+    <Image
+      src="/logo.png"
+      alt={t("brand")}
+      width={240}
+      height={68}
+      priority
+      sizes="240px"
+      className={cn("h-7 w-auto sm:h-8", className)}
+    />
+  );
+}
+
 export function Logo({ className }: { className?: string }) {
   const t = useTranslations("common");
 
@@ -16,15 +41,7 @@ export function Logo({ className }: { className?: string }) {
         className,
       )}
     >
-      <Image
-        src="/logo.png"
-        alt={t("brand")}
-        width={240}
-        height={68}
-        priority
-        sizes="240px"
-        className="h-7 w-auto sm:h-8"
-      />
+      <LogoMark />
     </Link>
   );
 }

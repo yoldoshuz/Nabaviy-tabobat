@@ -22,7 +22,9 @@
     "remove": "Remove",
     "openMenu": "Open menu",
     "skipToContent": "Skip to content",
-    "otherBrands": "Other NUMA projects"
+    "otherBrands": "Other NUMA projects",
+    "outOfStock": "Out of stock",
+    "outOfStockNote": "This product is temporarily out of stock. Leave a request or write to us and we will let you know the moment it is back."
   },
   "nav": {
     "home": "Home",

@@ -10,11 +10,19 @@ export const siteConfig = {
 export const contacts = {
   phone: "+998 71 203 22 32",
   phoneHref: "tel:+998712032232",
-  email: "info@nabaviytabobati.uz",
-  emailHref: "mailto:info@nabaviytabobati.uz",
-  instagram: "@nabaviy_tabobati",
-  instagramHref: "https://instagram.com/nabaviy_tabobati",
-  telegram: "https://t.me/nabaviy_tabobati",
+  /*
+   * Group-wide contacts. The tester round found the per-brand handles dead: the
+   * Instagram account was never registered and the Telegram username resolves
+   * to nothing. These are the ones the group actually answers on — @numa.uz on
+   * Instagram and @Numa_uz_admin, the shared admin covering all four NUMA
+   * sites. Identical in every repo on purpose.
+   */
+  email: "numafamilyuz@gmail.com",
+  emailHref: "mailto:numafamilyuz@gmail.com",
+  instagram: "@numa.uz",
+  instagramHref: "https://www.instagram.com/numa.uz",
+  telegramHandle: "@Numa_uz_admin",
+  telegram: "https://t.me/Numa_uz_admin",
   /**
    * Resolved from the office address rather than a literal pin — the previous
    * coordinate sat in the city centre. `geo` is omitted until the exact point
