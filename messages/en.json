@@ -23,6 +23,7 @@
     "openMenu": "Open menu",
     "skipToContent": "Skip to content",
     "otherBrands": "Other NUMA projects",
+    "comingSoon": "Coming soon",
     "outOfStock": "Out of stock",
     "outOfStockNote": "This product is temporarily out of stock. Leave a request or write to us and we will let you know the moment it is back."
   },
@@ -40,7 +41,8 @@
     "products": "PRODUCTS",
     "company": "COMPANY",
     "contacts": "CONTACTS",
-    "rights": "© 2025 Nabaviy Tabobat. All rights reserved."
+    "rights": "© 2025 Nabaviy Tabobat. All rights reserved.",
+    "certificate": "ISO 22000 certificate (PDF)"
   },
   "cta": {
     "title": "Nabaviy Tabobat",
@@ -58,6 +60,8 @@
     "namePlaceholder": "Your name",
     "phoneLabel": "Phone number *",
     "phonePlaceholder": "Your phone number",
+    "subjectLabel": "Subject",
+    "subjectPlaceholder": "For example: choosing a product",
     "messageLabel": "Issue / Question *",
     "messagePlaceholder": "Describe your health concern or ask a question. Our specialist will recommend a suitable product…",
     "note": "After you submit the form our specialist will contact you within 24 hours. The consultation is free!",
@@ -70,7 +74,7 @@
     "successHint": "We usually reply within 15–30 minutes during business hours",
     "successHome": "Back to home",
     "successCatalog": "Go to catalog",
-    "errorMessage": "Describe the problem — at least 10 characters",
+    "errorMessage": "Describe the problem",
     "errorRateLimit": "Too many requests. Please try again later",
     "errorNetwork": "Could not send the request. Please try again"
   },

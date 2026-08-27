@@ -19,6 +19,7 @@ import {
   postConsultation,
   PROBLEM_MAX_LENGTH,
   PROBLEM_MIN_LENGTH,
+  SUBJECT_MAX_LENGTH,
 } from "@/lib/api/consultation";
 import { Link } from "@/lib/i18n/navigation";
 import { formatUzPhoneInput, toApiPhone, UZ_PHONE_PREFIX } from "@/lib/phone";
@@ -78,6 +79,7 @@ function ConsultationModal({ onClose }: { onClose: () => void }) {
       const data = new FormData(event.currentTarget);
       const name = String(data.get("name") ?? "").trim();
       const phone = String(data.get("phone") ?? "").trim();
+      const subject = String(data.get("subject") ?? "").trim();
       const message = String(data.get("message") ?? "").trim();
 
       const apiPhone = toApiPhone(phone);
@@ -95,6 +97,7 @@ function ConsultationModal({ onClose }: { onClose: () => void }) {
         await postConsultation({
           name,
           phone: apiPhone,
+          subject: subject.slice(0, SUBJECT_MAX_LENGTH),
           problem: message.slice(0, PROBLEM_MAX_LENGTH),
         });
         setStatus("done");
@@ -166,6 +169,20 @@ function ConsultationModal({ onClose }: { onClose: () => void }) {
               prefill={user ? formatUzPhoneInput(user.phone) : undefined}
             />
           </div>
+
+          {/*
+            Optional, and deliberately unmarked: the CRM prints it as its own
+            line on the deal card, so a one-line "what is this about" is worth
+            asking for — but a required field between the phone number and the
+            question is one more thing to abandon the form over.
+          */}
+          <Field
+            id="consultation-subject"
+            name="subject"
+            label={t("subjectLabel")}
+            placeholder={t("subjectPlaceholder")}
+            maxLength={SUBJECT_MAX_LENGTH}
+          />
 
           <div className="space-y-2">
             <label
@@ -282,6 +299,7 @@ function Field({
   type = "text",
   autoComplete,
   prefill,
+  maxLength,
 }: {
   id: string;
   name: string;
@@ -292,6 +310,7 @@ function Field({
   /** Seeded from the account, so a signed-in visitor retypes nothing. */
   prefill?: string;
   autoComplete?: string;
+  maxLength?: number;
 }) {
   // The phone field carries its own country code and regroups the digits as
   // they are typed, so what the customer sees is always what the API accepts.
@@ -307,6 +326,7 @@ function Field({
         type={type}
         placeholder={placeholder}
         autoComplete={autoComplete}
+        maxLength={maxLength}
         {...(prefill && !isPhone ? { defaultValue: prefill } : {})}
         {...(isPhone
           ? {

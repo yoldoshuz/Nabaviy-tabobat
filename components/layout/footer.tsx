@@ -2,7 +2,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 
 import { Container } from "@/components/shared/container";
-import { contacts, footerNavigation } from "@/lib/constants";
+import { contacts, footerNavigation, ISO_22000_CERTIFICATE } from "@/lib/constants";
 import { Link } from "@/lib/i18n/navigation";
 
 export function Footer() {
@@ -45,6 +45,20 @@ export function Footer() {
                 <FooterLink href={item.href}>{tNav(item.key)}</FooterLink>
               </li>
             ))}
+            {/*
+              A plain `<a>`, not the locale-aware `FooterLink`: this is a file
+              in `public/`, and prefixing it with `/ru` would 404.
+            */}
+            <li>
+              <a
+                href={ISO_22000_CERTIFICATE}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="text-sm text-cream/60 transition-colors hover:text-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+              >
+                {t("certificate")}
+              </a>
+            </li>
           </FooterColumn>
 
           <FooterColumn title={t("contacts")}>
