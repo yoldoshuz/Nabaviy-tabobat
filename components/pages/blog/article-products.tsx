@@ -3,6 +3,7 @@ import Image from "next/image";
 
 import { AddToCartButton } from "@/components/shared/add-to-cart-button";
 import { Link } from "@/lib/i18n/navigation";
+import { cn, isSoldOut } from "@/lib/utils";
 import type { Product } from "@/types";
 
 interface ArticleProductsProps {
@@ -37,7 +38,9 @@ export function ArticleProducts({ products, note }: ArticleProductsProps) {
       </p>
 
       <ul className="mt-8 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-        {products.map((product) => (
+        {products.map((product) => {
+          const soldOut = isSoldOut(product);
+          return (
           <li
             key={product.slug}
             className="group flex flex-col rounded-lg bg-white p-5 text-center ring-1 ring-border transition-shadow hover:shadow-card"
@@ -52,7 +55,11 @@ export function ArticleProducts({ products, note }: ArticleProductsProps) {
                 width={140}
                 height={220}
                 sizes="140px"
-                className="mx-auto h-[130px] w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+                className={cn(
+                  "mx-auto h-[130px] w-auto object-contain transition-transform duration-300 group-hover:scale-105",
+                  // Drained of colour, so the card reads as unavailable at a glance.
+                  soldOut && "opacity-45 saturate-25",
+                )}
               />
             </Link>
 
@@ -69,12 +76,18 @@ export function ArticleProducts({ products, note }: ArticleProductsProps) {
               {tCommon("price", { value: format.number(product.price) })}
             </p>
 
+            {/* The lead-product strip pulls straight from the article's curated
+                list, so a jar that has since sold out lands here too — it must
+                carry the same disabled control as every other card, not the one
+                path that still took the order. */}
             <AddToCartButton
               slug={product.slug}
+              soldOut={soldOut}
               className="mt-4 h-10 w-full px-3 text-xs"
             />
           </li>
-        ))}
+          );
+        })}
       </ul>
     </aside>
   );
