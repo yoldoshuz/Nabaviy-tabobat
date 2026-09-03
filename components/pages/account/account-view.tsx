@@ -28,10 +28,9 @@ import {
   updateProfile,
   type Purchase,
 } from "@/lib/api/account";
-import { formatAmount } from "@/lib/format";
+import { formatPrice } from "@/lib/format";
 import { Link } from "@/lib/i18n/navigation";
 import { cn } from "@/lib/utils";
-import type { Locale } from "@/types";
 
 const PANEL =
   "rounded-lg bg-white p-5 shadow-card sm:p-7";
@@ -303,7 +302,6 @@ function StoreTag({ store }: { store?: string }) {
  */
 function CartPanel() {
   const t = useTranslations("account");
-  const locale = useLocale();
   const { items, count, subtotal, ready, hasUnavailable, setQuantity, remove } =
     useCart();
 
@@ -371,7 +369,7 @@ function CartPanel() {
                     {item.product.name}
                   </span>
                   <span className="block text-xs text-brand/60">
-                    {formatAmount(item.product.price, locale as Locale)}
+                    {formatPrice(item.product.price)}
                   </span>
                 </span>
                 <span className="flex w-full items-center justify-between gap-3 sm:w-auto sm:justify-end">
@@ -380,7 +378,7 @@ function CartPanel() {
                     onChange={(next) => setQuantity(item.slug, next)}
                   />
                   <span className="w-24 text-right text-sm font-bold whitespace-nowrap text-brand">
-                    {formatAmount(item.product.price * item.quantity, locale as Locale)}
+                    {formatPrice(item.product.price * item.quantity)}
                   </span>
                   <button
                     type="button"
@@ -398,7 +396,7 @@ function CartPanel() {
           <div className="mt-4 flex items-center justify-between rounded-lg bg-stone px-4 py-3">
             <span className="text-sm font-bold text-brand">{t("total")}</span>
             <span className="text-xl font-extrabold text-brand">
-              {formatAmount(subtotal, locale as Locale)}
+              {formatPrice(subtotal)}
             </span>
           </div>
 
@@ -471,7 +469,7 @@ function OrdersPanel() {
                       <StoreTag store={order.store} />
                       <StatusPill status={order.status} />
                       <span className="text-base font-extrabold whitespace-nowrap text-brand">
-                        {formatAmount(Number(order.totalAmount), locale as Locale)}
+                        {formatPrice(Number(order.totalAmount))}
                       </span>
                       <ChevronDown
                         className={cn(
@@ -546,7 +544,7 @@ function OrderLines({ id }: { id: string }) {
             <span className="text-brand/40"> × {item.quantity}</span>
           </span>
           <span className="font-bold whitespace-nowrap text-brand">
-            {formatAmount(Number(item.subtotal), locale as Locale)}
+            {formatPrice(Number(item.subtotal))}
           </span>
         </li>
       ))}
@@ -631,7 +629,7 @@ function PurchaseRow({ purchase, locale }: { purchase: Purchase; locale: string 
           )}
           {/* `amount` is already in sums — nothing to divide here. */}
           <span className="text-base font-extrabold whitespace-nowrap text-brand">
-            {formatAmount(purchase.amount, locale as Locale)}
+            {formatPrice(purchase.amount)}
           </span>
         </div>
       </div>
@@ -648,7 +646,7 @@ function PurchaseRow({ purchase, locale }: { purchase: Purchase; locale: string 
                 <span className="text-brand/40"> × {item.quantity}</span>
               </span>
               <span className="whitespace-nowrap text-brand">
-                {formatAmount(item.price * item.quantity, locale as Locale)}
+                {formatPrice(item.price * item.quantity)}
               </span>
             </li>
           ))}

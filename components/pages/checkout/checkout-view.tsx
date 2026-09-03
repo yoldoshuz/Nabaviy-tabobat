@@ -4,13 +4,14 @@ import { useAuth, useCart, useCheckout, useMounted } from "@/hooks";
 import { formatUzPhoneInput, UZ_PHONE_PREFIX } from "@/lib/phone";
 import { CircleCheck } from "lucide-react";
 import Image from "next/image";
-import { useFormatter, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { useState, type FormEvent } from "react";
 
 import { Container } from "@/components/shared/container";
 import { GreenLeaf } from "@/components/shared/green-leaf";
 import { enabledPaymentMethods, normalizePhone } from "@/lib/api/checkout";
 import type { OfferedPaymentMethod } from "@/lib/api/types";
+import { formatPrice } from "@/lib/format";
 import { Link } from "@/lib/i18n/navigation";
 import { cn } from "@/lib/utils";
 
@@ -29,7 +30,6 @@ export function CheckoutView() {
   const t = useTranslations("checkout");
   const tCommon = useTranslations("common");
   const tCatalog = useTranslations("catalog");
-  const format = useFormatter();
   const { lines, count, subtotal, totals } = useCart();
   const { user } = useAuth();
 
@@ -221,7 +221,7 @@ export function CheckoutView() {
                     </span>
                     <span className="shrink-0 text-sm text-brand">
                       {tCommon("priceValue", {
-                        value: format.number(line.total),
+                        value: formatPrice(line.total),
                       })}
                     </span>
                   </li>
@@ -233,7 +233,7 @@ export function CheckoutView() {
               <div className="flex items-center justify-between gap-4">
                 <dt className="text-brand/70">{t("items", { count })}</dt>
                 <dd className="text-brand">
-                  {tCommon("priceValue", { value: format.number(subtotal) })}
+                  {tCommon("priceValue", { value: formatPrice(subtotal) })}
                 </dd>
               </div>
               {/* Priced by the API so this line and the created order cannot
@@ -243,7 +243,7 @@ export function CheckoutView() {
                 <dd className="text-brand">
                   {totals.deliveryFee > 0
                     ? tCommon("priceValue", {
-                        value: format.number(totals.deliveryFee),
+                        value: formatPrice(totals.deliveryFee),
                       })
                     : t("deliveryPrice")}
                 </dd>
@@ -254,7 +254,7 @@ export function CheckoutView() {
               <span className="text-brand/70">{t("total")}</span>
               <span className="text-brand">
                 {tCommon("priceValue", {
-                  value: format.number(totals.grandTotal),
+                  value: formatPrice(totals.grandTotal),
                 })}
               </span>
             </div>

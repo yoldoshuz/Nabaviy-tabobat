@@ -3,6 +3,7 @@ import { useTranslations } from "next-intl";
 
 import { Container } from "@/components/shared/container";
 import { GreenLeaf } from "@/components/shared/green-leaf";
+import type { ProductContent } from "@/lib/api/blocks";
 import type { Product } from "@/types";
 
 /** Positions of the floating stat chips around the bottle (Figma detail page). */
@@ -13,9 +14,28 @@ const chipPositions = [
   "right-[-4%] bottom-[10%] sm:right-[-10%]",
 ];
 
-export function ProductAbout({ product }: { product: Product }) {
+export function ProductAbout({
+  product,
+  content,
+}: {
+  product: Product;
+  content?: ProductContent;
+}) {
   const t = useTranslations("product");
   const tCatalog = useTranslations(`catalog.${product.slug}`);
+
+  /*
+   * The admin's "описание с цифрами" block. Four chips, because they sit on the
+   * ring's four compass points and a fifth would have nowhere to go — the extra
+   * numbers belong in the paragraph beside it.
+   */
+  const cms = content?.about;
+  const chips = cms?.stats.length
+    ? cms.stats.slice(0, 4).map((stat) => ({ value: stat.value, label: stat.label }))
+    : product.highlights.map((highlight) => ({
+        value: highlight.value,
+        label: t(`highlightLabels.${highlight.labelKey}`),
+      }));
 
   return (
     <section className="relative overflow-hidden bg-white pb-16 lg:pb-24">
@@ -32,10 +52,10 @@ export function ProductAbout({ product }: { product: Product }) {
       <Container className="relative grid items-center gap-12 lg:grid-cols-2">
         <div>
           <h2 className="text-balance text-3xl leading-[1.3] text-brand sm:text-4xl">
-            {tCatalog("aboutTitle")}
+            {cms?.title || tCatalog("aboutTitle")}
           </h2>
           <p className="mt-8 max-w-md text-sm leading-relaxed text-brand/75">
-            {tCatalog("aboutText")}
+            {cms?.text || tCatalog("aboutText")}
           </p>
         </div>
 
@@ -64,14 +84,14 @@ export function ProductAbout({ product }: { product: Product }) {
             className="absolute top-1/2 left-1/2 h-[72%] w-auto -translate-x-1/2 -translate-y-1/2 object-contain drop-shadow-[0_20px_40px_rgba(16,40,27,0.25)]"
           />
 
-          {product.highlights.map((highlight, index) => (
+          {chips.map((chip, index) => (
             <div
-              key={highlight.labelKey}
+              key={chip.label + index}
               className={`absolute w-28 rounded-lg bg-brand px-3 py-3 text-center text-cream shadow-card sm:w-32 sm:px-4 ${chipPositions[index]}`}
             >
-              <span className="block text-sm">{highlight.value}</span>
+              <span className="block text-sm">{chip.value}</span>
               <span className="mt-1 block text-xs tracking-[0.14em] text-cream/70">
-                {t(`highlightLabels.${highlight.labelKey}`)}
+                {chip.label}
               </span>
             </div>
           ))}

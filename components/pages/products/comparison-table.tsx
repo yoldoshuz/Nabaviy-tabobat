@@ -31,7 +31,7 @@ export function ComparisonTable({ products }: { products: Product[] }) {
                   {products.map((product) => (
                     <th key={product.slug} scope="col" className="px-4 pt-6 pb-4">
                       <span className="block overflow-hidden rounded-lg">
-                        <span className="block bg-brand py-2 text-xs text-cream">
+                        <span className="block bg-brand py-2 font-brand text-sm text-cream">
                           {tCatalog(`${product.slug}.name`)}
                         </span>
                         {/* Whole bottle, never a slice of its label. */}

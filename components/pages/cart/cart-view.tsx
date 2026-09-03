@@ -3,11 +3,12 @@
 import { useCart, useMounted } from "@/hooks";
 import { Headphones, Leaf, Trash2, Truck } from "lucide-react";
 import Image from "next/image";
-import { useFormatter, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 
 import { ConsultationButton } from "@/components/layout/consultation-button";
 import { Container } from "@/components/shared/container";
 import { QuantityInput } from "@/components/shared/quantity-input";
+import { formatPrice } from "@/lib/format";
 import { Link } from "@/lib/i18n/navigation";
 
 const benefits = [
@@ -20,7 +21,6 @@ export function CartView() {
   const t = useTranslations("cart");
   const tCommon = useTranslations("common");
   const tCatalog = useTranslations("catalog");
-  const format = useFormatter();
   const { lines, count, subtotal, totals, hasUnavailable, setQuantity, remove } = useCart();
   const mounted = useMounted();
 
@@ -84,7 +84,7 @@ export function CartView() {
                         </p>
                         <p className="mt-2 text-sm text-brand">
                           {tCommon("priceValue", {
-                            value: format.number(line.product.price),
+                            value: formatPrice(line.product.price),
                           })}
                         </p>
                       </div>
@@ -116,7 +116,7 @@ export function CartView() {
                     <dt className="text-cream/80">{t("items", { count })}</dt>
                     <dd>
                       {tCommon("priceValue", {
-                        value: format.number(subtotal),
+                        value: formatPrice(subtotal),
                       })}
                     </dd>
                   </div>
@@ -127,7 +127,7 @@ export function CartView() {
                     <dd>
                       {totals.deliveryFee > 0
                         ? tCommon("priceValue", {
-                            value: format.number(totals.deliveryFee),
+                            value: formatPrice(totals.deliveryFee),
                           })
                         : t("deliveryFree")}
                     </dd>
@@ -138,7 +138,7 @@ export function CartView() {
                   <span className="text-cream/80">{t("total")}</span>
                   <span>
                     {tCommon("priceValue", {
-                      value: format.number(totals.grandTotal),
+                      value: formatPrice(totals.grandTotal),
                     })}
                   </span>
                 </div>
@@ -147,7 +147,7 @@ export function CartView() {
                   <p className="mt-4 text-sm font-medium text-red-600">
                     {t("unavailableTotal")}:{" "}
                     {tCommon("priceValue", {
-                      value: format.number(totals.unavailableTotal),
+                      value: formatPrice(totals.unavailableTotal),
                     })}
                   </p>
                 ) : null}

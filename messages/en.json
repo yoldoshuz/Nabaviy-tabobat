@@ -147,12 +147,7 @@
       "title": "Videos about Nabaviy medicine",
       "subtitle": "Watch helpful videos about Nabaviy medicine, natural products, a healthy lifestyle and expert recommendations",
       "play": "Watch video",
-      "items": {
-        "one": "Talking to a specialist — Nabaviy Tabobat products",
-        "two": "A natural healing experience — a customer story",
-        "three": "Sport and natural energy — a daily routine",
-        "four": "Natural products for the whole family"
-      }
+      "itemLabel": "Video review {index}"
     },
     "testimonials": {
       "title": "What our customers say",

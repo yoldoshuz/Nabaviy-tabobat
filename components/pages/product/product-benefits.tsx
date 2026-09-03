@@ -3,11 +3,27 @@ import { useTranslations } from "next-intl";
 import { Container } from "@/components/shared/container";
 import { GreenLeaf } from "@/components/shared/green-leaf";
 import { SectionHeading } from "@/components/shared/section-heading";
+import type { ProductContent } from "@/lib/api/blocks";
 import type { Product } from "@/types";
 
-export function ProductBenefits({ product }: { product: Product }) {
+export function ProductBenefits({
+  product,
+  content,
+}: {
+  product: Product;
+  content?: ProductContent;
+}) {
   const t = useTranslations("product");
   const tCatalog = useTranslations(`catalog.${product.slug}`);
+
+  /* The admin's "Для чего нужен" block, or the bundled copy when it has none. */
+  const cms = content?.benefits;
+  const items =
+    cms?.items ??
+    product.benefitKeys.map((key) => ({
+      title: tCatalog(`benefits.${key}.title`),
+      text: tCatalog(`benefits.${key}.description`),
+    }));
 
   return (
     <section className="relative overflow-hidden bg-white pb-16 lg:pb-24">
@@ -19,22 +35,22 @@ export function ProductBenefits({ product }: { product: Product }) {
 
       <Container className="relative">
         <SectionHeading
-          title={t("benefitsTitle", { product: tCatalog("name") })}
-          subtitle={tCatalog("benefitsSubtitle")}
+          title={cms?.title || t("benefitsTitle", { product: tCatalog("name") })}
+          subtitle={cms?.subtitle || tCatalog("benefitsSubtitle")}
           className="mx-auto"
         />
 
         <ul className="mt-12 grid gap-6 md:grid-cols-2">
-          {product.benefitKeys.map((key) => (
+          {items.map((item, index) => (
             <li
-              key={key}
+              key={item.title + index}
               className="rounded-lg bg-white px-7 py-6 shadow-card ring-1 ring-border"
             >
               <h3 className="font-sans text-sm font-medium text-brand">
-                {tCatalog(`benefits.${key}.title`)}
+                {item.title}
               </h3>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                {tCatalog(`benefits.${key}.description`)}
+                {item.text}
               </p>
             </li>
           ))}

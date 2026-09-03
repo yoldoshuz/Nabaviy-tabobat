@@ -96,6 +96,13 @@ function toProduct(api: ApiProduct): Product {
     featureKeys: attrs.featureKeys ?? base?.featureKeys ?? [],
     usageKeys: attrs.usageKeys ?? base?.usageKeys ?? [],
     advantageKeys: attrs.advantageKeys ?? base?.advantageKeys ?? [],
+    order: Number(attrs.order ?? base?.order ?? 0),
+    // Only the by-slug response carries these, so on a list they are simply
+    // absent — the catalogue has no use for them and they would bloat the
+    // response.
+    blocks: api.blocks?.length
+      ? [...api.blocks].sort((a, b) => a.position - b.position)
+      : undefined,
   };
 }
 
@@ -134,6 +141,7 @@ function toRelatedProduct(row: ApiBlogPostProduct): Product | null {
     featureKeys: base?.featureKeys ?? [],
     usageKeys: base?.usageKeys ?? [],
     advantageKeys: base?.advantageKeys ?? [],
+    order: base?.order ?? 0,
   };
 }
 
@@ -177,9 +185,19 @@ export async function fetchApiBlogPosts(): Promise<ApiBlogPost[] | null> {
 
 /* ── public surface ──────────────────────────────────────────────────────── */
 
+/**
+ * The catalogue in the order the shop wants it shown.
+ *
+ * The API answers in its own insertion order, which has nothing to do with the
+ * merchandising sequence, so `order` — editable per product in the admin and
+ * seeded from the bundled catalogue — is what decides the grid. The sort is
+ * stable, so products sharing a number keep the order the API sent.
+ */
+const byOrder = (products: Product[]) => [...products].sort((a, b) => a.order - b.order);
+
 export async function getProducts(): Promise<Product[]> {
   const api = await fetchApiProducts();
-  if (!api?.length) return staticProducts;
+  if (!api?.length) return byOrder(staticProducts);
   /*
    * Sold-out products are dropped here rather than badged.
    *
@@ -190,7 +208,7 @@ export async function getProducts(): Promise<Product[]> {
    * best space on the home page. `isFeatured` is set in the admin and never
    * cleared when stock runs out, so the filter belongs on this side.
    */
-  return api.map(toProduct).filter((product) => !isSoldOut(product));
+  return byOrder(api.map(toProduct).filter((product) => !isSoldOut(product)));
 }
 
 export async function getProduct(slug: string): Promise<Product | undefined> {
@@ -206,8 +224,8 @@ export async function getFeaturedProducts(): Promise<Product[]> {
     return Array.isArray(data) ? data : (data.rows ?? []);
   });
 
-  if (!api?.length) return staticProducts;
-  return api.map(toProduct);
+  if (!api?.length) return byOrder(staticProducts);
+  return byOrder(api.map(toProduct));
 }
 
 export async function getArticles(): Promise<BlogArticle[]> {

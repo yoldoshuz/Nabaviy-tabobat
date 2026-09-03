@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useFormatter, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 import { AddToCartButton } from "@/components/shared/add-to-cart-button";
@@ -9,6 +9,8 @@ import { ProductImage } from "@/components/shared/product-image";
 import { Container } from "@/components/shared/container";
 import { GreenLeaf } from "@/components/shared/green-leaf";
 import { QuantityInput } from "@/components/shared/quantity-input";
+import type { ProductContent } from "@/lib/api/blocks";
+import { formatPrice } from "@/lib/format";
 import { Link } from "@/lib/i18n/navigation";
 import { cn, isSoldOut } from "@/lib/utils";
 import type { Product } from "@/types";
@@ -22,16 +24,35 @@ const featureKeys = [
   "storage",
 ] as const;
 
-export function ProductShowcase({ product }: { product: Product }) {
+export function ProductShowcase({
+  product,
+  content,
+}: {
+  product: Product;
+  content?: ProductContent;
+}) {
   const t = useTranslations("product");
   const tCommon = useTranslations("common");
   const tCatalog = useTranslations(`catalog.${product.slug}`);
-  const format = useFormatter();
   const [quantity, setQuantity] = useState(1);
 
   const images = [product.image, product.imageBack, product.gallery[0]];
   const [active, setActive] = useState(0);
   const soldOut = isSoldOut(product);
+
+  /*
+   * The buy box reads the admin's `hero` and `specs` blocks when the product
+   * has them and stays on the bundled copy when it does not.
+   *
+   * The spec sheet is the bigger change: the bundled one prints six fixed rows
+   * whose values come from one range-wide list, so "форма выпуска: сироп" was
+   * on the page of every product whether or not it is a syrup. A CMS sheet
+   * carries its own labels and as many rows as the moderator wrote.
+   */
+  const specs = content?.specs?.items;
+  const tagline = content?.hero?.tagline || tCatalog("tagline");
+  const description = content?.hero?.text || tCatalog("description");
+  const badge = content?.hero?.badge;
 
   return (
     <section className="relative overflow-hidden bg-white pt-8 pb-16 lg:pb-24">
@@ -115,17 +136,25 @@ export function ProductShowcase({ product }: { product: Product }) {
             </ol>
           </nav>
 
-          <h1 className="mt-4 text-4xl text-brand sm:text-5xl">
+          {badge && (
+            <p className="mt-4 inline-flex rounded-full bg-gold/25 px-3 py-1 text-xs tracking-[0.12em] text-gold-strong uppercase">
+              {badge}
+            </p>
+          )}
+
+          <h1 className="mt-4 font-brand text-4xl font-normal text-brand sm:text-5xl">
             {tCatalog("name")}
           </h1>
-          <p className="mt-2 text-sm text-gold-strong">{tCatalog("tagline")}</p>
+          {tagline && <p className="mt-2 text-sm text-gold-strong">{tagline}</p>}
 
-          <p className="mt-6 max-w-lg text-sm leading-relaxed text-brand/75">
-            {tCatalog("description")}
-          </p>
+          {description && (
+            <p className="mt-6 max-w-lg text-sm leading-relaxed text-brand/75">
+              {description}
+            </p>
+          )}
 
           <p className="mt-10 text-2xl text-brand">
-            {tCommon("priceValue", { value: format.number(product.price) })}
+            {tCommon("priceValue", { value: formatPrice(product.price) })}
           </p>
 
           {soldOut ? (
@@ -161,18 +190,30 @@ export function ProductShowcase({ product }: { product: Product }) {
             </div>
           )}
 
-          <h2 className="mt-10 text-2xl text-brand">{t("features")}</h2>
+          <h2 className="mt-10 text-2xl text-brand">
+            {content?.specs?.title || t("features")}
+          </h2>
           <dl className="mt-5 space-y-3 text-sm">
-            {featureKeys.map((key) => (
-              <div key={key} className="grid gap-1 sm:grid-cols-[1fr_1.2fr]">
-                <dt className="text-brand/60">{t(`featureLabels.${key}`)}</dt>
-                <dd className="text-brand/85">
-                  {key === "volume"
-                    ? product.volume
-                    : t(`featureValues.${key}`)}
-                </dd>
-              </div>
-            ))}
+            {specs
+              ? specs.map((spec, index) => (
+                  <div
+                    key={spec.label + index}
+                    className="grid gap-1 sm:grid-cols-[1fr_1.2fr]"
+                  >
+                    <dt className="text-brand/60">{spec.label}</dt>
+                    <dd className="text-brand/85">{spec.value}</dd>
+                  </div>
+                ))
+              : featureKeys.map((key) => (
+                  <div key={key} className="grid gap-1 sm:grid-cols-[1fr_1.2fr]">
+                    <dt className="text-brand/60">{t(`featureLabels.${key}`)}</dt>
+                    <dd className="text-brand/85">
+                      {key === "volume"
+                        ? product.volume
+                        : t(`featureValues.${key}`)}
+                    </dd>
+                  </div>
+                ))}
           </dl>
         </div>
       </Container>

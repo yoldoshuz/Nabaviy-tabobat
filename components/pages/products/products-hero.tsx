@@ -52,7 +52,7 @@ export function ProductsHero({ products }: { products: Product[] }) {
                   sizes="(min-width: 1024px) 280px, (min-width: 640px) 45vw, 90vw"
                   className="object-cover opacity-25 transition-transform duration-500 group-hover:scale-110"
                 />
-                <span className="relative text-base text-cream">
+                <span className="relative font-brand text-lg text-cream">
                   {tCatalog(`${product.slug}.name`)}
                 </span>
                 <span className="relative mt-1 text-xs text-cream/70">

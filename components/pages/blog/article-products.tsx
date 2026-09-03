@@ -1,7 +1,8 @@
-import { useFormatter, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 import { AddToCartButton } from "@/components/shared/add-to-cart-button";
+import { formatPrice } from "@/lib/format";
 import { Link } from "@/lib/i18n/navigation";
 import { cn, isSoldOut } from "@/lib/utils";
 import type { Product } from "@/types";
@@ -26,7 +27,6 @@ interface ArticleProductsProps {
 export function ArticleProducts({ products, note }: ArticleProductsProps) {
   const t = useTranslations("blog.buy");
   const tCommon = useTranslations("common");
-  const format = useFormatter();
 
   if (products.length === 0) return null;
 
@@ -73,7 +73,7 @@ export function ArticleProducts({ products, note }: ArticleProductsProps) {
             </h4>
 
             <p className="mt-2 text-xs font-medium text-brand">
-              {tCommon("price", { value: format.number(product.price) })}
+              {tCommon("price", { value: formatPrice(product.price) })}
             </p>
 
             {/* The lead-product strip pulls straight from the article's curated

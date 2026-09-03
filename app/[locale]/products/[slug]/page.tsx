@@ -6,12 +6,18 @@ import { ProductAbout } from "@/components/pages/product/product-about";
 import { ProductAdvantages } from "@/components/pages/product/product-advantages";
 import { ProductBenefits } from "@/components/pages/product/product-benefits";
 import { ProductCta } from "@/components/pages/product/product-cta";
+import { ProductFaq } from "@/components/pages/product/product-faq";
 import { ProductMeters } from "@/components/pages/product/product-meters";
 import { ProductShowcase } from "@/components/pages/product/product-showcase";
 import { ProductUsage } from "@/components/pages/product/product-usage";
 import { JsonLd } from "@/components/shared/json-ld";
 import { locales } from "@/lib/i18n/routing";
 import { breadcrumbJsonLd, productJsonLd } from "@/lib/json-ld";
+import {
+  resolveProductContent,
+  resolveSectionOrder,
+  type ContentSection,
+} from "@/lib/api/blocks";
 import { getProduct } from "@/lib/api/catalog";
 import { products } from "@/lib/products";
 import { buildMetadata } from "@/lib/seo";
@@ -37,7 +43,9 @@ export async function generateMetadata(
   return buildMetadata({
     locale: locale as Locale,
     title: t("title", { product: name }),
-    description: tCatalog(`${product.slug}.description`),
+    description:
+      resolveProductContent(product.blocks, locale as Locale).hero?.text ||
+      tCatalog(`${product.slug}.description`),
     keywords: t("keywords", { product: name }).split(", "),
     path: `/products/${product.slug}`,
     images: [product.gallery[0]],
@@ -58,14 +66,29 @@ export default async function ProductPage(
   const tProduct = await getTranslations({ locale, namespace: "product" });
   const name = tCatalog(`${product.slug}.name`);
 
+  /*
+   * Everything below the buy box is written in the admin now. What comes back
+   * empty stays on the copy bundled in `messages/`, so a product whose landing
+   * nobody has filled in renders exactly the page it renders today.
+   */
+  const content = resolveProductContent(product.blocks, locale as Locale);
+
+  /* The order the moderator arranged the blocks in. */
+  const SECTION: Record<ContentSection, React.ReactNode> = {
+    benefits: <ProductBenefits key="benefits" product={product} content={content} />,
+    howToUse: <ProductUsage key="howToUse" product={product} content={content} />,
+    about: <ProductAbout key="about" product={product} content={content} />,
+    advantages: (
+      <ProductAdvantages key="advantages" product={product} content={content} />
+    ),
+    metrics: <ProductMeters key="metrics" product={product} content={content} />,
+    faq: <ProductFaq key="faq" content={content} />,
+  };
+
   return (
     <>
-      <ProductShowcase product={product} />
-      <ProductBenefits product={product} />
-      <ProductUsage product={product} />
-      <ProductAbout product={product} />
-      <ProductAdvantages product={product} />
-      <ProductMeters product={product} />
+      <ProductShowcase product={product} content={content} />
+      {resolveSectionOrder(product.blocks).map((section) => SECTION[section])}
       <ProductCta product={product} />
 
       <JsonLd
@@ -73,7 +96,8 @@ export default async function ProductPage(
         data={[
           productJsonLd(product, locale as Locale, {
             name,
-            description: tCatalog(`${product.slug}.description`),
+            description:
+              content.hero?.text || tCatalog(`${product.slug}.description`),
           }),
           breadcrumbJsonLd(
             [

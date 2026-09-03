@@ -6,13 +6,21 @@ const localeTags: Record<Locale, string> = {
   en: "en-US",
 };
 
-/** Formats a UZS amount with locale aware thousand separators (no currency code). */
-export function formatAmount(value: number, locale: Locale): string {
-  return new Intl.NumberFormat(localeTags[locale], {
-    maximumFractionDigits: 0,
-  })
+/**
+ * `390000` → `390 000`, grouped with a non-breaking space in every language.
+ *
+ * The grouping is fixed here instead of following the active locale on purpose.
+ * `Intl.NumberFormat("uz")` disagrees between ICU builds — Node groups with a
+ * non-breaking space, Chrome with a comma — so a locale-formatted price makes
+ * the server HTML and the client render differ and React throws a hydration
+ * mismatch on every page that prints one. `ru-RU` groups with a space in every
+ * ICU version, and the replace normalises whichever space character it picks.
+ * The design wants the space grouping in all three languages anyway.
+ */
+export function formatPrice(value: number): string {
+  return new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 0 })
     .format(value)
-    .replace(/ /g, " ");
+    .replace(/\s/g, " ");
 }
 
 export function formatDate(value: string, locale: Locale): string {

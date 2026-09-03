@@ -3,11 +3,36 @@ import { useTranslations } from "next-intl";
 
 import { Container } from "@/components/shared/container";
 import { GreenLeaf } from "@/components/shared/green-leaf";
+import type { ProductContent } from "@/lib/api/blocks";
 import type { Product } from "@/types";
 
-export function ProductMeters({ product }: { product: Product }) {
+export function ProductMeters({
+  product,
+  content,
+}: {
+  product: Product;
+  content?: ProductContent;
+}) {
   const t = useTranslations("product");
   const tCatalog = useTranslations(`catalog.${product.slug}`);
+
+  /*
+   * The admin's "шкалы эффективности" block. The bundled meters read their
+   * words from one range-wide list under `product.meters.*`, so until now every
+   * bottle claimed the same things at the same percentages.
+   */
+  const cms = content?.metrics;
+  const meters =
+    cms?.items.map((item) => ({
+      title: item.title,
+      description: item.description,
+      value: item.percent,
+    })) ??
+    product.meters.map((meter) => ({
+      title: t(`meters.${meter.key}.title`),
+      description: t(`meters.${meter.key}.description`),
+      value: meter.value,
+    }));
 
   return (
     <section className="relative overflow-hidden bg-white pb-16 lg:pb-24">
@@ -17,16 +42,28 @@ export function ProductMeters({ product }: { product: Product }) {
       />
 
       <Container className="relative grid items-center gap-12 lg:grid-cols-[1.1fr_1fr]">
-        <ul className="space-y-6">
-          {product.meters.map((meter) => (
-            <li key={meter.key} className="border-b border-border pb-5">
+        <div>
+          {/*
+            The design gives this block no heading, because the bundled meters
+            are the same five claims on every page and needed no introduction.
+            A block written in the admin can have one, and dropping it would
+            mean a moderator typing a title into a field that does nothing.
+          */}
+          {cms?.title && (
+            <h2 className="mb-8 text-balance text-3xl leading-[1.35] text-brand sm:text-4xl">
+              {cms.title}
+            </h2>
+          )}
+          <ul className="space-y-6">
+          {meters.map((meter, index) => (
+            <li key={meter.title + index} className="border-b border-border pb-5">
               <div className="grid items-center gap-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)_auto]">
                 <div>
                   <h3 className="text-sm tracking-[0.06em] text-brand">
-                    {t(`meters.${meter.key}.title`)}
+                    {meter.title}
                   </h3>
                   <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">
-                    {t(`meters.${meter.key}.description`)}
+                    {meter.description}
                   </p>
                 </div>
 
@@ -36,7 +73,7 @@ export function ProductMeters({ product }: { product: Product }) {
                   aria-valuenow={meter.value}
                   aria-valuemin={0}
                   aria-valuemax={100}
-                  aria-label={t(`meters.${meter.key}.title`)}
+                  aria-label={meter.title}
                 >
                   <div
                     className="h-full rounded-full bg-brand"
@@ -47,8 +84,9 @@ export function ProductMeters({ product }: { product: Product }) {
                 <span className="text-sm text-brand/80">{meter.value}%</span>
               </div>
             </li>
-          ))}
-        </ul>
+            ))}
+          </ul>
+        </div>
 
         <div className="relative mx-auto aspect-square w-full max-w-[440px]">
           <div className="absolute inset-0 rounded-full bg-stone/50" />

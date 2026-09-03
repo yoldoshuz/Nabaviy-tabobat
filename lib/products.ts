@@ -34,6 +34,7 @@ export const products: Product[] = [
     featureKeys: ["volume", "form", "age", "country", "shelfLife", "storage"],
     usageKeys: ["dose", "course", "water", "advice"],
     advantageKeys: ["one", "two", "three", "four", "five", "six"],
+    order: 1,
   },
   {
     slug: "qora-sedana",
@@ -68,6 +69,7 @@ export const products: Product[] = [
     featureKeys: ["volume", "form", "age", "country", "shelfLife", "storage"],
     usageKeys: ["dose", "course", "water", "advice"],
     advantageKeys: ["one", "two", "three", "four", "five", "six"],
+    order: 2,
   },
   {
     slug: "qust-al-hindi",
@@ -102,6 +104,7 @@ export const products: Product[] = [
     featureKeys: ["volume", "form", "age", "country", "shelfLife", "storage"],
     usageKeys: ["dose", "course", "water", "advice"],
     advantageKeys: ["one", "two", "three", "four", "five", "six"],
+    order: 3,
   },
 ];
 

@@ -8,13 +8,23 @@ import { useState } from "react";
 import { Container } from "@/components/shared/container";
 import { GreenLeaf } from "@/components/shared/green-leaf";
 import { SectionHeading } from "@/components/shared/section-heading";
+import type { ProductContent } from "@/lib/api/blocks";
 import type { Product } from "@/types";
 
-export function ProductAdvantages({ product }: { product: Product }) {
+export function ProductAdvantages({
+  product,
+  content,
+}: {
+  product: Product;
+  content?: ProductContent;
+}) {
   const t = useTranslations("product");
   const tCommon = useTranslations("common");
   const tCatalog = useTranslations(`catalog.${product.slug}`);
   const [index, setIndex] = useState(0);
+
+  /* The admin's "Преимущества" block, or the bundled copy when it has none. */
+  const cms = content?.advantages;
 
   /**
    * Banners are uploaded photos, so their shapes are whatever the shop sent —
@@ -50,7 +60,7 @@ export function ProductAdvantages({ product }: { product: Product }) {
 
       <Container className="relative">
         <SectionHeading
-          title={t("advantagesTitle", { product: tCatalog("name") })}
+          title={cms?.title || t("advantagesTitle", { product: tCatalog("name") })}
           className="mx-auto"
         />
 
@@ -98,17 +108,15 @@ export function ProductAdvantages({ product }: { product: Product }) {
         </div>
 
         <ul className="mt-10 grid gap-4 md:grid-cols-2">
-          {product.advantageKeys.map((key) => (
+          {(cms?.items ?? product.advantageKeys.map((key) => tCatalog(`advantages.${key}`))).map((advantage, position) => (
             <li
-              key={key}
+              key={advantage + position}
               className="flex items-center gap-3 rounded-lg bg-white px-5 py-4 shadow-card ring-1 ring-border"
             >
               <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-gold text-brand">
                 <Check className="size-4" aria-hidden />
               </span>
-              <span className="text-sm text-brand/85">
-                {tCatalog(`advantages.${key}`)}
-              </span>
+              <span className="text-sm text-brand/85">{advantage}</span>
             </li>
           ))}
         </ul>
