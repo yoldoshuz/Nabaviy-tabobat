@@ -27,6 +27,28 @@ import type { ApiBlogPost, ApiBlogPostProduct, ApiProduct } from "./types";
 
 /* ── mapping ─────────────────────────────────────────────────────────────── */
 
+/**
+ * The product's place in the catalogue grid.
+ *
+ * `sortOrder` is the backend's own column, set from the admin's arrows, and it
+ * wins whenever it has been set. It starts at 0 for every product, so a
+ * catalogue nobody has ordered by hand falls through to `attributes.order`
+ * (where the position briefly lived) and then to the bundled catalogue, which
+ * is the sequence this storefront shipped with.
+ */
+function resolveOrder(
+  sortOrder: number | undefined,
+  attributeOrder: unknown,
+  bundled: number | undefined,
+  fallback: number,
+): number {
+  if (typeof sortOrder === "number" && sortOrder > 0) return sortOrder;
+  const legacy = Number(attributeOrder);
+  if (Number.isFinite(legacy) && legacy > 0) return legacy;
+  return bundled ?? fallback;
+}
+
+
 const staticProduct = (slug: string) => staticProducts.find((p) => p.slug === slug);
 const staticArticle = (slug: string) => staticArticles.find((a) => a.slug === slug);
 
@@ -96,7 +118,7 @@ function toProduct(api: ApiProduct): Product {
     featureKeys: attrs.featureKeys ?? base?.featureKeys ?? [],
     usageKeys: attrs.usageKeys ?? base?.usageKeys ?? [],
     advantageKeys: attrs.advantageKeys ?? base?.advantageKeys ?? [],
-    order: Number(attrs.order ?? base?.order ?? 0),
+    order: resolveOrder(api.sortOrder, attrs.order, base?.order, 0),
     // Only the by-slug response carries these, so on a list they are simply
     // absent — the catalogue has no use for them and they would bloat the
     // response.
@@ -189,9 +211,9 @@ export async function fetchApiBlogPosts(): Promise<ApiBlogPost[] | null> {
  * The catalogue in the order the shop wants it shown.
  *
  * The API answers in its own insertion order, which has nothing to do with the
- * merchandising sequence, so `order` — editable per product in the admin and
- * seeded from the bundled catalogue — is what decides the grid. The sort is
- * stable, so products sharing a number keep the order the API sent.
+ * merchandising sequence, so `order` — the admin's `sortOrder`, falling back to
+ * the bundled catalogue — is what decides the grid. The sort is stable, so
+ * products sharing a number keep the order the API sent.
  */
 const byOrder = (products: Product[]) => [...products].sort((a, b) => a.order - b.order);
 
