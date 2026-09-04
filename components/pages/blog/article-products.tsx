@@ -1,10 +1,12 @@
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 
 import { AddToCartButton } from "@/components/shared/add-to-cart-button";
 import { formatPrice } from "@/lib/format";
 import { Link } from "@/lib/i18n/navigation";
+import { noteForLocale } from "@/lib/i18n/note";
 import { cn, isSoldOut } from "@/lib/utils";
+import type { AppLocale } from "@/lib/i18n/routing";
 import type { Product } from "@/types";
 
 interface ArticleProductsProps {
@@ -27,6 +29,7 @@ interface ArticleProductsProps {
 export function ArticleProducts({ products, note }: ArticleProductsProps) {
   const t = useTranslations("blog.buy");
   const tCommon = useTranslations("common");
+  const locale = useLocale() as AppLocale;
 
   if (products.length === 0) return null;
 
@@ -34,7 +37,7 @@ export function ArticleProducts({ products, note }: ArticleProductsProps) {
     <aside className="mt-14 rounded-lg border border-gold/40 bg-stone/50 p-6 sm:p-8">
       <h3 className="text-center text-xl text-brand sm:text-2xl">{t("title")}</h3>
       <p className="mx-auto mt-3 max-w-xl text-center text-sm text-muted-foreground">
-        {note ?? t("subtitle")}
+        {noteForLocale(note, locale) ?? t("subtitle")}
       </p>
 
       <ul className="mt-8 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">

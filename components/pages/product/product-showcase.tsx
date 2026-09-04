@@ -36,7 +36,17 @@ export function ProductShowcase({
   const tCatalog = useTranslations(`catalog.${product.slug}`);
   const [quantity, setQuantity] = useState(1);
 
-  const images = [product.image, product.imageBack, product.gallery[0]];
+  /*
+   * Every photo the product has, once.
+   *
+   * This was three fixed slots — front, back, first gallery frame — so a
+   * moderator uploading a fourth photo had nowhere to see it, and the shop read
+   * that as the site ignoring the upload. `imageBack` and the gallery overlap
+   * on most products, hence the dedupe.
+   */
+  const images = [
+    ...new Set([product.image, product.imageBack, ...product.gallery]),
+  ].filter(Boolean);
   const [active, setActive] = useState(0);
   const soldOut = isSoldOut(product);
 
@@ -81,9 +91,14 @@ export function ProductShowcase({
             />
           </div>
 
-          <ul className="mt-4 grid grid-cols-3 gap-4">
+          {/* Scrolls rather than truncates: three across at rest, more if the
+              product has more. */}
+          <ul className="no-scrollbar mt-4 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-1">
             {images.map((image, index) => (
-              <li key={image + index}>
+              <li
+                key={image + index}
+                className="w-[calc((100%-2rem)/3)] shrink-0 snap-start"
+              >
                 <button
                   type="button"
                   onClick={() => setActive(index)}
