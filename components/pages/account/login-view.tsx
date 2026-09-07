@@ -135,7 +135,6 @@ export function LoginView({ next }: { next: string }) {
                   }
                   inputMode="numeric"
                   autoComplete="one-time-code"
-                  placeholder="0000"
                   className={`${FIELD} tracking-[0.4em]`}
                 />
               </label>
