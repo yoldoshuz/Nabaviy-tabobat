@@ -1,0 +1,798 @@
+{
+  "common": {
+    "brand": "Nabaviy Tabobat",
+    "currency": "UZS",
+    "price": "Price: {value} UZS",
+    "priceValue": "{value} UZS",
+    "addToCart": "Add to cart",
+    "orderNow": "Place an order",
+    "viewProducts": "View products",
+    "consultation": "Consultation",
+    "getConsultation": "Get a consultation",
+    "viaTelegram": "Via Telegram",
+    "loading": "Loading…",
+    "close": "Close",
+    "prev": "Previous",
+    "next": "Next",
+    "free": "Free",
+    "pcs": "{count} pcs",
+    "quantity": "Quantity",
+    "increase": "Increase",
+    "decrease": "Decrease",
+    "remove": "Remove",
+    "openMenu": "Open menu",
+    "skipToContent": "Skip to content",
+    "otherBrands": "Other NUMA projects",
+    "comingSoon": "Coming soon",
+    "outOfStock": "Out of stock",
+    "outOfStockNote": "This product is temporarily out of stock. Leave a request or write to us and we will let you know the moment it is back."
+  },
+  "nav": {
+    "home": "Home",
+    "products": "Products",
+    "blog": "Blog",
+    "contacts": "Contacts",
+    "about": "About us",
+    "cart": "Cart",
+    "language": "Language"
+  },
+  "footer": {
+    "description": "Heal following the guidance of the Master of the Worlds! Restore your health with natural products.",
+    "products": "PRODUCTS",
+    "company": "COMPANY",
+    "contacts": "CONTACTS",
+    "rights": "© 2025 Nabaviy Tabobat. All rights reserved.",
+    "certificate": "ISO 22000 certificate (PDF)"
+  },
+  "callback": {
+    "hint": "Leave your number — our specialist will call you back.",
+    "phoneLabel": "Phone number",
+    "submit": "GET IN TOUCH",
+    "sending": "Sending…",
+    "success": "Thank you! We'll call you shortly.",
+    "errorPhone": "Enter the full phone number",
+    "errorRateLimit": "Too many requests. Please try again a little later",
+    "errorNetwork": "Could not send the request. Please try again"
+  },
+  "cta": {
+    "title": "Nabaviy Tabobat",
+    "description": "Order now to restore your health with natural products. Our specialist will get in touch with you.",
+    "phoneLabel": "Phone",
+    "instagramLabel": "Instagram",
+    "messageLabel": "Message us",
+    "messageValue": "Online order"
+  },
+  "consultation": {
+    "title": "Nabaviy Tabobat",
+    "titleAccent": "consultation",
+    "subtitle": "Get advice on healthy living based on the recommendations of Muhammad (peace be upon him)",
+    "nameLabel": "Your name *",
+    "namePlaceholder": "Your name",
+    "phoneLabel": "Phone number *",
+    "phonePlaceholder": "Your phone number",
+    "subjectLabel": "Subject",
+    "subjectPlaceholder": "For example: choosing a product",
+    "messageLabel": "Issue / Question *",
+    "messagePlaceholder": "Describe your health concern or ask a question. Our specialist will recommend a suitable product…",
+    "note": "After you submit the form our specialist will contact you within 24 hours. The consultation is free!",
+    "submit": "Get a free consultation",
+    "submitting": "Sending…",
+    "errorName": "Please enter your name",
+    "errorPhone": "Please enter your phone number",
+    "successTitle": "Thank you for your request!",
+    "successText": "Your request has been sent successfully. Our specialist will contact you shortly.",
+    "successHint": "We usually reply within 15–30 minutes during business hours",
+    "successHome": "Back to home",
+    "successCatalog": "Go to catalog",
+    "errorMessage": "Describe the problem",
+    "errorRateLimit": "Too many requests. Please try again later",
+    "errorNetwork": "Could not send the request. Please try again"
+  },
+  "home": {
+    "hero": {
+      "title": "Heal the way",
+      "titleAccent": "nature intended",
+      "description": "Guided by the teachings of the Master of the Worlds — 100% natural products rooted in Islamic medicine. It is time to restore your health with the power of nature."
+    },
+    "featured": {
+      "title": "Our three core products",
+      "subtitle": "Every product is created on the foundation of Islamic medicine and modern science. Natural, halal and effective.",
+      "badge": "NIGELLA SATIVA"
+    },
+    "about": {
+      "title": "About the Nabaviy medicine centre",
+      "description": "Our Nabaviy medicine centre provides prevention and treatment services for a wide range of conditions based on prophetic medicine. We apply natural and safe methods rooted in the sunnah of the Prophet Muhammad ﷺ. Our experienced specialists combine traditional and Islamic medical knowledge, minimising the use of chemical drugs and helping patients return to a healthy life.",
+      "imageAlt": "Nabaviy Tabobat ANTI|BIOTIC product",
+      "cards": {
+        "experts": {
+          "title": "Experienced specialists",
+          "description": "Doctors trained in both Nabaviy and conventional medicine"
+        },
+        "natural": {
+          "title": "Natural treatment methods",
+          "description": "A gentle and natural approach to the body"
+        },
+        "individual": {
+          "title": "Individual approach",
+          "description": "Dedicated recommendations and care for every patient"
+        },
+        "islamic": {
+          "title": "Rooted in Islamic medicine",
+          "description": "Treatment and prevention in accordance with the sunnah"
+        }
+      }
+    },
+    "certificates": {
+      "title": "Our international certificates",
+      "subtitle": "We follow international quality and safety standards at every stage of production",
+      "items": {
+        "euroLeaf": {
+          "name": "EURO-LEAF",
+          "title": "European organic certificate",
+          "description": "The official European Union mark for organic products. It confirms compliance with strict organic production, ecological purity and quality control requirements."
+        },
+        "halal": {
+          "name": "HALAL CERTIFICATE",
+          "title": "Halal certificate",
+          "description": "Confirms that the product is manufactured in accordance with halal requirements and meets Islamic quality, safety and purity standards."
+        },
+        "usda": {
+          "name": "USDA ORGANIC",
+          "title": "USDA National Organic Program",
+          "description": "A certificate issued by the United States Department of Agriculture confirming compliance with organic production, processing, storage and sales standards."
+        },
+        "iso": {
+          "name": "ISO 22000:2018",
+          "title": "Food safety management system",
+          "description": "An international standard confirming that food safety and quality are maintained at every stage of production and delivery."
+        },
+        "gmp": {
+          "name": "GMP",
+          "title": "Good Manufacturing Practice",
+          "description": "An international good manufacturing practice standard confirming high requirements for production, quality control, safety and hygiene."
+        }
+      }
+    },
+    "videos": {
+      "title": "Videos about Nabaviy medicine",
+      "subtitle": "Watch helpful videos about Nabaviy medicine, natural products, a healthy lifestyle and expert recommendations",
+      "play": "Watch video",
+      "itemLabel": "Video review {index}"
+    },
+    "testimonials": {
+      "title": "What our customers say",
+      "subtitle": "Through natural methods we have helped many people improve their health",
+      "consumer": "{product} customer",
+      "items": {
+        "one": {
+          "text": "After one month of taking Omega-3 my memory improved and falling asleep became easier. I am very grateful!",
+          "author": "Akbar Yusupov"
+        },
+        "two": {
+          "text": "Black cumin strengthened my immunity. I did not get sick this winter and I breathe freely!",
+          "author": "Malika Rahimova"
+        },
+        "three": {
+          "text": "Qust al-Hindi solved my digestive problems. Nabaviy Tabobat products changed my life!",
+          "author": "Sanjar Mamatov"
+        }
+      }
+    },
+    "faq": {
+      "title": "Frequently asked questions",
+      "subtitle": "Answers to the most common questions about Nabaviy medicine",
+      "items": {
+        "what": {
+          "question": "What is Nabaviy medicine?",
+          "answer": "Nabaviy medicine is an approach to supporting health through a healthy lifestyle and natural remedies, rooted in the sunnah of the Prophet Muhammad ﷺ."
+        },
+        "which": {
+          "question": "Which product is right for me?",
+          "answer": "Every person has different needs. That is why we recommend consulting a specialist before choosing a product."
+        },
+        "natural": {
+          "question": "Are the products natural?",
+          "answer": "Yes. The products presented on the site have a natural composition and are manufactured in accordance with quality requirements."
+        },
+        "howTake": {
+          "question": "How should the products be taken?",
+          "answer": "The intake schedule and recommended dose are listed separately for each product. Please follow the instructions."
+        },
+        "howOrder": {
+          "question": "How do I place an order?",
+          "answer": "Choose the product you need, add it to the cart and order online, or contact our specialist for a consultation."
+        }
+      }
+    }
+  },
+  "products": {
+    "title": "All",
+    "titleAccent": "products",
+    "subtitle": "Three premium products based on Nabaviy medicine — for immunity, heart, brain and digestive health.",
+    "compareTitle": "Compare the products",
+    "compareFeatures": "FEATURES",
+    "compare": {
+      "dose": "Dose",
+      "course": "Course",
+      "benefit": "Main benefit",
+      "audience": "Who it is for"
+    },
+    "highlights": {
+      "qoraSedana": "Black cumin — for immunity and digestion",
+      "qustAlHindi": "Qust al-Hindi — for cleansing the body",
+      "omega": "Omega — for heart and brain"
+    }
+  },
+  "product": {
+    "breadcrumbHome": "Home",
+    "breadcrumbProducts": "Products",
+    "features": "Specifications",
+    "featureLabels": {
+      "volume": "Volume:",
+      "form": "Product form:",
+      "age": "Suitable from:",
+      "country": "Country of origin:",
+      "shelfLife": "Shelf life:",
+      "storage": "Storage conditions:"
+    },
+    "featureValues": {
+      "volume": "400 ml",
+      "form": "Capsules",
+      "age": "15 years and older",
+      "country": "Uzbekistan",
+      "shelfLife": "24 months",
+      "storage": "Store in a dry, cool place at a temperature not above +25°C"
+    },
+    "benefitsTitle": "How does {product} help?",
+    "usageTitle": "How to take {product}?",
+    "usageSubtitle": "{product} intake schedule and recommendations.",
+    "advantagesTitle": "Benefits of {product}",
+    "usage": {
+      "dose": {
+        "title": "Dose",
+        "description": "1-2 capsules a day. Take in the morning before a meal or together with food"
+      },
+      "course": {
+        "title": "Course duration",
+        "description": "Take regularly for one month; the first results appear after 1-2 weeks"
+      },
+      "water": {
+        "title": "Drink plenty of water",
+        "description": "Drink 2-3 litres of clean water a day during the course — it speeds up detoxification"
+      },
+      "advice": {
+        "title": "Advice",
+        "description": "Not for use during pregnancy or by children under 12. Consult your doctor"
+      }
+    },
+    "importantTitle": "Important recommendations",
+    "important": {
+      "one": "Take the capsule after a meal with water",
+      "two": "Do not exceed the recommended daily dose",
+      "three": "Store in a dry, cool place at a temperature not above +25°C",
+      "four": "Keep out of reach of children",
+      "five": "Consult a doctor if necessary"
+    },
+    "highlightLabels": {
+      "dose": "DOSE",
+      "natural": "NATURAL",
+      "course": "COURSE",
+      "formula": "FORMULA"
+    },
+    "meters": {
+      "immunity": {
+        "title": "IMMUNE SUPPORT",
+        "description": "Supports the natural defence functions of the body"
+      },
+      "digestion": {
+        "title": "DIGESTIVE SYSTEM",
+        "description": "Helps the digestive system work normally"
+      },
+      "energy": {
+        "title": "ENERGY AND VITALITY",
+        "description": "Helps maintain the overall tone of the body"
+      },
+      "antioxidant": {
+        "title": "ANTIOXIDANT PROTECTION",
+        "description": "Helps protect cells from the effects of free radicals"
+      },
+      "strength": {
+        "title": "NATURAL STRENGTH",
+        "description": "Supports the body's strength with natural components"
+      },
+      "natural": {
+        "title": "NATURAL COMPOSITION",
+        "description": "A natural product made from plant-based raw materials"
+      }
+    },
+    "ctaTitle": "Order right now",
+    "ctaDescription": "Add {product} to your daily routine and feel the result within 2-4 weeks!",
+    "galleryThumb": "{product} photo {index}",
+    "backLabel": "back side",
+    "added": "Added to cart",
+    "quantity": "Quantity",
+    "decrease": "Decrease",
+    "increase": "Increase"
+  },
+  "catalog": {
+    "omega-3": {
+      "name": "Omega 3",
+      "tagline": "Fish Oil & Omega Complex",
+      "subtitle": "A natural complex supporting the heart, brain and immunity",
+      "short": "A source of essential ω-3 acids that support brain function, memory and focus.",
+      "description": "Omega 3 is a natural food supplement containing the unsaturated fatty acids the body cannot produce on its own. The product helps support the cardiovascular system, improve brain function, preserve vision and strengthen immunity. Daily intake supports the overall healthy functioning of the body.",
+      "benefitsSubtitle": "The DHA and EPA acids in Omega 3 have a broad spectrum of effects on the body.",
+      "aboutTitle": "Omega 3: natural strength for heart and mind",
+      "aboutText": "Omega 3 is a natural complex derived from fish oil. As a Nabaviy Tabobat product it supports the cardiovascular system, improves brain function and increases the overall tone of the body.",
+      "features": {
+        "one": "Supports memory and focus",
+        "two": "Helps brain function",
+        "three": "Supports heart and vascular health",
+        "four": "Beneficial for vision"
+      },
+      "benefits": {
+        "one": {
+          "title": "Heart health",
+          "description": "Supports the cardiovascular system and helps balance cholesterol."
+        },
+        "two": {
+          "title": "Brain function",
+          "description": "Helps improve memory, attention and concentration."
+        },
+        "three": {
+          "title": "Vision",
+          "description": "Supports retinal health and reduces eye fatigue."
+        },
+        "four": {
+          "title": "Joints",
+          "description": "Reduces joint inflammation and supports mobility."
+        },
+        "five": {
+          "title": "Immunity",
+          "description": "Strengthens the body's natural defence functions."
+        },
+        "six": {
+          "title": "Energy and tone",
+          "description": "Reduces fatigue and increases daily activity."
+        }
+      },
+      "advantages": {
+        "one": "Naturally supports the cardiovascular system",
+        "two": "Helps improve memory and concentration",
+        "three": "Supports joint mobility",
+        "four": "Helps preserve vision",
+        "five": "Has a positive effect on skin and hair health",
+        "six": "Increases overall immunity and energy levels"
+      },
+      "compare": {
+        "dose": "400 mg",
+        "course": "1-3 months",
+        "benefit": "Heart, brain, vision",
+        "audience": "Athletes, seniors"
+      }
+    },
+    "qora-sedana": {
+      "name": "Qora Sedana",
+      "tagline": "Nigella Sativa — Black cumin",
+      "subtitle": "Natural support for immunity and digestion",
+      "short": "A plant recognised in prophetic medicine — for cleansing the body, the airways and digestion.",
+      "description": "\"A cure for every ailment\" — the blessed plant of the Prophet, peace be upon him. It strengthens immunity, cleanses the body and improves overall wellbeing.",
+      "benefitsSubtitle": "The active compounds of black cumin have a broad spectrum of effects on the body.",
+      "aboutTitle": "Qora Sedana: a natural remedy for many ailments",
+      "aboutText": "Black cumin (Nigella Sativa) has been used as a healing plant since ancient times. Its benefits are also specifically highlighted in Islamic sources. It strengthens immunity, reduces inflammation and protects the body from harmful substances.",
+      "features": {
+        "one": "Helps cleanse the body",
+        "two": "Improves the airways",
+        "three": "Anti-inflammatory effect for the intestines",
+        "four": "Natural help for internal inflammation"
+      },
+      "benefits": {
+        "one": {
+          "title": "Colds and flu",
+          "description": "Helps with bronchitis, asthma and sinusitis. Reduces mucus in the airways."
+        },
+        "two": {
+          "title": "Allergies",
+          "description": "Enhances liver detoxification. Helps remove heavy metals and harmful substances."
+        },
+        "three": {
+          "title": "Stomach problems",
+          "description": "Reduces stomach inflammation and improves intestinal motility."
+        },
+        "four": {
+          "title": "Skin conditions",
+          "description": "Natural action against fungi and parasites. Strengthens the intestinal ecosystem."
+        },
+        "five": {
+          "title": "Immunity",
+          "description": "Strengthens the body's natural defence system."
+        },
+        "six": {
+          "title": "Energy and tone",
+          "description": "Reduces fatigue and general weakness."
+        }
+      },
+      "advantages": {
+        "one": "Naturally strengthens immunity",
+        "two": "Helps clear the airways",
+        "three": "Improves the digestive system",
+        "four": "Protects the body from harmful substances",
+        "five": "Has a positive effect on skin health",
+        "six": "Increases overall energy levels"
+      },
+      "compare": {
+        "dose": "400 mg",
+        "course": "1 month",
+        "benefit": "Immunity, digestion",
+        "audience": "Everyone"
+      }
+    },
+    "qust-al-hindi": {
+      "name": "Qust al-Hindi",
+      "tagline": "Saussurea Lappa — Indian costus",
+      "subtitle": "A natural remedy for cleansing and balance",
+      "short": "A plant valued in Nabaviy medicine and used for overall wellbeing.",
+      "description": "For body cleansing, the airways, digestion and internal inflammation — a plant that holds a special place in prophetic medicine. Indian costus brings the body back into balance.",
+      "benefitsSubtitle": "The active compounds of Indian costus — costunolide, lactones and flavonoids — have a broad spectrum of effects.",
+      "aboutTitle": "Qust al-Hindi: Indian costus — purity and balance",
+      "aboutText": "Qust al-Hindi is a plant that appears in Nabaviy medicine in two varieties: marine and Indian. As a Nabaviy Tabobat product it supports overall cleansing of the body, improves the airways and normalises digestion.",
+      "features": {
+        "one": "Helps cleanse the body",
+        "two": "Supports the digestive system",
+        "three": "Strengthens immunity",
+        "four": "A natural wellbeing remedy"
+      },
+      "benefits": {
+        "one": {
+          "title": "Airways",
+          "description": "Helps with bronchitis, asthma and sinusitis. Reduces mucus in the airways."
+        },
+        "two": {
+          "title": "Detoxification",
+          "description": "Enhances liver detoxification. Helps remove heavy metals and harmful substances."
+        },
+        "three": {
+          "title": "Digestive system",
+          "description": "Reduces stomach inflammation and improves motility. Helpful with gastritis and colitis."
+        },
+        "four": {
+          "title": "Against parasites",
+          "description": "Natural action against fungi and parasites. Strengthens the intestinal ecosystem."
+        },
+        "five": {
+          "title": "Anti-inflammatory",
+          "description": "Helps with chronic inflammatory processes. Recommended for rheumatoid arthritis and autoimmune conditions."
+        },
+        "six": {
+          "title": "Energy and tone",
+          "description": "Reduces fatigue and general weakness. Energy levels rise once the body regains balance."
+        }
+      },
+      "advantages": {
+        "one": "Cleanses the body — removes toxins",
+        "two": "Provides natural help against internal inflammation",
+        "three": "Improves the airways and makes breathing easier",
+        "four": "Supports the liver and gallbladder",
+        "five": "Improves digestion and normalises stomach acidity",
+        "six": "Increases overall immunity and energy levels"
+      },
+      "compare": {
+        "dose": "400 mg",
+        "course": "1-3 months",
+        "benefit": "Cleansing, breathing",
+        "audience": "Adults"
+      }
+    }
+  },
+  "blog": {
+    "title": "Natural healing",
+    "titleAccent": "knowledge",
+    "subtitle": "Useful advice about Nabaviy medicine, common conditions and their natural remedies",
+    "searchPlaceholder": "For example: colds, about black cumin…",
+    "searchLabel": "Search articles",
+    "empty": "Nothing found. Try a different search.",
+    "tipsTitle": "Useful recommendations",
+    "buy": {
+      "title": "Products from this article",
+      "subtitle": "The Nabaviy Tabobat remedies discussed above"
+    },
+    "tips": {
+      "sugar": "Avoid sugar and artificial additives",
+      "water": "Drink warm water every morning",
+      "natural": "Eat more natural products",
+      "sleep": "Get enough sleep",
+      "rest": "Do not forget to rest during the day",
+      "activity": "Do not forget physical activity"
+    },
+    "articles": {
+      "qora-sedana": {
+        "title": "Black cumin — a cure for every illness?",
+        "intro": "Black cumin (Nigella sativa) has been used as a healing plant since ancient times. Its benefits are also specifically highlighted in Islamic sources. It strengthens immunity, reduces inflammation and protects the body from harmful substances.",
+        "subtitle": "Taking black cumin regularly is beneficial in the following cases:",
+        "note": "Mixing it with honey increases its effectiveness even further",
+        "cards": {
+          "cold": {
+            "title": "Colds and flu",
+            "description": "Helps with bronchitis, asthma and sinusitis. Reduces mucus in the airways."
+          },
+          "allergy": {
+            "title": "Allergies",
+            "description": "Enhances liver detoxification. Helps remove heavy metals and harmful substances."
+          },
+          "stomach": {
+            "title": "Stomach problems",
+            "description": "Reduces stomach inflammation and improves motility. Helpful with gastritis and colitis."
+          },
+          "skin": {
+            "title": "Skin conditions",
+            "description": "Natural action against fungi and parasites. Strengthens the intestinal ecosystem."
+          }
+        }
+      },
+      "omega-3": {
+        "title": "Omega 3 — what does it give the heart and brain?",
+        "intro": "Omega 3 unsaturated fatty acids cannot be produced by the body itself, yet they are vital. They are the foundation for the cardiovascular system, brain function and vision.",
+        "subtitle": "Taking Omega 3 regularly is beneficial in the following cases:",
+        "note": "Taking it together with food improves absorption",
+        "cards": {
+          "heart": {
+            "title": "Heart and vessels",
+            "description": "Supports cholesterol balance and helps vascular elasticity."
+          },
+          "brain": {
+            "title": "Brain function",
+            "description": "Helps improve memory, attention and concentration."
+          },
+          "vision": {
+            "title": "Vision",
+            "description": "Supports retinal health and reduces eye fatigue."
+          },
+          "joints": {
+            "title": "Joints",
+            "description": "Reduces joint inflammation and supports mobility."
+          }
+        }
+      },
+      "qust-al-hindi": {
+        "title": "Qust al-Hindi — a natural remedy for cleansing",
+        "intro": "Qust al-Hindi holds a special place in Nabaviy medicine. For centuries it has been used to cleanse the body, ease breathing and restore balance to the digestive system.",
+        "subtitle": "Taking Qust al-Hindi regularly is beneficial in the following cases:",
+        "note": "Taking it with plenty of water speeds up the detox process",
+        "cards": {
+          "breath": {
+            "title": "Airways",
+            "description": "Helps with bronchitis, asthma and sinusitis. Makes breathing easier."
+          },
+          "detox": {
+            "title": "Detoxification",
+            "description": "Enhances liver detoxification and helps remove harmful substances."
+          },
+          "digestion": {
+            "title": "Digestive system",
+            "description": "Reduces stomach inflammation and improves intestinal motility."
+          },
+          "immunity": {
+            "title": "Immunity",
+            "description": "Strengthens the body's natural defence functions."
+          }
+        }
+      }
+    }
+  },
+  "contacts": {
+    "title": "Orders and",
+    "titleAccent": "consultation",
+    "subtitle": "Contact us to order a product or get a free consultation.",
+    "cardTitle": "Get in touch with us",
+    "workingHours": "Monday–Saturday: 9:00 – 20:00",
+    "address": "Tashkent, Yashnabad district, Elbek street, 31",
+    "callNow": "Call us right now",
+    "writeTelegram": "Write on Telegram",
+    "mapTitle": "Nabaviy Tabobat office on the map"
+  },
+  "cart": {
+    "title": "Cart",
+    "summaryTitle": "Cart",
+    "items": "Items ({count})",
+    "delivery": "Delivery",
+    "deliveryFree": "Free",
+    "total": "Total",
+    "checkout": "Place an order",
+    "empty": "Your cart is still empty",
+    "emptyDescription": "Go to the catalog and choose the product that suits you.",
+    "benefits": {
+      "delivery": {
+        "title": "Fast delivery",
+        "description": "1-2 days"
+      },
+      "natural": {
+        "title": "Natural products",
+        "description": "100% quality"
+      },
+      "support": {
+        "title": "24/7 support",
+        "description": "Always in touch"
+      }
+    },
+    "helpTitle": "Need help with your order?",
+    "helpDescription": "Our specialists will answer all of your questions",
+    "naturalProduct": "Natural product",
+    "unavailable": "Out of stock",
+    "unavailableTotal": "Not available to order",
+    "unavailableHint": "Remove the unavailable items to place the order."
+  },
+  "checkout": {
+    "title": "Checkout",
+    "contactTitle": "Contact details",
+    "nameLabel": "Your name*",
+    "namePlaceholder": "Ruslan Akhmedov",
+    "phoneLabel": "Phone number*",
+    "phonePlaceholder": "+998 94 011 53 63",
+    "cityLabel": "City*",
+    "cityPlaceholder": "Tashkent, Uzbekistan",
+    "addressLabel": "Delivery address*",
+    "addressPlaceholder": "Amir Temur street, 123",
+    "deliveryTitle": "Delivery method",
+    "deliveryOption": "Delivery within 1-3 days",
+    "deliveryPrice": "Free",
+    "orderTitle": "Your order",
+    "items": "Items ({count})",
+    "delivery": "Delivery",
+    "total": "Total",
+    "pay": "Pay with CLICK",
+    "processing": "Sending…",
+    "successTitle": "Your order has been received!",
+    "successText": "Our specialist will contact you shortly to confirm it.",
+    "errorRequired": "Please fill in this field",
+    "emptyCart": "Add products to your cart to place an order.",
+    "surnameLabel": "Surname",
+    "surnamePlaceholder": "Karimov",
+    "paymentTitle": "Payment method",
+    "paymentCash": "Cash on delivery",
+    "paymentCashHint": "Pay the courier after checking your order",
+    "paymentClick": "Click",
+    "paymentClickHint": "Card payment via Click",
+    "paymentPayme": "Payme",
+    "paymentPaymeHint": "Card payment via Payme",
+    "paymentUzum": "Uzum",
+    "paymentUzumHint": "Pay in the Uzum app",
+    "submitting": "Placing your order…",
+    "redirecting": "Taking you to payment…",
+    "payCash": "Place order",
+    "orderNumber": "Order number",
+    "errorGeneric": "We couldn't place the order. Please try again.",
+    "errorStock": "Not enough stock left. Please adjust the quantity.",
+    "errorPayment": "The order was created but payment could not be opened. We'll contact you.",
+    "errorOffline": "The server is unavailable. We'll take your order by phone.",
+    "errorPhone": "Enter the number as +998 XX XXX XX XX",
+    "errorUnavailable": "This product is no longer on sale. Refresh the cart and remove it."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "Sorry, the page you are looking for does not exist or has been moved.",
+    "action": "Back to home"
+  },
+  "metadata": {
+    "home": {
+      "title": "Nabaviy Tabobat — natural health products",
+      "description": "100% natural products based on Islamic medicine: Omega 3, Qora Sedana, Qust al-Hindi. Delivery in Tashkent and a free consultation.",
+      "keywords": "nabaviy medicine, natural supplements, black cumin, omega 3, qust al hindi, Tashkent"
+    },
+    "products": {
+      "title": "Products — Nabaviy Tabobat",
+      "description": "Three premium products based on Nabaviy medicine: Omega 3, Qora Sedana and Qust al-Hindi. Comparison table and prices.",
+      "keywords": "natural supplements, vitamins, black cumin capsules, omega 3 Uzbekistan"
+    },
+    "blog": {
+      "title": "Blog — natural healing knowledge",
+      "description": "Useful advice about Nabaviy medicine, common conditions and their natural remedies.",
+      "keywords": "natural treatment, healthy lifestyle, nabaviy medicine articles"
+    },
+    "contacts": {
+      "title": "Contacts — Nabaviy Tabobat",
+      "description": "Contact us to order a product or get a free consultation. Tashkent, Uzbekistan.",
+      "keywords": "nabaviy tabobat contacts, order, consultation Tashkent"
+    },
+    "cart": {
+      "title": "Cart — Nabaviy Tabobat",
+      "description": "Your selected natural products."
+    },
+    "checkout": {
+      "title": "Checkout — Nabaviy Tabobat",
+      "description": "Checkout and payment with CLICK."
+    },
+    "product": {
+      "title": "{product} — Nabaviy Tabobat",
+      "keywords": "{product}, natural product, nabaviy medicine, Tashkent"
+    }
+  },
+  "brands": {
+    "family": "NUMA FAMILY",
+    "nutrition": "NUMA NUTRITION",
+    "kids": "NUMA KIDS",
+    "catering": "NUMA CATERING"
+  },
+  "PaymentReturn": {
+    "metaTitle": "Payment status",
+    "metaDescription": "Checking the payment status of your order.",
+    "checking": "Checking the payment…",
+    "paidTitle": "Order paid",
+    "paidText": "Payment confirmed. We'll contact you about delivery.",
+    "failedTitle": "Payment failed",
+    "failedText": "You were not charged. The items are back in your cart, so you can order again.",
+    "stillPendingTitle": "Payment is processing",
+    "stillPendingText": "This can take a few minutes. The status will appear in your orders — nothing is lost.",
+    "unknownTitle": "Could not check the payment",
+    "unknownText": "Refresh the page or check the status later.",
+    "missingOrder": "No order specified",
+    "orderRef": "Order number:",
+    "toCart": "Go to cart",
+    "toCatalog": "To catalogue"
+  },
+  "account": {
+    "title": "My account",
+    "loading": "Loading",
+    "profile": "Profile",
+    "name": "Name",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "phone": "Phone number",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "signOut": "Sign out",
+    "orders": "My orders",
+    "noOrders": "No orders yet",
+    "prev": "Back",
+    "next": "Next",
+    "purchases": "Purchase history",
+    "purchasesHint": "Orders from the site and purchases through a manager, in one list",
+    "noPurchases": "No purchases yet",
+    "managerPurchase": "Purchase",
+    "viaManager": "Through a manager",
+    "signInTitle": "Sign in",
+    "signInSubtitle": "We will text you a confirmation code",
+    "registerTitle": "Create an account",
+    "signInTab": "Sign in",
+    "registerTab": "Register",
+    "sendCode": "Send the code",
+    "codeTitle": "Code from the SMS",
+    "codeSubtitle": "We sent a code to {phone}",
+    "code": "Code",
+    "confirm": "Confirm",
+    "changePhone": "Change the number",
+    "account": "Account",
+    "status": {
+      "new": "New",
+      "processing": "Processing",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "stores": {
+      "nutrition": "Nutrition",
+      "kids": "Kids",
+      "halal": "Nabaviy Tabobat",
+      "family": "Family"
+    },
+    "errors": {
+      "phone": "Enter a valid number",
+      "name": "Enter your first name",
+      "unregistered": "There is no account for this number — register instead",
+      "alreadyRegistered": "This number is already registered — sign in instead",
+      "wrongCode": "The code is wrong or has expired",
+      "rateLimit": "Too many attempts. Please try again later",
+      "validation": "Check the details you entered",
+      "network": "The request failed. Please try again"
+    },
+    "cart": "Cart",
+    "checkout": "Checkout",
+    "emptyCart": "Your cart is empty.",
+    "toCatalogue": "Browse the catalogue",
+    "total": "Total",
+    "cartUnavailable": "Something in the cart is currently unavailable",
+    "quantity": "Quantity",
+    "decrease": "Decrease",
+    "increase": "Increase",
+    "removeItem": "Remove from cart"
+  }
+}
