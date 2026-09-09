@@ -12,7 +12,7 @@
 import { blogArticles as staticArticles } from "@/lib/blog";
 import { products as staticProducts } from "@/lib/products";
 import { isSoldOut } from "@/lib/utils";
-import type { BlogArticle, Product } from "@/types";
+import type { BlogArticle, Product, ProductImageSlots } from "@/types";
 
 import { isApiConfigured } from "./config";
 import { resolveMediaUrl } from "./media";
@@ -23,7 +23,12 @@ import {
   getProductBySlug,
   getProductList,
 } from "./endpoints";
-import type { ApiBlogPost, ApiBlogPostProduct, ApiProduct } from "./types";
+import type {
+  ApiBlogPost,
+  ApiBlogPostProduct,
+  ApiProduct,
+  ImageSlotKey,
+} from "./types";
 
 /* ── mapping ─────────────────────────────────────────────────────────────── */
 
@@ -75,6 +80,36 @@ function uploadedShots(api: ApiProduct): string[] {
     .filter(Boolean);
 }
 
+/** The four gallery places, in the order the design stacks them. */
+const GALLERY_SLOTS: ImageSlotKey[] = ["gallery_1", "gallery_2", "gallery_3", "gallery_4"];
+
+/**
+ * The pictures a moderator placed by hand, keyed by the slot they sit in.
+ *
+ * Empty slots are dropped rather than kept as `null`, so a caller can ask
+ * `slots.about_1` and get either a picture or nothing — no third state to think
+ * about at every use site.
+ */
+function slotted(api: ApiProduct): ProductImageSlots {
+  const entries = Object.entries(api.images ?? {}).flatMap(([slot, value]) => {
+    const url = img(value?.url);
+    if (!url) return [];
+    return [[slot, { ...value!, url }] as const];
+  });
+  return Object.fromEntries(entries) as ProductImageSlots;
+}
+
+/**
+ * The wide strip, or `null` when nobody placed one — the caller's cue to keep
+ * whatever it was showing before rather than render an empty band.
+ */
+function bannerShots(slots: ProductImageSlots): string[] | null {
+  const placed = [slots.banner_wide?.url, slots.advantages_1?.url].filter(
+    (url): url is string => Boolean(url),
+  );
+  return placed.length ? placed : null;
+}
+
 /**
  * Folds an API product onto the storefront's `Product`.
  *
@@ -86,7 +121,21 @@ function toProduct(api: ApiProduct): Product {
   const attrs = api.attributes ?? {};
   const images = attrs.images ?? {};
   const base = staticProduct(api.slug);
-  const shots = uploadedShots(api);
+  const slots = slotted(api);
+  /*
+   * The four gallery places win over the upload pile outright.
+   *
+   * The array walk stays as the fallback, and deliberately so. Slots arrived
+   * after the catalogue was already full, so a product nobody has re-uploaded
+   * since has `images` empty and `media` full; reading only the slots would
+   * blank out its card. Once any gallery slot is filled, that placement is the
+   * moderator's explicit choice and wins — including the gaps, which is why the
+   * list is compacted rather than padded.
+   */
+  const placed = GALLERY_SLOTS.map((slot) => slots[slot]?.url).filter(
+    (url): url is string => Boolean(url),
+  );
+  const shots = placed.length ? placed : uploadedShots(api);
   const card = shots[0] || img(images.card) || base?.image || "";
   const gallery = shots.length
     ? shots
@@ -107,11 +156,17 @@ function toProduct(api: ApiProduct): Product {
     image: card,
     imageBack: shots[1] || img(images.back) || base?.imageBack || card,
     gallery: gallery.length ? gallery : [card],
-    banners: shots.length
+    /*
+     * The banner carousel. `banner_wide` is the slot cut for exactly this
+     * strip, with `advantages_1` behind it, and only then the old behaviour of
+     * reusing the gallery — which was never really a banner, just the widest
+     * thing available.
+     */
+    banners: bannerShots(slots) ?? (shots.length
       ? shots
       : images.banners
         ? imgs(images.banners)
-        : (base?.banners ?? [card]),
+        : (base?.banners ?? [card])),
     highlights: attrs.highlights ?? base?.highlights ?? [],
     meters: attrs.meters ?? base?.meters ?? [],
     benefitKeys: attrs.benefitKeys ?? base?.benefitKeys ?? [],
@@ -119,6 +174,7 @@ function toProduct(api: ApiProduct): Product {
     usageKeys: attrs.usageKeys ?? base?.usageKeys ?? [],
     advantageKeys: attrs.advantageKeys ?? base?.advantageKeys ?? [],
     order: resolveOrder(api.sortOrder, attrs.order, base?.order, 0),
+    slots,
     // Only the by-slug response carries these, so on a list they are simply
     // absent — the catalogue has no use for them and they would bloat the
     // response.

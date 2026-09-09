@@ -1,6 +1,9 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
+import type { ImageSlotKey } from "@/lib/api/types"
+import type { Product } from "@/types"
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
@@ -16,4 +19,21 @@ export function cn(...inputs: ClassValue[]) {
  */
 export function isSoldOut(product: { stock?: number }): boolean {
   return typeof product.stock === "number" && product.stock <= 0
+}
+
+/**
+ * The picture a moderator placed into a named slot, or the given fallback.
+ *
+ * Every section below the price used to borrow from the same unordered upload
+ * pile by index — `banners[2]`, `gallery[1]` — so which photo appeared where was
+ * an accident of upload order, and a product with two uploads left holes. Now
+ * each section asks for the frame that was placed in its own slot, and the
+ * borrowed one is only the floor underneath.
+ */
+export function slotImage(
+  product: Pick<Product, "slots">,
+  slot: ImageSlotKey,
+  fallback: string | undefined,
+): string | undefined {
+  return product.slots?.[slot]?.url || fallback
 }

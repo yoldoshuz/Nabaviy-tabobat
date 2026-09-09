@@ -1,4 +1,4 @@
-import type { ApiProductBlock } from "@/lib/api/types";
+import type { ApiImageSlot, ApiProductBlock, ImageSlotKey } from "@/lib/api/types";
 import type { locales } from "@/lib/i18n/routing";
 
 export type Locale = (typeof locales)[number];
@@ -61,7 +61,18 @@ export interface Product {
    * back to the copy bundled in `messages/`.
    */
   blocks?: ApiProductBlock[];
+  /**
+   * Pictures the moderator placed into named slots, keyed by slot.
+   *
+   * `image`/`gallery`/`banners` above are still the fields the cards and the
+   * showcase read, so nothing breaks without this. What it adds is the sections
+   * further down the page: each one asks for the slot it was designed around and
+   * falls back to whichever photo it used to borrow from the pile.
+   */
+  slots?: ProductImageSlots;
 }
+
+export type ProductImageSlots = Partial<Record<ImageSlotKey, ApiImageSlot>>;
 
 export interface CartItem {
   slug: ProductSlug;

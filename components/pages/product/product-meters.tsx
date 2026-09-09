@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { Container } from "@/components/shared/container";
 import { GreenLeaf } from "@/components/shared/green-leaf";
 import type { ProductContent } from "@/lib/api/blocks";
+import { slotImage } from "@/lib/utils";
 import type { Product } from "@/types";
 
 export function ProductMeters({
@@ -92,7 +93,7 @@ export function ProductMeters({
           <div className="absolute inset-0 rounded-full bg-stone/50" />
           <div className="absolute inset-[10%] rounded-full bg-brand/10" />
           <Image
-            src={product.image}
+            src={slotImage(product, "metrics_1", product.image)!}
             alt={tCatalog("name")}
             width={360}
             height={580}

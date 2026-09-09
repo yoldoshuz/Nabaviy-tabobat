@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { Container } from "@/components/shared/container";
 import { GreenLeaf } from "@/components/shared/green-leaf";
 import type { ProductContent } from "@/lib/api/blocks";
+import { slotImage } from "@/lib/utils";
 import type { Product } from "@/types";
 
 /** Positions of the floating stat chips around the bottle (Figma detail page). */
@@ -76,7 +77,7 @@ export function ProductAbout({
           ))}
 
           <Image
-            src={product.image}
+            src={slotImage(product, "about_1", product.image)!}
             alt={tCatalog("name")}
             width={360}
             height={580}

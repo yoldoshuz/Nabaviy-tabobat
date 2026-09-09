@@ -5,6 +5,7 @@ import { Container } from "@/components/shared/container";
 import { GreenLeaf } from "@/components/shared/green-leaf";
 import { SectionHeading } from "@/components/shared/section-heading";
 import type { ProductContent } from "@/lib/api/blocks";
+import { slotImage } from "@/lib/utils";
 import type { Product } from "@/types";
 
 const importantKeys = ["one", "two", "three", "four", "five"] as const;
@@ -38,6 +39,24 @@ export function ProductUsage({
   const warnings = content?.warnings;
   const important =
     warnings?.items ?? importantKeys.map((key) => t(`important.${key}`));
+
+  /*
+   * The three photos of this block, each from the slot cut for it.
+   *
+   * They used to be `banners[2]`, `gallery[1]` and `banners[1]` — positions in
+   * an unordered upload pile, which meant the picture beside the instructions
+   * was whatever happened to be uploaded third, and a product with two uploads
+   * rendered a hole. The fallbacks keep those positions, then step down to the
+   * card photo so every box has something to show.
+   */
+  const instructionShot =
+    slotImage(product, "how_to_use_1", product.banners[2]) ?? product.image;
+  const lifestyleShot =
+    slotImage(product, "lifestyle_1", product.gallery[1]) ?? product.image;
+  const warningShot =
+    slotImage(product, "banner_wide", product.banners[1]) ??
+    product.banners[0] ??
+    product.image;
 
   return (
     <section className="relative overflow-hidden bg-white pb-16 lg:pb-24">
@@ -83,7 +102,7 @@ export function ProductUsage({
             */}
             <div className="grid gap-5 sm:grid-cols-2">
               <Image
-                src={product.banners[2]}
+                src={instructionShot}
                 alt={tCatalog("name")}
                 width={506}
                 height={506}
@@ -91,7 +110,7 @@ export function ProductUsage({
                 className="aspect-square w-full rounded-lg bg-stone object-cover"
               />
               <Image
-                src={product.gallery[1]}
+                src={lifestyleShot}
                 alt={tCatalog("name")}
                 width={506}
                 height={506}
@@ -103,7 +122,7 @@ export function ProductUsage({
 
             <div className="relative overflow-hidden rounded-lg">
               <Image
-                src={product.banners[1]}
+                src={warningShot}
                 alt=""
                 aria-hidden
                 fill
