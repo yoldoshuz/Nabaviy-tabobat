@@ -1,4 +1,5 @@
 import { contacts, siteConfig } from "@/lib/constants";
+import { galleryOf } from "@/lib/product-images";
 import { absoluteUrl, localizedPath } from "@/lib/seo";
 import { isSoldOut } from "@/lib/utils";
 import type { Locale, Product } from "@/types";
@@ -89,7 +90,14 @@ export function productJsonLd(
     name,
     description,
     sku: product.sku,
-    image: [product.image, ...product.gallery].map((src) => absoluteUrl(src)),
+    /*
+     * The cover plus whatever the gallery holds, deduped. Search engines want
+     * several views of the same product, and the gallery is now addressed by
+     * slot rather than by a field that overlapped with the cover.
+     */
+    image: [...new Set([product.image, ...galleryOf(product.images).map((i) => i.url)])]
+      .filter(Boolean)
+      .map((src) => absoluteUrl(src)),
     brand: { "@type": "Brand", name: siteConfig.name },
     offers: {
       "@type": "Offer",

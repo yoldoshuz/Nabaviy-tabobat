@@ -45,7 +45,7 @@ export function ProductsHero({ products }: { products: Product[] }) {
                 className="group relative flex h-36 flex-col justify-end overflow-hidden rounded-lg border border-cream/10 p-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
               >
                 <Image
-                  src={product.gallery[0]}
+                  src={product.image}
                   alt=""
                   aria-hidden
                   fill

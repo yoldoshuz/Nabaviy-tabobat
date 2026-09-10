@@ -8,10 +8,12 @@ import { AddToCartButton } from "@/components/shared/add-to-cart-button";
 import { ProductImage } from "@/components/shared/product-image";
 import { Container } from "@/components/shared/container";
 import { GreenLeaf } from "@/components/shared/green-leaf";
+import { SlotBackground } from "@/components/shared/slot-image";
 import { QuantityInput } from "@/components/shared/quantity-input";
 import type { ProductContent } from "@/lib/api/blocks";
 import { formatPrice } from "@/lib/format";
 import { Link } from "@/lib/i18n/navigation";
+import { galleryOf } from "@/lib/product-images";
 import { cn, isSoldOut } from "@/lib/utils";
 import type { Product } from "@/types";
 
@@ -37,16 +39,16 @@ export function ProductShowcase({
   const [quantity, setQuantity] = useState(1);
 
   /*
-   * Every photo the product has, once.
+   * The slider's frames, taken from the four gallery places by name.
    *
-   * This was three fixed slots — front, back, first gallery frame — so a
-   * moderator uploading a fourth photo had nowhere to see it, and the shop read
-   * that as the site ignoring the upload. `imageBack` and the gallery overlap
-   * on most products, hence the dedupe.
+   * This was the packshot, its back and the gallery deduped by path — a set
+   * assembled from three fields that all drew on the same upload pile, which is
+   * why the dedupe was needed at all. The gallery slots are the moderator's own
+   * choice of what the slider shows, gaps included, and a photo can only sit in
+   * one place.
    */
-  const images = [
-    ...new Set([product.image, product.imageBack, ...product.gallery]),
-  ].filter(Boolean);
+  const gallery = galleryOf(product.images);
+  const cover = gallery[0];
   const [active, setActive] = useState(0);
   const soldOut = isSoldOut(product);
 
@@ -65,7 +67,18 @@ export function ProductShowcase({
   const badge = content?.hero?.badge;
 
   return (
-    <section className="relative overflow-hidden bg-white pt-8 pb-16 lg:pb-24">
+    <section className="relative isolate overflow-hidden bg-white pt-8 pb-16 lg:pb-24">
+      {/*
+        `hero_bg` — a slot the admin has offered all along and no Nabaviy
+        product has filled, because the page had nowhere to show it. It sits
+        behind the buy box under a veil that keeps the price and the spec sheet
+        legible; without one the section keeps its plain white ground.
+      */}
+      <SlotBackground images={product.images} slot="hero_bg" className="-z-20" />
+      <div
+        aria-hidden
+        className="absolute inset-0 -z-10 bg-gradient-to-b from-white/85 via-white/93 to-white"
+      />
       <GreenLeaf
         variant={4}
         className="top-4 right-0 hidden w-[230px] opacity-90 lg:block"
@@ -78,25 +91,33 @@ export function ProductShowcase({
       <Container className="relative grid gap-10 lg:grid-cols-2 lg:gap-14">
         <div>
           <div className="flex aspect-square items-center justify-center rounded-xl bg-stone/60 p-8">
-            <ProductImage
-              key={images[active]}
-              slug={product.slug}
-              src={images[active]}
-              alt={tCatalog("name")}
-              width={420}
-              height={520}
-              priority
-              sizes="(min-width: 1024px) 520px, 90vw"
-              className="h-[72%] w-auto object-contain drop-shadow-[0_16px_30px_rgba(16,40,27,0.2)]"
-            />
+            {/*
+              Nothing is drawn when the product has no gallery photo at all.
+              That cannot happen through the admin — `gallery_1` is the required
+              slot — and inventing a picture for the case would put artwork
+              belonging to some other product at the top of this one.
+            */}
+            {cover && (
+              <ProductImage
+                key={cover.url}
+                slug={product.slug}
+                src={gallery[active]?.url ?? cover.url}
+                alt={tCatalog("name")}
+                width={420}
+                height={520}
+                priority
+                sizes="(min-width: 1024px) 520px, 90vw"
+                className="h-[72%] w-auto object-contain drop-shadow-[0_16px_30px_rgba(16,40,27,0.2)]"
+              />
+            )}
           </div>
 
           {/* Scrolls rather than truncates: three across at rest, more if the
               product has more. */}
           <ul className="no-scrollbar mt-4 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-1">
-            {images.map((image, index) => (
+            {gallery.map((image, index) => (
               <li
-                key={image + index}
+                key={image.url}
                 className="w-[calc((100%-2rem)/3)] shrink-0 snap-start"
               >
                 <button
@@ -108,12 +129,14 @@ export function ProductShowcase({
                   })}
                   aria-current={index === active}
                   className={cn(
-                    "flex aspect-[190/175] w-full items-center justify-center overflow-hidden rounded-lg border-2 bg-stone/50 p-3 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand",
+                    // Square, like the slot: the thumbnail is the same
+                    // photograph as the frame above, not a wider crop of it.
+                    "flex aspect-square w-full items-center justify-center overflow-hidden rounded-lg border-2 bg-stone/50 p-3 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand",
                     index === active ? "border-brand" : "border-transparent",
                   )}
                 >
                   <Image
-                    src={image}
+                    src={image.url}
                     alt=""
                     aria-hidden
                     width={160}

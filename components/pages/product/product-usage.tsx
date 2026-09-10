@@ -1,11 +1,12 @@
-import Image from "next/image";
 import { useTranslations } from "next-intl";
 
 import { Container } from "@/components/shared/container";
 import { GreenLeaf } from "@/components/shared/green-leaf";
 import { SectionHeading } from "@/components/shared/section-heading";
+import { SlotImage } from "@/components/shared/slot-image";
 import type { ProductContent } from "@/lib/api/blocks";
-import { slotImage } from "@/lib/utils";
+import { hasSlots } from "@/lib/product-images";
+import { cn } from "@/lib/utils";
 import type { Product } from "@/types";
 
 const importantKeys = ["one", "two", "three", "four", "five"] as const;
@@ -41,22 +42,15 @@ export function ProductUsage({
     warnings?.items ?? importantKeys.map((key) => t(`important.${key}`));
 
   /*
-   * The three photos of this block, each from the slot cut for it.
+   * One photograph, from the slot shot for these instructions.
    *
-   * They used to be `banners[2]`, `gallery[1]` and `banners[1]` — positions in
-   * an unordered upload pile, which meant the picture beside the instructions
-   * was whatever happened to be uploaded third, and a product with two uploads
-   * rendered a hole. The fallbacks keep those positions, then step down to the
-   * card photo so every box has something to show.
+   * The three frames here used to be `banners[2]`, `gallery[1]` and
+   * `banners[1]` — positions in an unordered upload pile, which on Qora Sedana
+   * resolved to `gallery_3`, `gallery_2` and `gallery_2` again, the last of
+   * them cropped into a 544×254 strip. When `how_to_use_1` is empty the steps
+   * take the full width rather than a column collapsing into a grey box.
    */
-  const instructionShot =
-    slotImage(product, "how_to_use_1", product.banners[2]) ?? product.image;
-  const lifestyleShot =
-    slotImage(product, "lifestyle_1", product.gallery[1]) ?? product.image;
-  const warningShot =
-    slotImage(product, "banner_wide", product.banners[1]) ??
-    product.banners[0] ??
-    product.image;
+  const illustrated = hasSlots(product.images, "how_to_use_1");
 
   return (
     <section className="relative overflow-hidden bg-white pb-16 lg:pb-24">
@@ -74,7 +68,12 @@ export function ProductUsage({
           className="mx-auto"
         />
 
-        <div className="mt-12 grid gap-8 lg:grid-cols-2 lg:gap-12">
+        <div
+          className={cn(
+            "mt-12 grid gap-8",
+            illustrated && "lg:grid-cols-2 lg:gap-12",
+          )}
+        >
           <ol className="relative space-y-6 border-l border-border pl-8 lg:pl-10">
             {steps.map((step, index) => (
               <li key={step.title + index} className="relative">
@@ -95,50 +94,30 @@ export function ProductUsage({
           </ol>
 
           <div className="space-y-5">
-            {/*
-              Square tiles, filled edge to edge: the uploaded photos come in
-              both shapes, and a square crop keeps the bottle recognisable in
-              either — a letterboxed photo left grey bars down both sides.
-            */}
-            <div className="grid gap-5 sm:grid-cols-2">
-              <Image
-                src={instructionShot}
-                alt={tCatalog("name")}
-                width={506}
-                height={506}
-                sizes="(min-width: 1024px) 260px, 45vw"
-                className="aspect-square w-full rounded-lg bg-stone object-cover"
-              />
-              <Image
-                src={lifestyleShot}
-                alt={tCatalog("name")}
-                width={506}
-                height={506}
-                loading="lazy"
-                sizes="(min-width: 1024px) 260px, 45vw"
-                className="aspect-square w-full rounded-lg bg-stone object-cover"
-              />
-            </div>
+            <SlotImage
+              images={product.images}
+              slot="how_to_use_1"
+              alt={tCatalog("name")}
+              sizes="(min-width: 1024px) 540px, 90vw"
+              fit="cover"
+              className="rounded-lg bg-stone"
+            />
 
-            <div className="relative overflow-hidden rounded-lg">
-              <Image
-                src={warningShot}
-                alt=""
-                aria-hidden
-                fill
-                sizes="(min-width: 1024px) 540px, 90vw"
-                className="object-cover"
-              />
-              <div className="relative bg-brand-deep/55 px-6 py-8 sm:px-10">
-                <h3 className="font-display text-lg text-gold">
-                  {warnings?.title || t("importantTitle")}
-                </h3>
-                <ul className="mt-4 space-y-2 text-sm leading-relaxed text-cream/90">
-                  {important.map((rule, index) => (
-                    <li key={rule + index}>{rule}</li>
-                  ))}
-                </ul>
-              </div>
+            {/*
+              "Важно соблюдать" has no slot of its own — it is a list of rules,
+              and the photo that used to sit behind it, dimmed under a green
+              veil, was borrowed from the gallery. It keeps the deep green plate
+              instead, which is what the copy reads on.
+            */}
+            <div className="rounded-lg bg-brand-deep px-6 py-8 sm:px-10">
+              <h3 className="font-display text-lg text-gold">
+                {warnings?.title || t("importantTitle")}
+              </h3>
+              <ul className="mt-4 space-y-2 text-sm leading-relaxed text-cream/90">
+                {important.map((rule, index) => (
+                  <li key={rule + index}>{rule}</li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>

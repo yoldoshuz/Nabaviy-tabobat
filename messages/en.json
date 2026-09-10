@@ -243,6 +243,13 @@
       "shelfLife": "24 months",
       "storage": "Store in a dry, cool place at a temperature not above +25°C"
     },
+    "slots": {
+      "compositionTitle": "What's on the label",
+      "compositionText": "The full composition of {product}, exactly as printed on the pack. Worth reading before you buy, especially if you take other supplements.",
+      "lifestyleTitle": "{product} every day",
+      "certificateTitle": "Quality certificate",
+      "certificateText": "The product has passed laboratory testing and certification. The document can be read in full."
+    },
     "benefitsTitle": "How does {product} help?",
     "usageTitle": "How to take {product}?",
     "usageSubtitle": "{product} intake schedule and recommendations.",
