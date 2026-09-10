@@ -36,7 +36,7 @@ export function ComparisonTable({ products }: { products: Product[] }) {
                         </span>
                         {/* Whole bottle, never a slice of its label. */}
                         <Image
-                          src={product.gallery[0]}
+                          src={product.image}
                           alt={tCatalog(`${product.slug}.name`)}
                           width={220}
                           height={160}

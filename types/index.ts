@@ -1,4 +1,5 @@
-import type { ApiImageSlot, ApiProductBlock, ImageSlotKey } from "@/lib/api/types";
+import type { ApiProductBlock } from "@/lib/api/types";
+import type { ProductImages } from "@/lib/product-images";
 import type { locales } from "@/lib/i18n/routing";
 
 export type Locale = (typeof locales)[number];
@@ -31,12 +32,8 @@ export interface Product {
   currency: "UZS";
   sku: string;
   volume: string;
+  /** Packshot — the card, the cart and the comparison table read this. */
   image: string;
-  imageBack: string;
-  /** Square-ish lifestyle shots used for thumbnails and cards. */
-  gallery: string[];
-  /** Wide lifestyle shots used for the banner carousel and usage collage. */
-  banners: string[];
   /** Highlighted numbers rendered around the bottle on the detail page */
   highlights: { value: string; labelKey: string }[];
   /** Effectiveness meters on the detail page */
@@ -62,17 +59,20 @@ export interface Product {
    */
   blocks?: ApiProductBlock[];
   /**
-   * Pictures the moderator placed into named slots, keyed by slot.
+   * Every place a photograph can go on this product's page, keyed by the name
+   * of the place.
    *
-   * `image`/`gallery`/`banners` above are still the fields the cards and the
-   * showcase read, so nothing breaks without this. What it adds is the sections
-   * further down the page: each one asks for the slot it was designed around and
-   * falls back to whichever photo it used to borrow from the pile.
+   * This is the whole of the page's photography. Each section asks for the slot
+   * that carries its own name — `benefits` reads `benefits_1`/`benefits_2`,
+   * `metrics` reads `metrics_1` — and an empty slot means that section renders
+   * without a picture.
+   *
+   * It replaces `imageBack`, `gallery` and `banners`, which were positions in
+   * an unordered upload pile: `gallery_1` appeared five times on the Qora
+   * Sedana page because "the first photo" was the only address the page had.
    */
-  slots?: ProductImageSlots;
+  images?: ProductImages;
 }
-
-export type ProductImageSlots = Partial<Record<ImageSlotKey, ApiImageSlot>>;
 
 export interface CartItem {
   slug: ProductSlug;

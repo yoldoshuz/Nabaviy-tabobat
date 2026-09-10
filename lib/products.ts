@@ -1,4 +1,33 @@
+import {
+  EMPTY_PRODUCT_IMAGES,
+  GALLERY_SLOTS,
+  type ProductImages,
+} from "@/lib/product-images";
 import type { Product, ProductSlug } from "@/types";
+
+/**
+ * The bundled catalogue's own photographs, placed into the gallery slots.
+ *
+ * The offline storefront has no admin behind it, so this is where its artwork
+ * declares which places it fills: the product page reads named slots and
+ * nothing else. Only the gallery is bundled — the informational slots are
+ * content, and content nobody has uploaded has no stand-in. The old `banners`
+ * array is gone with the rest: it was the widest file the product happened to
+ * have, which is not the same thing as a banner.
+ *
+ * The dimensions are the slot's specification, which is all a layout needs from
+ * them.
+ */
+function bundledGallery(...urls: string[]): ProductImages {
+  return {
+    ...EMPTY_PRODUCT_IMAGES,
+    ...Object.fromEntries(
+      urls
+        .slice(0, GALLERY_SLOTS.length)
+        .map((url, index) => [GALLERY_SLOTS[index], { url, width: 1000, height: 1000 }]),
+    ),
+  };
+}
 
 export const products: Product[] = [
   {
@@ -9,13 +38,12 @@ export const products: Product[] = [
     sku: "NT-OMG3-400",
     volume: "400 mg",
     image: "/product-omega-3.png",
-    imageBack: "/product-omega-3-back.png",
-    gallery: ["/product-shot-1.png", "/product-shot-2.png"],
-    banners: [
-      "/product-banner.png",
-      "/product-shot-3.png",
-      "/product-shot-4.png",
-    ],
+    images: bundledGallery(
+      "/product-omega-3.png",
+      "/product-omega-3-back.png",
+      "/product-shot-1.png",
+      "/product-shot-2.png",
+    ),
     highlights: [
       { value: "400 mg", labelKey: "dose" },
       { value: "100%", labelKey: "natural" },
@@ -44,13 +72,12 @@ export const products: Product[] = [
     sku: "NT-QSED-400",
     volume: "400 mg",
     image: "/product-qora-sedana.png",
-    imageBack: "/product-omega-3-back.png",
-    gallery: ["/product-shot-2.png", "/product-shot-1.png"],
-    banners: [
-      "/product-shot-3.png",
-      "/product-shot-4.png",
-      "/product-banner.png",
-    ],
+    images: bundledGallery(
+      "/product-qora-sedana.png",
+      "/product-omega-3-back.png",
+      "/product-shot-2.png",
+      "/product-shot-1.png",
+    ),
     highlights: [
       { value: "400 mg", labelKey: "dose" },
       { value: "100%", labelKey: "natural" },
@@ -79,13 +106,12 @@ export const products: Product[] = [
     sku: "NT-QAH-400",
     volume: "400 mg",
     image: "/product-omega-3.png",
-    imageBack: "/product-omega-3-back.png",
-    gallery: ["/product-shot-1.png", "/product-shot-2.png"],
-    banners: [
-      "/product-shot-4.png",
-      "/product-banner.png",
-      "/product-shot-3.png",
-    ],
+    images: bundledGallery(
+      "/product-omega-3.png",
+      "/product-omega-3-back.png",
+      "/product-shot-1.png",
+      "/product-shot-2.png",
+    ),
     highlights: [
       { value: "400 mg", labelKey: "dose" },
       { value: "100%", labelKey: "natural" },

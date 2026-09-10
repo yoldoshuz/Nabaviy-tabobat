@@ -9,6 +9,12 @@ import { ProductCta } from "@/components/pages/product/product-cta";
 import { ProductFaq } from "@/components/pages/product/product-faq";
 import { ProductMeters } from "@/components/pages/product/product-meters";
 import { ProductShowcase } from "@/components/pages/product/product-showcase";
+import {
+  ProductBanner,
+  ProductCertificate,
+  ProductLabel,
+  ProductLifestyle,
+} from "@/components/pages/product/product-slot-sections";
 import { ProductUsage } from "@/components/pages/product/product-usage";
 import { JsonLd } from "@/components/shared/json-ld";
 import { locales } from "@/lib/i18n/routing";
@@ -48,7 +54,7 @@ export async function generateMetadata(
       tCatalog(`${product.slug}.description`),
     keywords: t("keywords", { product: name }).split(", "),
     path: `/products/${product.slug}`,
-    images: [product.gallery[0]],
+    images: [product.image],
     type: "article",
   });
 }
@@ -89,6 +95,18 @@ export default async function ProductPage(
     <>
       <ProductShowcase product={product} content={content} />
       {resolveSectionOrder(product.blocks).map((section) => SECTION[section])}
+
+      {/*
+        The four sections that are a photograph and nothing else. They have no
+        CMS block to order them, so they close the page in the order the shared
+        template lays down — label, lifestyle, certificate, wide strip — and
+        each one renders only if its slot has a file in it.
+      */}
+      <ProductLabel product={product} />
+      <ProductLifestyle product={product} />
+      <ProductCertificate product={product} />
+      <ProductBanner product={product} />
+
       <ProductCta product={product} />
 
       <JsonLd

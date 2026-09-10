@@ -11,8 +11,9 @@
 
 import { blogArticles as staticArticles } from "@/lib/blog";
 import { products as staticProducts } from "@/lib/products";
+import { toProductImages } from "@/lib/product-images";
 import { isSoldOut } from "@/lib/utils";
-import type { BlogArticle, Product, ProductImageSlots } from "@/types";
+import type { BlogArticle, Product } from "@/types";
 
 import { isApiConfigured } from "./config";
 import { resolveMediaUrl } from "./media";
@@ -27,7 +28,6 @@ import type {
   ApiBlogPost,
   ApiBlogPostProduct,
   ApiProduct,
-  ImageSlotKey,
 } from "./types";
 
 /* ── mapping ─────────────────────────────────────────────────────────────── */
@@ -57,57 +57,37 @@ function resolveOrder(
 const staticProduct = (slug: string) => staticProducts.find((p) => p.slug === slug);
 const staticArticle = (slug: string) => staticArticles.find((a) => a.slug === slug);
 
+/**
+ * The cover of a product the API sent in trimmed form — a blog junction row,
+ * which carries `media` and no `images`.
+ */
 const mainMediaUrl = (api: ApiProduct): string | undefined =>
-  (api.media ?? []).find((m) => m.isMain)?.url ?? (api.media ?? [])[0]?.url;
+  (api.media ?? []).find((m) => m.slot === "gallery_1")?.url ??
+  (api.media ?? []).find((m) => m.isMain)?.url ??
+  (api.media ?? [])[0]?.url;
 
 const img = (url: string | null | undefined) => resolveMediaUrl(url);
-const imgs = (urls: (string | null | undefined)[] | undefined) =>
-  (urls ?? []).map(img).filter(Boolean);
-
 /**
- * The photos uploaded through the admin, the one marked main first and the rest
- * in their sort order.
+ * The one photo a card needs: the product's cover.
  *
- * These outrank `attributes.images` on purpose. `attributes` is seed data that
- * no admin screen writes to, so as long as it won, a moderator could replace a
- * product's whole photo set and watch the storefront ignore every one of them.
- */
-function uploadedShots(api: ApiProduct): string[] {
-  return [...(api.media ?? [])]
-    .filter((m) => m.type !== "video")
-    .sort((a, b) => Number(b.isMain) - Number(a.isMain) || a.sortOrder - b.sortOrder)
-    .map((m) => img(m.url))
-    .filter(Boolean);
-}
-
-/** The four gallery places, in the order the design stacks them. */
-const GALLERY_SLOTS: ImageSlotKey[] = ["gallery_1", "gallery_2", "gallery_3", "gallery_4"];
-
-/**
- * The pictures a moderator placed by hand, keyed by the slot they sit in.
+ * The by-slug response answers with the full `images` map, but a catalogue list
+ * does not — it carries `media` only — so a card resolves its cover from the
+ * slot each file says it sits in. `gallery_1` is the documented cover; `isMain`
+ * is the same fact spelled the old way and stands behind it; the first upload
+ * is the last resort, for a record whose files predate slots entirely.
  *
- * Empty slots are dropped rather than kept as `null`, so a caller can ask
- * `slots.about_1` and get either a picture or nothing — no third state to think
- * about at every use site.
+ * With `mainMediaUrl` above, these two are the only readers of `media` left, and
+ * the only places `isMain` is consulted. Nothing on a product page goes near
+ * either.
  */
-function slotted(api: ApiProduct): ProductImageSlots {
-  const entries = Object.entries(api.images ?? {}).flatMap(([slot, value]) => {
-    const url = img(value?.url);
-    if (!url) return [];
-    return [[slot, { ...value!, url }] as const];
-  });
-  return Object.fromEntries(entries) as ProductImageSlots;
-}
-
-/**
- * The wide strip, or `null` when nobody placed one — the caller's cue to keep
- * whatever it was showing before rather than render an empty band.
- */
-function bannerShots(slots: ProductImageSlots): string[] | null {
-  const placed = [slots.banner_wide?.url, slots.advantages_1?.url].filter(
-    (url): url is string => Boolean(url),
-  );
-  return placed.length ? placed : null;
+function coverShot(api: ApiProduct): string {
+  const photos = (api.media ?? []).filter((m) => m.type !== "video");
+  const cover =
+    api.images?.gallery_1?.url ??
+    photos.find((m) => m.slot === "gallery_1")?.url ??
+    photos.find((m) => m.isMain)?.url ??
+    photos[0]?.url;
+  return img(cover);
 }
 
 /**
@@ -119,29 +99,10 @@ function bannerShots(slots: ProductImageSlots): string[] | null {
  */
 function toProduct(api: ApiProduct): Product {
   const attrs = api.attributes ?? {};
-  const images = attrs.images ?? {};
+  const seeded = attrs.images ?? {};
   const base = staticProduct(api.slug);
-  const slots = slotted(api);
-  /*
-   * The four gallery places win over the upload pile outright.
-   *
-   * The array walk stays as the fallback, and deliberately so. Slots arrived
-   * after the catalogue was already full, so a product nobody has re-uploaded
-   * since has `images` empty and `media` full; reading only the slots would
-   * blank out its card. Once any gallery slot is filled, that placement is the
-   * moderator's explicit choice and wins — including the gaps, which is why the
-   * list is compacted rather than padded.
-   */
-  const placed = GALLERY_SLOTS.map((slot) => slots[slot]?.url).filter(
-    (url): url is string => Boolean(url),
-  );
-  const shots = placed.length ? placed : uploadedShots(api);
-  const card = shots[0] || img(images.card) || base?.image || "";
-  const gallery = shots.length
-    ? shots
-    : images.gallery
-      ? imgs(images.gallery)
-      : (base?.gallery ?? []);
+  const images = toProductImages(api.images);
+  const card = coverShot(api) || img(seeded.card) || base?.image || "";
 
   return {
     id: api.id,
@@ -154,19 +115,6 @@ function toProduct(api: ApiProduct): Product {
     sku: api.sku || base?.sku || "",
     volume: attrs.volume ?? base?.volume ?? "",
     image: card,
-    imageBack: shots[1] || img(images.back) || base?.imageBack || card,
-    gallery: gallery.length ? gallery : [card],
-    /*
-     * The banner carousel. `banner_wide` is the slot cut for exactly this
-     * strip, with `advantages_1` behind it, and only then the old behaviour of
-     * reusing the gallery — which was never really a banner, just the widest
-     * thing available.
-     */
-    banners: bannerShots(slots) ?? (shots.length
-      ? shots
-      : images.banners
-        ? imgs(images.banners)
-        : (base?.banners ?? [card])),
     highlights: attrs.highlights ?? base?.highlights ?? [],
     meters: attrs.meters ?? base?.meters ?? [],
     benefitKeys: attrs.benefitKeys ?? base?.benefitKeys ?? [],
@@ -174,7 +122,11 @@ function toProduct(api: ApiProduct): Product {
     usageKeys: attrs.usageKeys ?? base?.usageKeys ?? [],
     advantageKeys: attrs.advantageKeys ?? base?.advantageKeys ?? [],
     order: resolveOrder(api.sortOrder, attrs.order, base?.order, 0),
-    slots,
+    /*
+     * Empty on a list, which is correct: the endpoint does not send `images`
+     * there and every section that reads a slot lives on the product page.
+     */
+    images,
     // Only the by-slug response carries these, so on a list they are simply
     // absent — the catalogue has no use for them and they would bloat the
     // response.
@@ -208,9 +160,12 @@ function toRelatedProduct(row: ApiBlogPostProduct): Product | null {
     price: Number(api.price),
     currency: "UZS",
     image,
-    gallery: base?.gallery ?? [image],
-    banners: base?.banners ?? [image],
-    imageBack: base?.imageBack ?? image,
+    /*
+     * No slots: the junction sends five fields and none of them is `images`.
+     * A card needs the cover, which it has, and every section that reads a slot
+     * lives on the product page this card links to.
+     */
+    images: base?.images,
     sku: base?.sku ?? "",
     volume: base?.volume ?? "",
     highlights: base?.highlights ?? [],

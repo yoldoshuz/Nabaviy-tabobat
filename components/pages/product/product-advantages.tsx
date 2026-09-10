@@ -1,13 +1,10 @@
-"use client";
-
-import { Check, ChevronLeft, ChevronRight } from "lucide-react";
-import Image from "next/image";
+import { Check } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
 
 import { Container } from "@/components/shared/container";
 import { GreenLeaf } from "@/components/shared/green-leaf";
 import { SectionHeading } from "@/components/shared/section-heading";
+import { SlotImage } from "@/components/shared/slot-image";
 import type { ProductContent } from "@/lib/api/blocks";
 import type { Product } from "@/types";
 
@@ -19,37 +16,11 @@ export function ProductAdvantages({
   content?: ProductContent;
 }) {
   const t = useTranslations("product");
-  const tCommon = useTranslations("common");
   const tCatalog = useTranslations(`catalog.${product.slug}`);
-  const [index, setIndex] = useState(0);
 
   /* The admin's "Преимущества" block, or the bundled copy when it has none. */
   const cms = content?.advantages;
-
-  /**
-   * Banners are uploaded photos, so their shapes are whatever the shop sent —
-   * portrait bottles and landscape scenes in the same carousel. A fixed frame
-   * cropped the portrait ones down to a band of label, so the frame takes the
-   * shape of the photo it is showing instead, measured as it loads. The width
-   * cap keeps a tall photo from pushing the rest of the page off the screen.
-   *
-   * `ratio` holds the shape on screen and `ratios` remembers the ones already
-   * measured: on the way to a photo seen before the frame reshapes with the
-   * click, and on the way to a new one it keeps the outgoing shape until the
-   * photo lands, rather than snapping through a placeholder in between.
-   */
-  const [ratios, setRatios] = useState<Record<string, number>>({});
-  const [ratio, setRatio] = useState(1200 / 415);
-
-  const src = product.banners[index];
-  const total = product.banners.length;
-
-  const go = (step: number) => {
-    const next = (index + step + total) % total;
-    setIndex(next);
-    const known = ratios[product.banners[next]];
-    if (known) setRatio(known);
-  };
+  const title = cms?.title || t("advantagesTitle", { product: tCatalog("name") });
 
   return (
     <section className="relative overflow-hidden bg-white pb-16 lg:pb-24">
@@ -59,53 +30,26 @@ export function ProductAdvantages({
       />
 
       <Container className="relative">
-        <SectionHeading
-          title={cms?.title || t("advantagesTitle", { product: tCatalog("name") })}
-          className="mx-auto"
+        <SectionHeading title={title} className="mx-auto" />
+
+        {/*
+          One picture, from the slot named after this block, in the shape it was
+          shot in.
+
+          This was a carousel over the product's whole photo set, with the frame
+          measuring each file as it loaded and reshaping to match — machinery
+          that existed only because the strip was being handed pictures never
+          meant for it. \`advantages_1\` is shot 4:3, the box is 4:3, and there is
+          nothing left to measure. Empty slot, no picture: the checklist below is
+          the section.
+        */}
+        <SlotImage
+          images={product.images}
+          slot="advantages_1"
+          alt={tCatalog("name")}
+          sizes="(min-width: 1024px) 900px, 92vw"
+          className="mx-auto mt-10 w-full max-w-3xl rounded-xl bg-stone"
         />
-
-        <div
-          className="relative mx-auto mt-10 w-full"
-          style={{ maxWidth: `calc(70vh * ${ratio})` }}
-        >
-          <div
-            className="relative w-full overflow-hidden rounded-xl bg-stone"
-            style={{ aspectRatio: ratio }}
-          >
-            <Image
-              key={src}
-              src={src}
-              alt={tCatalog("name")}
-              fill
-              sizes="(min-width: 1200px) 1140px, 92vw"
-              onLoad={(event) => {
-                const { naturalWidth, naturalHeight } = event.currentTarget;
-                if (!naturalWidth || !naturalHeight) return;
-                const loaded = naturalWidth / naturalHeight;
-                setRatio(loaded);
-                setRatios((current) => ({ ...current, [src]: loaded }));
-              }}
-              className="object-contain"
-            />
-          </div>
-
-          <button
-            type="button"
-            onClick={() => go(-1)}
-            aria-label={tCommon("prev")}
-            className="absolute top-1/2 -left-2 flex size-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-white text-brand shadow-card transition-colors hover:bg-stone focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand lg:-left-6"
-          >
-            <ChevronLeft className="size-5" aria-hidden />
-          </button>
-          <button
-            type="button"
-            onClick={() => go(1)}
-            aria-label={tCommon("next")}
-            className="absolute top-1/2 -right-2 flex size-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-white text-brand shadow-card transition-colors hover:bg-stone focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand lg:-right-6"
-          >
-            <ChevronRight className="size-5" aria-hidden />
-          </button>
-        </div>
 
         <ul className="mt-10 grid gap-4 md:grid-cols-2">
           {(cms?.items ?? product.advantageKeys.map((key) => tCatalog(`advantages.${key}`))).map((advantage, position) => (

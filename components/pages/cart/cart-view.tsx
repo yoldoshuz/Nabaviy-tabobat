@@ -61,7 +61,7 @@ export function CartView() {
                   >
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
                       <Image
-                        src={line.product.gallery[0]}
+                        src={line.product.image}
                         alt={tCatalog(`${line.slug}.name`)}
                         width={196}
                         height={196}

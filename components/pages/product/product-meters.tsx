@@ -1,10 +1,11 @@
-import Image from "next/image";
 import { useTranslations } from "next-intl";
 
 import { Container } from "@/components/shared/container";
 import { GreenLeaf } from "@/components/shared/green-leaf";
+import { SlotImage } from "@/components/shared/slot-image";
 import type { ProductContent } from "@/lib/api/blocks";
-import { slotImage } from "@/lib/utils";
+import { hasSlots } from "@/lib/product-images";
+import { cn } from "@/lib/utils";
 import type { Product } from "@/types";
 
 export function ProductMeters({
@@ -35,6 +36,14 @@ export function ProductMeters({
       value: meter.value,
     }));
 
+  /*
+   * The photo belongs to this block: `metrics_1`, not the packshot the ring
+   * used to borrow — `gallery_1` again, its fifth appearance on the Qora Sedana
+   * page. With the slot empty the meters take the whole width rather than
+   * leaving a ring drawn around nothing.
+   */
+  const illustrated = hasSlots(product.images, "metrics_1");
+
   return (
     <section className="relative overflow-hidden bg-white pb-16 lg:pb-24">
       <GreenLeaf
@@ -42,7 +51,12 @@ export function ProductMeters({
         className="right-0 -bottom-6 hidden w-[140px] opacity-90 lg:block"
       />
 
-      <Container className="relative grid items-center gap-12 lg:grid-cols-[1.1fr_1fr]">
+      <Container
+        className={cn(
+          "relative grid items-center gap-12",
+          illustrated && "lg:grid-cols-[1.1fr_1fr]",
+        )}
+      >
         <div>
           {/*
             The design gives this block no heading, because the bundled meters
@@ -89,18 +103,14 @@ export function ProductMeters({
           </ul>
         </div>
 
-        <div className="relative mx-auto aspect-square w-full max-w-[440px]">
-          <div className="absolute inset-0 rounded-full bg-stone/50" />
-          <div className="absolute inset-[10%] rounded-full bg-brand/10" />
-          <Image
-            src={slotImage(product, "metrics_1", product.image)!}
-            alt={tCatalog("name")}
-            width={360}
-            height={580}
-            sizes="(min-width: 1024px) 340px, 60vw"
-            className="absolute top-1/2 left-1/2 h-[70%] w-auto -translate-x-1/2 -translate-y-1/2 object-contain drop-shadow-[0_20px_40px_rgba(16,40,27,0.28)]"
-          />
-        </div>
+        <SlotImage
+          images={product.images}
+          slot="metrics_1"
+          alt={tCatalog("name")}
+          sizes="(min-width: 1024px) 440px, 80vw"
+          className="mx-auto w-full max-w-[440px] rounded-xl bg-stone/60"
+          imageClassName="p-4"
+        />
       </Container>
     </section>
   );
